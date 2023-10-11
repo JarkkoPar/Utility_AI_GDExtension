@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://bjm4ohu7vx7ig"]
+
+[ext_resource type="Texture2D" uid="uid://i2trriwd5qem" path="res://example_2_dudes_in_combat/pistol.png" id="1_4e781"]
+[ext_resource type="Texture2D" uid="uid://xi3uviw8wvrt" path="res://example_2_dudes_in_combat/smg2.png" id="2_sn2pr"]
+[ext_resource type="Script" path="res://example_2_dudes_in_combat/weapon.gd" id="3_u5aqf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0oc4n"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_4e781")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_sn2pr")
+}],
+"loop": true,
+"name": &"smg",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_da7gx"]
+radius = 163.6
+
+[node name="Weapon" type="AnimatedSprite2D"]
+scale = Vector2(0.1, 0.1)
+sprite_frames = SubResource("SpriteFrames_0oc4n")
+animation = &"smg"
+script = ExtResource("3_u5aqf")
+
+[node name="Area2D" type="Area2D" parent="."]
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_da7gx")
