@@ -13,3 +13,18 @@ Works on Godot 4.1 or newer versions.
 # Installation
 Just copy the bin-folder with all its contents to your Godot project root folder. 
 
+# Example project
+The example project contains two example scenes. With these examples you get to know the nodes of the Utility AI GDExtension: 
+
+ * UtilityAIAgent node that is the "main" node for using the AI
+ * UtilityAISensor and UtilityAISensorGroup nodes that gives information to the AI about the game world
+ * UtilityAIBehaviour node that is used to define behaviours for the AI
+ * UtilityAIConsideration and UtilityAIConsiderationGroup nodes that define what score the behaviours will get based on sensor input
+ * UtilityAIAction and UtilityAIActionGroup nodes that make up the actual steps the AI should take to realize a behaviour
+
+## Example 1 - A dude following the mouse cursor
+
+The first example is a simple one, where one AI controlled entity follows the mouse cursor. When it gets close enough to the cursor, it stops and waits. It is a gentle introduction to Utility AI.
+
+## Example 2 - Dudes in combat
+The second example provides a more elaborate example with several behaviours for the AI agent with a multitude of sensors. In this example a blue and a red team of dudes pick up weapons and battle it out until only one team remains standing. 
