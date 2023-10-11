@@ -9,7 +9,7 @@ If you want the source code, you can find it here: [Utility AI Source Code repos
 
 # Compatibility
 Works on Godot 4.1 or newer versions. 
-Currently Windows and Linux versions are available.
+Currently 64bit Windows and Linux versions are available.
 
 # Installation
 Just copy the bin-folder with all its contents to your Godot project root folder. 

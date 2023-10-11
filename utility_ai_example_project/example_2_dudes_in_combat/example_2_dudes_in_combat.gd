@@ -6,6 +6,7 @@ extends Node2D
 # in the same team with them.
 # A team can have a leader-dude, who can bark orders to the dudes in their
 # team. 
+# The AI node structure is in the combat_dude scene along with the needed code.
 
 @onready var dude_template = preload("res://example_2_dudes_in_combat/combat_dude.tscn")
 @onready var weapon_template = preload("res://example_2_dudes_in_combat/weapon.tscn")

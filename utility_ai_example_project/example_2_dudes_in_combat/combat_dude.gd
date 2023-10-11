@@ -3,7 +3,6 @@ extends AnimatedSprite2D
 # This scene is where the AI logic happens, and compared to the dude running
 # after the cursor on the first example, the script is much longer.
 
-
 var ai:UtilityAIAgent # This is the AI agent which handles reasoning.
 
 # These are sensors we will use to update the AI agent's understanding
