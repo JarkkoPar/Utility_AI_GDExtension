@@ -25,6 +25,7 @@ The example project contains two example scenes. With these examples you get to 
 ## Example 1 - A dude following the mouse cursor
 
 The first example is a simple one, where one AI controlled entity follows the mouse cursor. When it gets close enough to the cursor, it stops and waits. It is a gentle introduction to Utility AI. 
+
 ![Example 1 - A dude following the mouse cursor](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/example_1.png)
 
 ## Example 2 - Dudes in combat
