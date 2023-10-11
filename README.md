@@ -1,5 +1,5 @@
 # Utility_AI_GDExtension
-This repository contains the binaries and example project for the Utility AI GDExtension.
+This repository contains the binaries and example project for the Utility AI GDExtension for Godot Engine.
 
 If you don't know what Utility AI is, here is what Wikipedia says about it:
 
