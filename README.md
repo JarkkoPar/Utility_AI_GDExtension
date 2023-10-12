@@ -29,13 +29,13 @@ The first example is a simple one, where one AI controlled entity follows the mo
  
 |Example 1|
 |---------|
-|![Example 1 - A dude following the mouse cursor](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/example_1.png)|
+|![Example 1 - A dude following the mouse cursor](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/screenshots/example_1.png)|
  
 ## Example 2 - Dudes in combat
 The second example provides a more elaborate example with several behaviours for the AI agent with a multitude of sensors. In this example a blue and a red team of dudes pick up weapons and battle it out until only one team remains standing. 
 
 |Example 2|
 |---------|
-|![Example 1 - Dudes in combat](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/example_2.png)|
+|![Example 1 - Dudes in combat](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/screenshots/example_2.png)|
  
  
