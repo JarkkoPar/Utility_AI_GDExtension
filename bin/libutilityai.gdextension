@@ -22,4 +22,5 @@ UtilityAIConsiderations = "res://bin/icons/UtilityAIConsiderationGroup.svg"
 UtilityAIConsideration = "res://bin/icons/UtilityAIConsideration.svg"
 UtilityAIConsiderationGroup = "res://bin/icons/UtilityAIConsiderationGroup.svg"
 UtilityAIBehaviour = "res://bin/icons/UtilityAIBehaviour.svg"
+UtilityAIBehaviourGroup = "res://bin/icons/UtilityAIBehaviourGroup.svg"
 
