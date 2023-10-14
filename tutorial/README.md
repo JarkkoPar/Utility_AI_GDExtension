@@ -30,19 +30,19 @@ The AI Agents works by evaluating different behaviours that have been defined fo
 |![Add the Behaviour nodes](tutorial_pic_3.png)|
 
 ## Adding the Considerations
-The AI Agent uses Considerations to decide what Behavious it should consider when scoring the behaviours. Each Consideration can use a Sensor as its input. If you don't set a sensor, it uses the "Activation Input Value" property as-is.
+The AI Agent uses Considerations to decide what it should consider when scoring the behaviours. Each Consideration can use a Sensor as its input. If you don't set a sensor, it uses the "Activation Input Value" property as-is.
 
 Add a UtilityAIConsideration node as the child of the "Move to Target Behaviour" node. Then rename it to "Am I Far Away from Target".
 |Add the first Consideration node|
 |--|
 |![Add the first Consideration node](tutorial_pic_4.png)|
 
-Select the "Am I Far Away from Target" node and in the Inspector, assign the "Input Sensore Node Path" to the DistanceToTarget sensor node. Once set, the sensor will set the "Activation Input Value" automatically when the AI Agent evaluates its options.
+Select the "Am I Far Away from Target" node and in the Inspector, assign the "Input Sensor Node Path" to the DistanceToTarget sensor node. Once set, the sensor will set the "Activation Input Value" automatically when the AI Agent evaluates its options.
 |Set the sensor|
 |--|
 |![Set the sensor](tutorial_pic_5.png)|
 
-The last thing we need to do is to set the "Activation Curve" property. This defines how the Consideration will evaluate the "Activation Input Value" property. Add a new Curve and set it to a curve where the Y-value is 0 when X-value is close to 0, and when X closes 1 the Y value will increase. This means that as the DistanceToTarget sensor value increases, so does the Consideration score, which in turn will make the "Move to Target Behaviour" more likely to be chosen. 
+The last thing we need to do is to set the "Activation Curve" property. This defines how the Consideration will evaluate the "Activation Input Value" property. Add a new Curve and set it to a curve where the Y-value is 0 when X-value is close to 0, and when X approaches 1 the Y value will increase. This means that as the DistanceToTarget sensor value increases, so does the Consideration score, which in turn will make the "Move to Target Behaviour" more likely to be chosen. 
 |Set the activation curve|
 |--|
 |![Set the activation curve](tutorial_pic_6.png)|

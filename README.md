@@ -40,13 +40,10 @@ The second example provides a more elaborate example with several behaviours for
 
 |Example 2|
 |---------|
-|![Example 1 - Dudes in combat](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/screenshots/example_2.png)|
+|![Example 2 - Dudes in combat](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/screenshots/example_2.png)|
  
 ## Example 3 - Making (better) use of Actions
 The third example shows a better, more re-usable way of using actions. In the earlier two examples the actions have been used only as an ID for an action. In this example the actions are extended with a script to contain the methods start_action(), execute_action() and end_action(). As a result the action node itself can be used perform what ever an action does, which both simplifies the AI Entity code and makes each action easier to share between different AI entities.
 
-|Example 3|
-|---------|
-|![Example 1 - Dudes in combat](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/screenshots/example_2.png)|
  
  
