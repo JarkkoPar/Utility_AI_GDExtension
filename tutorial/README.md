@@ -10,7 +10,7 @@ Now that we have something to display on the screen, let's create the AI Agent n
 The main node for the Utility AI GDExtension is the AI Agent node. It is under this node all the other nodes will be placed. So add an AI Agent node to your test scene, as a child of the Sprite2D. 
 |Add the AI Agent node|
 |--|
-|[Add the AI Agent node](tutorial_pic_1.png)|
+|![Add the AI Agent node](tutorial_pic_1.png)|
 
 We will be making a real-time example, so select the AI Agent node if it is not yet selected and change the "Thinking Delay in Seconds" property to 0.1. This makes the AI Agent do its reasoning more often. Leave the "Num Behaviours to Select" property to 1, which means the AI Agent will always select the best behaviour it can find. If you increase this value the AI Agent will choose randomly one of the top N behaviours, where N is the value you set to the property "Num Behaviours to Select".
 
@@ -19,7 +19,7 @@ We will be making a real-time example, so select the AI Agent node if it is not 
 The AI Agent uses `sensors` to observe what happens in the game world. For this tutorial we will create a random item that the AI will go to and pick up, so a thing of interest would be the _distance_ to the item. That will be our sensor. Add a UtilityAISensor node as the child of the UtilityAIAgent and rename it to DistanceToTarget.
 |Add the Sensor node|
 |--|
-|[Add the Sensor node](tutorial_pic_2.png)|
+|![Add the Sensor node](tutorial_pic_2.png)|
 
 For the Utility AI GDExtension each sensor should have a floating point input value between 0 and 1. 
 
@@ -27,7 +27,7 @@ For the Utility AI GDExtension each sensor should have a floating point input va
 The AI Agents works by evaluating different behaviours that have been defined for it. We will now add two behaviour nodes and use the Consideration and Action nodes to build their logic. Add two UtilityAIBehaviour nodes as the child of the AI Agent node. Name them "Move to Target Behaviour" and "Pickup Item Behaviour". 
 |Add the Behaviour nodes|
 |--|
-|[Add the Behaviour nodes](tutorial_pic_3.png)|
+|![Add the Behaviour nodes](tutorial_pic_3.png)|
 
 ## Adding the Considerations
 The AI Agent uses Considerations to decide what Behavious it should consider when scoring the behaviours. Each Consideration can use a Sensor as its input. If you don't set a sensor, it uses the "Activation Input Value" property as-is.
@@ -35,22 +35,22 @@ The AI Agent uses Considerations to decide what Behavious it should consider whe
 Add a UtilityAIConsideration node as the child of the "Move to Target Behaviour" node. Then rename it to "Am I Far Away from Target".
 |Add the first Consideration node|
 |--|
-|[Add the first Consideration node](tutorial_pic_4.png)|
+|![Add the first Consideration node](tutorial_pic_4.png)|
 
 Select the "Am I Far Away from Target" node and in the Inspector, assign the "Input Sensore Node Path" to the DistanceToTarget sensor node. Once set, the sensor will set the "Activation Input Value" automatically when the AI Agent evaluates its options.
 |Set the sensor|
 |--|
-|[Set the sensor](tutorial_pic_5.png)|
+|![Set the sensor](tutorial_pic_5.png)|
 
 The last thing we need to do is to set the "Activation Curve" property. This defines how the Consideration will evaluate the "Activation Input Value" property. Add a new Curve and set it to a curve where the Y-value is 0 when X-value is close to 0, and when X closes 1 the Y value will increase. This means that as the DistanceToTarget sensor value increases, so does the Consideration score, which in turn will make the "Move to Target Behaviour" more likely to be chosen. 
 |Set the activation curve|
 |--|
-|[Set the activation curve](tutorial_pic_6.png)|
+|![Set the activation curve](tutorial_pic_6.png)|
 
 Now, add a Consideration node as the child of the "Pickup Item Behaviour" and name it "Am I Near the Target". Set the sensor as the DistanceToTarget sensor. Create a new Activation Curve, but this time have the curve have a high Y-value when X is near to 0, and otherwise Y should be 0. This will make the "Pickup Item Behaviour" be less likely to be chosen when the AI Agent is farther away to the target.
 |Set the activation curve for the other consideration|
 |--|
-|[Set the activation curve for the other consideration](tutorial_pic_7.png)|
+|![Set the activation curve for the other consideration](tutorial_pic_7.png)|
 
 ## Adding the Actions
 We're almost done with the node structure! The last thing we need to do for the Behaviours is to add Actions to them. When the AI Agent has chosen a behaviour based on an evaluation of their Considerations, it will execute the Actions you have defined for the Behaviour. You can add as many actions as you like and you can even use the UtilityAIActionGroup node to group your actions and set if the actions should be executed as a sequence or just one of them to be picked randomly.
@@ -58,7 +58,7 @@ We're almost done with the node structure! The last thing we need to do for the 
 In our case we will add just one action for each of the behaviours and name them as "Move" and "Pickup". So do just that, add a UtilityAIAction node as the child of both Behaviour nodes, and them rename them as noted.
 |Add the Action nodes|
 |--|
-|[Add the Action nodes](tutorial_pic_8.png)|
+|![Add the Action nodes](tutorial_pic_8.png)|
 
 The action nodes contain two main properties: "Action ID" and "Is Finished". 
 
@@ -149,7 +149,7 @@ When a behaviour or action changes, the AI Agent emits a signal. We will use thi
 
 |Connect the Action Changed signal|
 |--|
-|[Connect the Action Changed signal](tutorial_pic_9.png)|
+|![Connect the Action Changed signal](tutorial_pic_9.png)|
 
 Then add the below code to the handler function. It checks if the new action is different from before. If it is, and the curren action is not the same as the new one, the action that is running is ended using the end_action() function. If the new action wasn't null, it is started using the start_action() function. We will define both of these functions in a moment.
 ```gdscript
