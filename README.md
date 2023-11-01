@@ -8,23 +8,24 @@ If you don't know what Utility AI is, here is what Wikipedia says about it:
 If you want the source code, you can find it here: [Utility AI Source Code repository](https://github.com/JarkkoPar/Utility_AI).
 
 # Compatibility
-Works on Godot 4.1 or newer versions. 
+Works on Godot 4.1.2 or newer versions. 
 Currently 64bit Windows and Linux versions are available.
 
 # Installation
-Just copy the bin-folder with all its contents to your Godot project root folder. 
+Just copy the addons-folder with all its contents to your Godot project root folder. 
+NOTE! If you have the version 1.1 bin-folder already installed in your Godot project root folder, you will need to delete it before you copy the addons folder to your project root folder.
 
 # Example project
-The example project contains three example scenes. With these examples you get to know the nodes of the Utility AI GDExtension: 
+The example project contains four example scenes. With these examples you get to know the nodes of the Utility AI GDExtension: 
 
  * UtilityAIAgent node that is the "main" node for using the AI
  * UtilityAISensor and UtilityAISensorGroup nodes that gives information to the AI about the game world
- * UtilityAIBehaviour node that is used to define behaviours for the AI
-activating them in a simple way based on considerations
+ * UtilityAIBehaviour node that is used to define behaviours for the AI activating them in a simple way based on considerations
+ * UtilityAIBehaviourGroup node that is used to group behaviours and activate/deactivate them
  * UtilityAIConsideration and UtilityAIConsiderationGroup nodes that define what score the behaviours will get based on sensor input
  * UtilityAIAction and UtilityAIActionGroup nodes that make up the actual steps the AI should take to realize a behaviour
 
-There is one more node which does not yet have an example project: the UtilityAIBehaviourGroup. This node can be used to activate and deactivate groups of nodes in a simple way, either using the is_active property or by using considerations.
+There are also specialized sensor nodes for adding vision to the AI agents, handling ranges, booleans, for instance.
 
 
 ## Example 1 - A dude following the mouse cursor
@@ -36,7 +37,7 @@ The first example is a simple one, where one AI controlled entity follows the mo
 |![Example 1 - A dude following the mouse cursor](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/screenshots/example_1.png)|
  
 ## Example 2 - Dudes in combat
-The second example provides a more elaborate example with several behaviours for the AI agent with a multitude of sensors. In this example a blue and a red team of dudes pick up weapons and battle it out until only one team remains standing. 
+The second example provides a more elaborate example with several behaviours and behaviour groups for the AI agent with a multitude of sensors. In this example a blue and a red team of dudes pick up weapons and battle it out until only one team remains standing. 
 
 |Example 2|
 |---------|
@@ -44,6 +45,14 @@ The second example provides a more elaborate example with several behaviours for
  
 ## Example 3 - Making (better) use of Actions
 The third example shows a better, more re-usable way of using actions. In the earlier two examples the actions have been used only as an ID for an action. In this example the actions are extended with a script to contain the methods start_action(), execute_action() and end_action(). As a result the action node itself can be used perform what ever an action does, which both simplifies the AI Entity code and makes each action easier to share between different AI entities.
-
+|Example 3|
+|---------|
+|![Example 3 - Making use of Actions](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/screenshots/example_3.png)|
+ 
+## Example 4 - Adding perception
+The fourth example shows how to add vision and hearing sensors to an AI agent, this time a Baddie. It uses a specialized sensor, UtilityAIArea2DVisibilitySensor, to achieve this. In the example a Baddie will chase you, the player, and investigate if you make too much noise.
+|Example 4|
+|---------|
+|![Example 4 - Adding perception](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/screenshots/example_4.png)|
  
  

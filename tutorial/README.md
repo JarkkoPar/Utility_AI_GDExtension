@@ -169,9 +169,9 @@ In the start_action() function we set the speed of the entity based on what acti
 
 ```gdscript
 func start_action(action_node):
-	if current_action.name == "Move":
+	if action_node.name == "Move":
 		speed = 100.0
-	elif current_action.name == "Pickup":
+	elif action_node.name == "Pickup":
 		speed = 0.0
 
 ```
@@ -179,9 +179,9 @@ func start_action(action_node):
 For end_action() function we don't currently do anything, but it is included as an example.
 ```gdscdript
 func end_action(action_node):
-	if current_action.name == "Move":
+	if action_node.name == "Move":
 		pass
-	elif current_action.name == "Pickup":
+	elif action_node.name == "Pickup":
 		pass
 
 ```
@@ -246,16 +246,16 @@ func _on_utility_ai_agent_action_changed(action_node):
 
 
 func start_action(action_node):
-	if current_action.name == "Move":
+	if action_node.name == "Move":
 		speed = 100.0
-	elif current_action.name == "Pickup":
+	elif action_node.name == "Pickup":
 		speed = 0.0
 
 
 func end_action(action_node):
-	if current_action.name == "Move":
+	if action_node.name == "Move":
 		pass
-	elif current_action.name == "Pickup":
+	elif action_node.name == "Pickup":
 		pass
 
 ```

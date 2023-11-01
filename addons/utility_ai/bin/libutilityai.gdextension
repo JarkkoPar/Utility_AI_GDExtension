@@ -1,0 +1,32 @@
+[configuration]
+
+entry_symbol = "utility_ai_library_init"
+compatibility_minimum = 4.1
+
+[libraries]
+
+windows.debug.x86_64 = "res://addons/utility_ai/bin/libutilityai.windows.template_debug.x86_64.dll"
+windows.release.x86_64 = "res://addons/utility_ai/bin/libutilityai.windows.template_release.x86_64.dll"
+linux.debug.x86_64 = "res://addons/utility_ai/bin/libutilityai.linux.template_debug.x86_64.so"
+linux.release.x86_64 = "res://addons/utility_ai/bin/libutilityai.linux.template_release.x86_64.so"
+
+[icons]
+UtilityAIAgent = "res://addons/utility_ai/bin/icons/UtilityAIAgent.svg"
+UtilityAIActions = "res://addons/utility_ai/bin/icons/UtilityAIActionGroup.svg"
+UtilityAIAction = "res://addons/utility_ai/bin/icons/UtilityAIAction.svg"
+UtilityAIActionGroup = "res://addons/utility_ai/bin/icons/UtilityAIActionGroup.svg"
+UtilityAISensors = "res://addons/utility_ai/bin/icons/UtilityAISensorGroup.svg"
+UtilityAISensor = "res://addons/utility_ai/bin/icons/UtilityAISensor.svg"
+UtilityAISensorGroup = "res://addons/utility_ai/bin/icons/UtilityAISensorGroup.svg"
+UtilityAIConsiderations = "res://addons/utility_ai/bin/icons/UtilityAIConsiderationGroup.svg"
+UtilityAIConsideration = "res://addons/utility_ai/bin/icons/UtilityAIConsideration.svg"
+UtilityAIConsiderationGroup = "res://addons/utility_ai/bin/icons/UtilityAIConsiderationGroup.svg"
+UtilityAIBehaviour = "res://addons/utility_ai/bin/icons/UtilityAIBehaviour.svg"
+UtilityAIBehaviourGroup = "res://addons/utility_ai/bin/icons/UtilityAIBehaviourGroup.svg"
+UtilityAIBooleanSensor = "res://addons/utility_ai/bin/icons/UtilityAIBooleanSensor.svg"
+UtilityAIIntRangeSensor = "res://addons/utility_ai/bin/icons/UtilityAIIntRangeSensor.svg"
+UtilityAIFloatRangeSensor = "res://addons/utility_ai/bin/icons/UtilityAIFloatRangeSensor.svg"
+UtilityAIDistanceVector2Sensor = "res://addons/utility_ai/bin/icons/UtilityAIDistanceVector2Sensor.svg"
+UtilityAIDistanceVector3Sensor = "res://addons/utility_ai/bin/icons/UtilityAIDistanceVector3Sensor.svg"
+UtilityAIArea2DVisibilitySensor = "res://addons/utility_ai/bin/icons/UtilityAIArea2DVisibilitySensor.svg"
+UtilityAIArea3DVisibilitySensor = "res://addons/utility_ai/bin/icons/UtilityAIArea3DVisibilitySensor.svg"
