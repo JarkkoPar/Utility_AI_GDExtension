@@ -15,6 +15,10 @@ Currently 64bit Windows and Linux versions are available.
 Just copy the addons-folder with all its contents to your Godot project root folder. 
 NOTE! If you have the version 1.1 bin-folder already installed in your Godot project root folder, you will need to delete it before you copy the addons folder to your project root folder.
 
+# Documentation
+
+You can find the documentation [here](documentation/Nodes_latest.md).
+
 # Example project
 The example project contains four example scenes. With these examples you get to know the nodes of the Utility AI GDExtension: 
 
