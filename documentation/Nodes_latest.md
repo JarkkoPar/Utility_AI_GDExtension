@@ -2,8 +2,19 @@
 
 This section describes the nodes, their properties and methods in detail. After each property and method you can find the version tag when the given property/method was introduced or last changed.
 
-This document describes the version 1.2 of Utility AI GDExtension. 
+This document describes the version **1.3** of Utility AI GDExtension. 
+Documentation of earlier versions: [1.2](Nodes_v1_2.md)
 
+## The two node groups - Agent behaviours and Node Query System
+
+There are two main node groups in Utility AI GDExtension: Agent behaviours and Node Query System (NQS). Both are utility-based systems for implementing robust AI systems to your games. 
+
+The *Agent behaviours* focus on utility based behaviours for a single AI agent. They answer the question "What is the best *behaviour* for the current situation?". 
+
+The *Node Query System* focuses on using utility functions to score and filter any type of Godot nodes. They answer the question "What is the *best node* for the job?". 
+
+
+## Agent behaviour nodes
 
 ### UtilityAIAgent 
 
@@ -311,6 +322,203 @@ The `UtilityAIActionGroup` has the following properties:
 |bool|is_finished|Set internally by the stepper, visible only for debugging purposes.|v1.0|
 |int|execution_rule|A choice of how the actions that are child nodes are executed: Sequence:0,PickOneAtRandom:1,IfElse:2,CustomRule:3. The Sequence choice will execute the actions from top to bottom, the Pick One At Random does what it says it will, the IfElse rule uses the `if_else_boolean_value` property to decide if the first or the second child node of the `UtilityAIActionGroup` will be chosen. Finally, the CustomRule choice allows you to write your own `eval` method that is responsible for setting the `current_action_index` property to choose what action should be executed.|v1.2|
 |int|current_action_index|Exposed for the use with a custom `eval` method to choose a child action/action group node to execute.|v1.2|
+
+#### Methods 
+
+None.
+
+
+## The Node Query System (NQS)
+
+The Utility AI Node Query System is a set of nodes that can be used to score and filter any set of Godot nodes to find the top N best nodes given a set of search criteria. The two main node types for the Node Query System are `UtilityAINQSSearchSpaces` and `UtilityAINQSSearchCriteria`. The *Search Spaces* nodes define a set of nodes as a "search space". The `execute_query()` method of the Search Space is used to apply the child *Search Criteria* nodes to filter and score the nodes within the "search space". Similarly to Considerations an *activation curve* can be set to further customize the scoring of each criteria to fit the needs of your game.
+
+The Node Query System has been designed to be as flexible as possible and to allow **any** node property to be used as a scoring or filtering criterion. This allows the use of the system for spatial reasoning ("what is the best cover point/tile to move to?"), but also any other type of quantitative reasoning or ranking a game could need for the AI ("what is the best inventory item to use?, "who is the biggest threat?"). 
+
+### UtilityAISearchSpaces nodes 
+
+The search space nodes are used to define the set of nodes that will be included in the search. The following nodes have been implemented:
+
+**General search spaces**
+
+ * UtilityAINodeGroupSearchSpace
+ * UtilityAINodeChildrenSearchSpace
+
+**2D search spaces** 
+
+* UtilityAIArea2DSearchSpace
+
+**3D search spaces** 
+
+* UtilityAIArea3DSearchSpace
+* UtilityAINavigation3DRectangularPointGridSearchSpace
+
+The search space nodes need to have the `UtilityAISearchCriteria` nodes as their children. For performance, when adding the search criteria add the **filtering** criteria first if possible to reduce the number of nodes as early as possible. After those add the score-based criteria to filter and rank the remaining nodes. 
+
+#### Properties
+
+All the search spaces have the following general properties.
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|bool|is_active|This property can be used to include or exlude the node from processing.|`DEV`|
+|int|top_n_to_find|The number of nodes to return (at maximum)|`DEV`|
+|TypedArray<Node>|_query_results|The resulting array of nodes, sorted in descending order based on the score.|`DEV`|
+|PackedFloat64Array|_query_result_scores|The resulting array of node scores.|`DEV`|
+
+
+#### Methods
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|void|initialize_search_space()|If you override the `_ready()` method, you have to call `initialize_search_space()` in your overridden _ready() method.|`DEV`|
+|void|execute_query()|The `execute_query()` method fetches the search space nodes based on its configuration and then applies the search criteria in top-down order.|`DEV`|
+
+### UtilityAINodeGroupSearchSpace
+
+This node uses the node grouping property of the Godot Engine to construct the search space. All the nodes in the given group are returned as the search space.
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|StringName|group_name|The group name to use in the search.|`DEV`|
+
+
+#### Methods 
+
+None.
+
+
+### UtilityAINodeChildrenSearchSpace
+
+This node uses the children of a node to construct the search space. The direct children of the given node are returned as the search space.
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|NodePath|parent_node|The parent node to use in the search.|`DEV`|
+
+
+#### Methods 
+
+None.
+
+
+### UtilityAIArea2DSearchSpace and UtilityAIArea3DSearchSpace
+
+These nodes use an Area2D or Area3D to define the search space. All the nodes that are within or intersecting with the Area2D/area3D are returned as the search space. The search space uses the on_area_entered and on_area_exited signals to determine which other Area2D/3D nodes are intersecting with the set area.
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|NodeName|area2d/3d_nodepath|The nodepath to the Area3D node to use.|`DEV`|
+|TypedArray<Area2D/3D>|intersecting_areas|The areas intersecting or within the set area. Useful when debugging the search space.|`DEV`|
+
+
+#### Methods 
+
+None.
+
+## UtilityAINavigation related search spaces
+
+The Navigation2D/Navigation3D search spaces are meant to be used with Godot Engine's navigation nodes. They create a set of Node2D or Node3D nodes that can be scored and filtered using the search criteria.
+
+The navigation search spaces are included but not yet fully developed. 
+
+#### Shared Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|RID|navigation_map_rid|The RID for the navigation map to use. Defaults to what ever is the default for the current viewport.|`DEV`|
+|float|grid_size|The distance between grid points.|`DEV`|
+|bool|use_owner_global_position_and_orientation|If true, the owner global position and orientation is used to set location and orientation for the point grid.|`DEV`|
+|bool|show_deug_info|IN DEVELOPMENT.|`DEV`|
+|Vector3|from_vector|The global position for the point grid if the owner position is not used.|`DEV`|
+|Vector3|direction_vector|The orientation for the point grid if the owner orientation is not used.|`DEV`|
+|TypedArray<Node3D>|point_grid|The points for the grid as nodes.|`DEV`|
+
+
+### UtilityAINavigation3DRectangularPointGridSearchSpace
+
+The RectangularPointGrid search spaces create a grid of Node2D/Node3D's on the navmesh. All the created grid nodes are returned as the search space.
+IN DEVELOPMENT!
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|float|rectangle_width|The width of the rectangular point grid (x-axis).|`DEV`|
+|float|rectangle_height|The height of the rectangular point grid (z-axis).|`DEV`|
+
+
+#### Methods 
+
+None.
+
+
+### UtilityAISearchCriteria nodes 
+
+The search criteria nodes are used to filter and score the nodes fetched using the search spaces. There are general criterias that can be used with any Godot node and specific criteria for 2D and 3D related search spaces.
+
+Each criterion has an internal `apply_criterion()` method that is applied to the node passed to it. This method updates the `is_filtered` and `score` properties of the criterion and the results are visible in the Godot Engine editor inspector.
+
+#### Properties
+
+All the criterion nodes share the following general properties.
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|bool|use_for_scoring|If true, the criterion will be used for scoring.|`DEV`|
+|bool|use_for_filtering|If true, the criterion will be used for filtering.|`DEV`|
+|bool|is_filtered|Used in `apply_criterion()`. If set to true, the will be filtered out.|`DEV`|
+|float|score|Used in `apply_criterion()`. The score calculated by `apply_criterion()`. Default value: 1.0.|`DEV`|
+
+
+### UtilityAICustomSearchCriterion
+
+With the custom search criterion you can define a method `apply_criterion()` that will be called to execute the filtering.
+
+#### Properties
+
+None.
+
+
+#### Methods 
+
+None.
+
+
+### UtilityAINode2DDistanceSearchCriterion and UtilityAINode3DDistanceSearchCriterion
+
+The Node2D/Node3D distance search criterion can be used to score and filter based on minimum and maximum distance to the set `distance_to` node.
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|NodePath|distance_to_nodepath|The path to the node to which you want to compare the distance to.|`DEV`|
+|float|min_distance|Minimum distance. If the distance is less than this and filtering is applied, the tested node is filtered out.|`DEV`|
+|float|max_distance|Maximum distance. If the distance is more than this and filtering is applied, the tested node is filtered out.|`DEV`|
+
+
+#### Methods 
+
+None.
+
+
+### UtilityAIMetadataSearchCriterion
+
+The metadata search criterion can be used to filter out nodes that do not contain certain metadata.
+
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|StringName|metadata|The name of the metadata field to find||`DEV`|
+
 
 #### Methods 
 
