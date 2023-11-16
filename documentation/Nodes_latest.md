@@ -3,15 +3,17 @@
 This section describes the nodes, their properties and methods in detail. After each property and method you can find the version tag when the given property/method was introduced or last changed.
 
 This document describes the version **1.3** of Utility AI GDExtension. 
+
 Documentation of earlier versions: [1.2](Nodes_v1_2.md)
+
 
 ## The two node groups - Agent behaviours and Node Query System
 
 There are two main node groups in Utility AI GDExtension: Agent behaviours and Node Query System (NQS). Both are utility-based systems for implementing robust AI systems to your games. 
 
-The *Agent behaviours* focus on utility based behaviours for a single AI agent. They answer the question "What is the best *behaviour* for the current situation?". 
+The *Agent behaviours* focus on utility based behaviours for a single AI agent. They answer the question "What is the best *behaviour* for the current situation?". Use the agent behaviours when you want to choose what an AI should do.
 
-The *Node Query System* focuses on using utility functions to score and filter any type of Godot nodes. They answer the question "What is the *best node* for the job?". 
+The *Node Query System* focuses on using utility functions to score and filter any type of Godot nodes. They answer the question "What is the *best node* for the job?". Use the NQS when you want to choose the best tile to move to, the biggest threat to attack, the best healing item to consumer, for example.
 
 
 ## Agent behaviour nodes
@@ -360,18 +362,18 @@ All the search spaces have the following general properties.
 
 |Type|Name|Description|Version|
 |--|--|--|--|
-|bool|is_active|This property can be used to include or exlude the node from processing.|`DEV`|
-|int|top_n_to_find|The number of nodes to return (at maximum)|`DEV`|
-|TypedArray<Node>|_query_results|The resulting array of nodes, sorted in descending order based on the score.|`DEV`|
-|PackedFloat64Array|_query_result_scores|The resulting array of node scores.|`DEV`|
+|bool|is_active|This property can be used to include or exlude the node from processing.|v1.3|
+|int|top_n_to_find|The number of nodes to return (at maximum)|v1.3|
+|TypedArray<Node>|_query_results|The resulting array of nodes, sorted in descending order based on the score.|v1.3|
+|PackedFloat64Array|_query_result_scores|The resulting array of node scores.|v1.3|
 
 
 #### Methods
 
 |Type|Name|Description|Version|
 |--|--|--|--|
-|void|initialize_search_space()|If you override the `_ready()` method, you have to call `initialize_search_space()` in your overridden _ready() method.|`DEV`|
-|void|execute_query()|The `execute_query()` method fetches the search space nodes based on its configuration and then applies the search criteria in top-down order.|`DEV`|
+|void|initialize_search_space()|If you override the `_ready()` method, you have to call `initialize_search_space()` in your overridden _ready() method.|v1.3|
+|void|execute_query()|The `execute_query()` method fetches the search space nodes based on its configuration and then applies the search criteria in top-down order.|v1.3|
 
 ### UtilityAINodeGroupSearchSpace
 
@@ -381,7 +383,7 @@ This node uses the node grouping property of the Godot Engine to construct the s
 
 |Type|Name|Description|Version|
 |--|--|--|--|
-|StringName|group_name|The group name to use in the search.|`DEV`|
+|StringName|group_name|The group name to use in the search.|v1.3|
 
 
 #### Methods 
@@ -397,7 +399,7 @@ This node uses the children of a node to construct the search space. The direct 
 
 |Type|Name|Description|Version|
 |--|--|--|--|
-|NodePath|parent_node|The parent node to use in the search.|`DEV`|
+|NodePath|parent_node|The parent node to use in the search.|v1.3|
 
 
 #### Methods 
@@ -413,8 +415,8 @@ These nodes use an Area2D or Area3D to define the search space. All the nodes th
 
 |Type|Name|Description|Version|
 |--|--|--|--|
-|NodeName|area2d/3d_nodepath|The nodepath to the Area3D node to use.|`DEV`|
-|TypedArray<Area2D/3D>|intersecting_areas|The areas intersecting or within the set area. Useful when debugging the search space.|`DEV`|
+|NodeName|area2d/3d_nodepath|The nodepath to the Area3D node to use.|v1.3|
+|TypedArray<Area2D/3D>|intersecting_areas|The areas intersecting or within the set area. Useful when debugging the search space.|v1.3|
 
 
 #### Methods 
@@ -431,13 +433,13 @@ The navigation search spaces are included but not yet fully developed.
 
 |Type|Name|Description|Version|
 |--|--|--|--|
-|RID|navigation_map_rid|The RID for the navigation map to use. Defaults to what ever is the default for the current viewport.|`DEV`|
-|float|grid_size|The distance between grid points.|`DEV`|
-|bool|use_owner_global_position_and_orientation|If true, the owner global position and orientation is used to set location and orientation for the point grid.|`DEV`|
-|bool|show_deug_info|IN DEVELOPMENT.|`DEV`|
-|Vector3|from_vector|The global position for the point grid if the owner position is not used.|`DEV`|
-|Vector3|direction_vector|The orientation for the point grid if the owner orientation is not used.|`DEV`|
-|TypedArray<Node3D>|point_grid|The points for the grid as nodes.|`DEV`|
+|RID|navigation_map_rid|The RID for the navigation map to use. Defaults to what ever is the default for the current viewport.|v1.3|
+|float|grid_size|The distance between grid points.|v1.3|
+|bool|use_owner_global_position_and_orientation|If true, the owner global position and orientation is used to set location and orientation for the point grid.|v1.3|
+|bool|show_deug_info|IN DEVELOPMENT.|v1.3|
+|Vector3|from_vector|The global position for the point grid if the owner position is not used.|v1.3|
+|Vector3|direction_vector|The orientation for the point grid if the owner orientation is not used.|v1.3|
+|TypedArray<Node3D>|point_grid|The points for the grid as nodes.|v1.3|
 
 
 ### UtilityAINavigation3DRectangularPointGridSearchSpace
@@ -449,8 +451,8 @@ IN DEVELOPMENT!
 
 |Type|Name|Description|Version|
 |--|--|--|--|
-|float|rectangle_width|The width of the rectangular point grid (x-axis).|`DEV`|
-|float|rectangle_height|The height of the rectangular point grid (z-axis).|`DEV`|
+|float|rectangle_width|The width of the rectangular point grid (x-axis).|v1.3|
+|float|rectangle_height|The height of the rectangular point grid (z-axis).|v1.3|
 
 
 #### Methods 
@@ -470,10 +472,10 @@ All the criterion nodes share the following general properties.
 
 |Type|Name|Description|Version|
 |--|--|--|--|
-|bool|use_for_scoring|If true, the criterion will be used for scoring.|`DEV`|
-|bool|use_for_filtering|If true, the criterion will be used for filtering.|`DEV`|
-|bool|is_filtered|Used in `apply_criterion()`. If set to true, the will be filtered out.|`DEV`|
-|float|score|Used in `apply_criterion()`. The score calculated by `apply_criterion()`. Default value: 1.0.|`DEV`|
+|bool|use_for_scoring|If true, the criterion will be used for scoring.|v1.3|
+|bool|use_for_filtering|If true, the criterion will be used for filtering.|v1.3|
+|bool|is_filtered|Used in `apply_criterion()`. If set to true, the will be filtered out.|v1.3|
+|float|score|Used in `apply_criterion()`. The score calculated by `apply_criterion()`. Default value: 1.0.|v1.3|
 
 
 ### UtilityAICustomSearchCriterion
@@ -498,9 +500,9 @@ The Node2D/Node3D distance search criterion can be used to score and filter base
 
 |Type|Name|Description|Version|
 |--|--|--|--|
-|NodePath|distance_to_nodepath|The path to the node to which you want to compare the distance to.|`DEV`|
-|float|min_distance|Minimum distance. If the distance is less than this and filtering is applied, the tested node is filtered out.|`DEV`|
-|float|max_distance|Maximum distance. If the distance is more than this and filtering is applied, the tested node is filtered out.|`DEV`|
+|NodePath|distance_to_nodepath|The path to the node to which you want to compare the distance to.|v1.3|
+|float|min_distance|Minimum distance. If the distance is less than this and filtering is applied, the tested node is filtered out.|v1.3|
+|float|max_distance|Maximum distance. If the distance is more than this and filtering is applied, the tested node is filtered out.|v1.3|
 
 
 #### Methods 
@@ -517,7 +519,7 @@ The metadata search criterion can be used to filter out nodes that do not contai
 
 |Type|Name|Description|Version|
 |--|--|--|--|
-|StringName|metadata|The name of the metadata field to find||`DEV`|
+|StringName|metadata|The name of the metadata field to find||v1.3|
 
 
 #### Methods 
