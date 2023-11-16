@@ -316,13 +316,17 @@ The `UtilityAIAction` has the following properties:
 |bool|is_active|This property can be used to include or exlude the node from processing.|v1.0|
 |int|action_id|A user-definable numeric ID for the action. Provided as an alternative to using action node names for identifying which is the current action the `AI agent` is currently executing.|v1.0|
 |bool|is_finished|Use this property only to let the `AI agent` know when the chosen action is finished. The stepper function will immediately set it back to false once it has moved on to the next action.|v1.0|
+|bool|has_failed|Use this property only to let the `AI agent` know when the chosen action has failed. You will also need to set the is_finished property! The stepper function will immediately set it back to false once it has handled the failed event.|v1.3|
+
 
 The `UtilityAIActionGroup` has the following properties:
 
 |Type|Name|Description|Version|
 |--|--|--|--|
 |bool|is_finished|Set internally by the stepper, visible only for debugging purposes.|v1.0|
+|bool|has_failed|Use this property only to let the `AI agent` know when the chosen action has failed. You will also need to set the is_finished property! The stepper function will immediately set it back to false once it has handled the failed event.|v1.3|
 |int|execution_rule|A choice of how the actions that are child nodes are executed: Sequence:0,PickOneAtRandom:1,IfElse:2,CustomRule:3. The Sequence choice will execute the actions from top to bottom, the Pick One At Random does what it says it will, the IfElse rule uses the `if_else_boolean_value` property to decide if the first or the second child node of the `UtilityAIActionGroup` will be chosen. Finally, the CustomRule choice allows you to write your own `eval` method that is responsible for setting the `current_action_index` property to choose what action should be executed.|v1.2|
+|int|error_handling_rule|A choice of how the `has_failed` property of the child nodes is handled: EndExecution:0,ContinueExecution:1.|v1.2|
 |int|current_action_index|Exposed for the use with a custom `eval` method to choose a child action/action group node to execute.|v1.2|
 
 #### Methods 
