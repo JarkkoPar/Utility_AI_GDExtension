@@ -38,13 +38,13 @@ There are also specialized sensor nodes for adding vision to the AI agents, hand
 
 The UtilityAI Node Query System is used to perform utility based queries to find Top N nodes that fit the set criteria. It as two types of nodes:
 
-Search spaces: 
+Search spaces that define a set of nodes you will use in your query: 
 
  * UtilityAINodeGroupSearchSpace
  * UtilityAINodeChildrenSearchSpace
  * UtilityAIArea2DSearchSpace and UtilityAIArea3DSearchSpace
 
-Search criteria:
+Search criteria that you want to use to select and rank the top N nodes:
 
  * UtilityAICustomSearchCriterion
  * UtilityAIMetadataSearchCriterion
@@ -79,4 +79,10 @@ The fourth example shows how to add vision and hearing sensors to an AI agent, t
 |---------|
 |![Example 4 - Adding perception](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/screenshots/example_4.png)|
  
+## Example 5 - Hide and seek
+The fith example is a 3D example that shows how to use the Node Query System to find a cover point to hide from the player. It uses an Area3D Search Space with a set of criteria to find the best places to hide, and the AI agent will try and hide from you.
+|Example 5|
+|---------|
+|![Example 5 - Hide and seek](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/screenshots/example_4.png)|
+
  
