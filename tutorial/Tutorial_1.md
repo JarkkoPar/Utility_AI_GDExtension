@@ -7,7 +7,7 @@ This tutorial focuses on general concepts you need to know when working with Uti
 
 The basic loop that Utility AI GDExtension builds upon is the classic **Sense - Think - Act paradigm**. The Sense - Think - Act paradagim, which is sometimes also called Sense - Plan - Act as well, is decades old and is used in things like robots, self-driving cars and of course with AI. Together these three steps help define what the behaviour of the AI will be.
  
-**Sensing** is about getting information about the "world state", which for a game may mean that the AI you are creating should know for instance how far away it is from the player, does the AI see the player or not, and how much health the AI currently has. In Utility AI GDExtension we use *Sensors* for sensing and gathering data about the "world state".
+**Sensing** is about getting information about the "world state", which for a game may mean that the AI you are creating should know for instance how far away it is from the player, does the AI see the player or not, and how much health the AI currently has. In Utility AI GDExtension we use *Sensors* for sensing and gathering data about the "world state". In addition to the sensors, the Node Query System can be used to sense the world and feed information to the AI agents.
 
 **Thinking** is about using the information gathered during the sensing step and coming up with a viable plan, or a behaviour, to react to the situation at hand. In Utility AI GDExtension thinking is done by using *Behaviours* with *Considerations*. The Considerations interpret the Sensors to help decide which Behaviour is valid for the situation.
 
@@ -16,7 +16,7 @@ The basic loop that Utility AI GDExtension builds upon is the classic **Sense - 
 How frequently you run this loop depends on your game. For a real-time game your AI agents will likely be running it a few times a second. For a turn-based game you will likely run it for a unit once at the beginning of its turn. 
 
 
-## At what level does our AI think?
+## At what detail level does our AI think?
 
 In my view, for most people it is easiest to think about what an AI agent would do in terms of "If this - Then that". For example: "If the AI gets shot at, it should take cover and shoot back", or "If the AI sees a coin, it should pick it up". Your natural way of thinking could be more detailed than that or maybe more abstract. Use it as a guide to yourself when you are creating the Sensor, Behaviour, Consideration and Action nodes. This will make it more intuitive for you to work with your AI's behaviours and the actions are at a detail level you are confortable with. 
 
@@ -38,7 +38,14 @@ In most cases it makes sense to group your Behaviours using Behaviour groups and
 
 ## Fiddling with the Curves
 
-Sometimes it can be tricky to find the correct Curves for the considerations. In such situations it is good to remember that the curve maximum value doesn't have to be 1. It can be anything. And maybe you should actually use the ConsiderationGroup and more than one Consideration for the thing you are trying to accomplish? At times you need to add some lag to your sensor values so that they change slower than the actual value. In some cases adding a cooldown to a Behaviour is an easy solution.
+Sometimes it can be tricky to find the correct Curves for the considerations. A relatively common problem with Utility systems is *oscillation*, where the chosen behaviour changes between a couple of options (you can see this happening occationally in the example 4). In such situations it is good to remember that the curve maximum value doesn't have to be 1. It can be anything. And maybe you should actually use the ConsiderationGroup and more than one Consideration for the thing you are trying to accomplish? At times you need to add some lag to your sensor values so that they change slower than the actual value. In some cases adding a cooldown to a Behaviour is an easy solution to prevent it from being chosen for a while, or even adding a little score boost to the currently selected behaviour to make sure it keeps getting selected more easily for some minimum amount of time. 
+
+
+## Utility is used in more things than just AI agents
+
+In a game there are many situations where you may want to know the utility of things other than the behaviour an AI agent should choose. A very common example is a movement or attack target tile in a tile-based game. The AI Agent and the behaviours do not work in this situation. That is why the **Node Query System** was added to Utility AI GDExtension. 
+
+The Node Query System is a generalized solution for calculating the utility of any type of node in a scene. For most games the likely use is to find the best movement targets, the enemies to attack or friendlies to heal or buff, or to find the best cover point nearby. My aim was to make as generalized a system as possible for Godot, so that you can decide what you want to measure for its utility for your game.
 
 
 ## So... How does it work in practice? 

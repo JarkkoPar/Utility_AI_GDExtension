@@ -7,6 +7,7 @@ If you don't know what Utility AI is, here is what Wikipedia says about it:
 
 If you want the source code, you can find it here: [Utility AI Source Code repository](https://github.com/JarkkoPar/Utility_AI).
 
+
 # Compatibility
 Works on Godot 4.1.2 or newer versions. 
 Currently 64bit Windows and Linux versions are available.
@@ -22,6 +23,8 @@ You can find the documentation [here](documentation/Nodes_latest.md).
 # Example project
 The example project contains four example scenes. With these examples you get to know the nodes of the Utility AI GDExtension: 
 
+**Agent behaviour nodes**
+
  * UtilityAIAgent node that is the "main" node for using the AI
  * UtilityAISensor and UtilityAISensorGroup nodes that gives information to the AI about the game world
  * UtilityAIBehaviour node that is used to define behaviours for the AI activating them in a simple way based on considerations
@@ -30,6 +33,23 @@ The example project contains four example scenes. With these examples you get to
  * UtilityAIAction and UtilityAIActionGroup nodes that make up the actual steps the AI should take to realize a behaviour
 
 There are also specialized sensor nodes for adding vision to the AI agents, handling ranges, booleans, for instance.
+
+**Node Query System nodes**
+
+The UtilityAI Node Query System is used to perform utility based queries to find Top N nodes that fit the set criteria. It as two types of nodes:
+
+Search spaces: 
+
+ * UtilityAINodeGroupSearchSpace
+ * UtilityAINodeChildrenSearchSpace
+ * UtilityAIArea2DSearchSpace and UtilityAIArea3DSearchSpace
+
+Search criteria:
+
+ * UtilityAICustomSearchCriterion
+ * UtilityAIMetadataSearchCriterion
+ * UtilityAIDistanceVector2SearchCriterion and UtilityAIDistanceVector3SearchCriterion
+ * UtilityAIDistance2DSearchCriterion and UtilityAIDistance3DSearchCriterion
 
 
 ## Example 1 - A dude following the mouse cursor

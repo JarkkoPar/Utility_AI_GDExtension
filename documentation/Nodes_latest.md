@@ -514,6 +514,24 @@ The Node2D/Node3D distance search criterion can be used to score and filter base
 None.
 
 
+### UtilityAIVector2DistanceSearchCriterion and UtilityAIVector3DistanceSearchCriterion
+
+The Vector2/3 distance search criterion can be used to score and filter based on minimum and maximum distance to the set `distance_to` vector.
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|Vector2/3|distance_to_vector|The global position to compare the search space node distance to.|v1.3|
+|float|min_distance|Minimum distance. If the distance is less than this and filtering is applied, the tested node is filtered out.|v1.3|
+|float|max_distance|Maximum distance. If the distance is more than this and filtering is applied, the tested node is filtered out.|v1.3|
+
+
+#### Methods 
+
+None.
+
+
 ### UtilityAIMetadataSearchCriterion
 
 The metadata search criterion can be used to filter out nodes that do not contain certain metadata.
