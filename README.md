@@ -48,8 +48,11 @@ Search criteria that you want to use to select and rank the top N nodes:
 
  * UtilityAICustomSearchCriterion
  * UtilityAIMetadataSearchCriterion
- * UtilityAIDistanceVector2SearchCriterion and UtilityAIDistanceVector3SearchCriterion
- * UtilityAIDistance2DSearchCriterion and UtilityAIDistance3DSearchCriterion
+ * UtilityAIAngleToDirectionVector2SearchCriterion
+ * UtilityAIAngleToDirectionVector3SearchCriterion
+ * UtilityAIXZAngleToDirectionVector3SearchCriterion
+ * UtilityAIDistanceToVector2SearchCriterion and UtilityAIDistanceToVector3SearchCriterion
+ * UtilityAIDistanceToNode2DSearchCriterion and UtilityAIDistanceToNode3DSearchCriterion
 
 
 ## Example 1 - A dude following the mouse cursor
