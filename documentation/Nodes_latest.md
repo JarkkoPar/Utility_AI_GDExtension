@@ -356,7 +356,7 @@ The search space nodes are used to define the set of nodes that will be included
 **3D search spaces** 
 
 * UtilityAIArea3DSearchSpace
-* UtilityAINavigation3DRectangularPointGridSearchSpace
+
 
 The search space nodes need to have the `UtilityAISearchCriteria` nodes as their children. For performance, when adding the search criteria add the **filtering** criteria first if possible to reduce the number of nodes as early as possible. After those add the score-based criteria to filter and rank the remaining nodes. 
 
@@ -378,6 +378,7 @@ All the search spaces have the following general properties.
 |--|--|--|--|
 |void|initialize_search_space()|If you override the `_ready()` method, you have to call `initialize_search_space()` in your overridden _ready() method.|v1.3|
 |void|execute_query()|The `execute_query()` method fetches the search space nodes based on its configuration and then applies the search criteria in top-down order.|v1.3|
+
 
 ### UtilityAINodeGroupSearchSpace
 
@@ -427,42 +428,6 @@ These nodes use an Area2D or Area3D to define the search space. All the nodes th
 
 None.
 
-## UtilityAINavigation related search spaces
-
-The Navigation2D/Navigation3D search spaces are meant to be used with Godot Engine's navigation nodes. They create a set of Node2D or Node3D nodes that can be scored and filtered using the search criteria.
-
-The navigation search spaces are included but not yet fully developed. 
-
-#### Shared Properties
-
-|Type|Name|Description|Version|
-|--|--|--|--|
-|RID|navigation_map_rid|The RID for the navigation map to use. Defaults to what ever is the default for the current viewport.|v1.3|
-|float|grid_size|The distance between grid points.|v1.3|
-|bool|use_owner_global_position_and_orientation|If true, the owner global position and orientation is used to set location and orientation for the point grid.|v1.3|
-|bool|show_deug_info|IN DEVELOPMENT.|v1.3|
-|Vector3|from_vector|The global position for the point grid if the owner position is not used.|v1.3|
-|Vector3|direction_vector|The orientation for the point grid if the owner orientation is not used.|v1.3|
-|TypedArray<Node3D>|point_grid|The points for the grid as nodes.|v1.3|
-
-
-### UtilityAINavigation3DRectangularPointGridSearchSpace
-
-The RectangularPointGrid search spaces create a grid of Node2D/Node3D's on the navmesh. All the created grid nodes are returned as the search space.
-IN DEVELOPMENT!
-
-#### Properties
-
-|Type|Name|Description|Version|
-|--|--|--|--|
-|float|rectangle_width|The width of the rectangular point grid (x-axis).|v1.3|
-|float|rectangle_height|The height of the rectangular point grid (z-axis).|v1.3|
-
-
-#### Methods 
-
-None.
-
 
 ### UtilityAISearchCriteria nodes 
 
@@ -482,9 +447,45 @@ All the criterion nodes share the following general properties.
 |float|score|Used in `apply_criterion()`. The score calculated by `apply_criterion()`. Default value: 1.0.|v1.3|
 
 
+### UtilityAIAngleToVector2SearchCriterion and UtilityAIAngleToVector3SearchCriterion
+
+The Vector2/3 angle search criterion can be used to score and filter based on the node minimum and maximum angle compared to the set `angle_to_direction_vector`. For Node2D this is the (1,0) vector and for Node3D the (0,0,-1) vector.
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|Vector2/3|angle_to_direction_vector|The direction vector compare the search space node facing to.|v1.3|
+|float|min_distance|Minimum distance. If the distance is less than this and filtering is applied, the tested node is filtered out.|v1.3|
+|float|max_distance|Maximum distance. If the distance is more than this and filtering is applied, the tested node is filtered out.|v1.3|
+
+
+#### Methods 
+
+None.
+
+### UtilityAIAngleToVector3XZSearchCriterion
+
+The Vector3 XZ angle search criterion can be used to score and filter based on the the node angle on the xz-plane compared to the given `angle_to_direction_vector`.
+
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|Vector2/3|angle_to_direction_vector|The direction vector compare the search space node facing to.|v1.3|
+|float|min_distance|Minimum distance. If the distance is less than this and filtering is applied, the tested node is filtered out.|v1.3|
+|float|max_distance|Maximum distance. If the distance is more than this and filtering is applied, the tested node is filtered out.|v1.3|
+
+
+#### Methods 
+
+None.
+
+
 ### UtilityAICustomSearchCriterion
 
-With the custom search criterion you can define a method `apply_criterion()` that will be called to execute the filtering.
+With the custom search criterion you can define a method `apply_criterion()` that will be called to execute the filtering. You need to set the `is_filtered` and `score` properties in the method.
 
 #### Properties
 
@@ -496,7 +497,7 @@ None.
 None.
 
 
-### UtilityAINode2DDistanceSearchCriterion and UtilityAINode3DDistanceSearchCriterion
+### UtilityAIDistanceToNode2DSearchCriterion and UtilityAIDistanceToNode3DSearchCriterion
 
 The Node2D/Node3D distance search criterion can be used to score and filter based on minimum and maximum distance to the set `distance_to` node.
 
@@ -514,7 +515,7 @@ The Node2D/Node3D distance search criterion can be used to score and filter base
 None.
 
 
-### UtilityAIVector2DistanceSearchCriterion and UtilityAIVector3DistanceSearchCriterion
+### UtilityAIDistanceToVector2SearchCriterion and UtilityAIDistanceToVector3SearchCriterion
 
 The Vector2/3 distance search criterion can be used to score and filter based on minimum and maximum distance to the set `distance_to` vector.
 
