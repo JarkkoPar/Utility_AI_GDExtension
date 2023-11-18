@@ -36,15 +36,15 @@ There are also specialized sensor nodes for adding vision to the AI agents, hand
 
 **Node Query System nodes**
 
-The UtilityAI Node Query System is used to perform utility based queries to find Top N nodes that fit the set criteria. It as two types of nodes:
+The UtilityAI Node Query System is used to perform utility based queries to find Top N nodes that fit the set criteria. It as two types of nodes: Search Spaces and Search Criteria.
 
-Search spaces that define a set of nodes you will use in your query: 
+A Search Space defines a set of nodes you will use in your query: 
 
  * UtilityAINodeGroupSearchSpace
  * UtilityAINodeChildrenSearchSpace
  * UtilityAIArea2DSearchSpace and UtilityAIArea3DSearchSpace
 
-Search criteria that you want to use to select and rank the top N nodes:
+A Search Criterion filters and scores the nodes in a search space to find the top N nodes:
 
  * UtilityAICustomSearchCriterion
  * UtilityAIMetadataSearchCriterion
