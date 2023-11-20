@@ -46,13 +46,15 @@ A Search Space defines a set of nodes you will use in your query:
 
 A Search Criterion filters and scores the nodes in a search space to find the top N nodes:
 
- * UtilityAICustomSearchCriterion
- * UtilityAIMetadataSearchCriterion
  * UtilityAIAngleToDirectionVector2SearchCriterion
  * UtilityAIAngleToDirectionVector3SearchCriterion
+ * UtilityAICustomSearchCriterion
  * UtilityAIXZAngleToDirectionVector3SearchCriterion
  * UtilityAIDistanceToVector2SearchCriterion and UtilityAIDistanceToVector3SearchCriterion
  * UtilityAIDistanceToNode2DSearchCriterion and UtilityAIDistanceToNode3DSearchCriterion
+ * UtilityAIDotProductVector2SearchCriterion and UtilityAIDotProductVector3SearchCriterion
+ * UtilityAIDotProductToPositionVector2SearchCriterion and UtilityAIDotProductToPositionVector3SearchCriterion
+ * UtilityAIMetadataSearchCriterion
 
 
 ## Example 1 - A dude following the mouse cursor
