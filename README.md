@@ -18,7 +18,7 @@ NOTE! If you have the version 1.1 bin-folder already installed in your Godot pro
 
 # Documentation
 
-You can find the documentation [here](documentation/Nodes_latest.md).
+You can find the documentation [here](documentation/Nodes_latest.md) and the tutorials [here](tutorial/readme.md).
 
 # Example project
 The example project contains four example scenes. With these examples you get to know the nodes of the Utility AI GDExtension: 
