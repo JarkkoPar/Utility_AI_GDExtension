@@ -100,7 +100,7 @@ We're now ready to test the query. Click on Run Current Scene (or press F6) and 
 |--|
 |![Choosing Remote](tutorial_3_pic_9.png)|
 
-In the Inspector, exand the Query Results and the Query Result Scores. You can see the resulting nodes and their scores (which should be 0.5 for all of them). By double-clicking on the node you can check that the `visible` property is `false` for the nodes that were found (remember, the is_filtered property was set as the visible property).
+In the Inspector, expand the Query Results and the Query Result Scores. You can see the resulting nodes and their scores (which should be 0.5 for all of them). By double-clicking on the node you can check that the `visible` property is `false` for the nodes that were found (remember, the is_filtered property was set as the visible property).
 |The query results|
 |--|
 |![The query results](tutorial_3_pic_10.png)|
