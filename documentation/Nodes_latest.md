@@ -358,7 +358,10 @@ The search space nodes are used to define the set of nodes that will be included
 * UtilityAIArea3DSearchSpace
 
 
-The search space nodes need to have the `UtilityAISearchCriteria` nodes as their children. For performance, when adding the search criteria add the **filtering** criteria first if possible to reduce the number of nodes as early as possible. After those add the score-based criteria to filter and rank the remaining nodes. 
+The search space nodes need to have the `UtilityAISearchCriteria` nodes as their children. For performance, when adding the search criteria add the **filtering** criteria first if possible to reduce the number of nodes as early as possible. After those, add the score-based criteria to filter and rank the remaining nodes. 
+
+The search spaces fill in a TypedArray `_query_results` and a PackedFloat64Array `_query_result_scores`. These are sorted by the score in a descending order. This means that the first node in the `_query_results` array is also the one with the highest score.
+ 
 
 #### Properties
 
@@ -449,7 +452,7 @@ All the criterion nodes share the following general properties.
 
 ### UtilityAIAngleToVector2SearchCriterion and UtilityAIAngleToVector3SearchCriterion
 
-The Vector2/3 angle search criterion can be used to score and filter based on the node minimum and maximum angle compared to the set `angle_to_direction_vector`. For Node2D this is the (1,0) vector and for Node3D the (0,0,-1) vector.
+The Vector2/3 angle search criterion can be used to score and filter based on the node minimum and maximum angle compared to the set `angle_to_direction_vector`. For Node2D the search space direction is the (1,0) vector rotated by the global rotation amount, and for Node3D the node direction (`-global_transform.basis.z`).
 
 #### Properties
 
@@ -466,7 +469,7 @@ None.
 
 ### UtilityAIAngleToVector3XZSearchCriterion
 
-The Vector3 XZ angle search criterion can be used to score and filter based on the the node angle on the xz-plane compared to the given `angle_to_direction_vector`.
+The Vector3 XZ angle search criterion can be used to score and filter based on the angle on the xz-plane between the search space node direction (`-global_transform.basis.z`) compared to the given `angle_to_direction_vector`.
 
 
 #### Properties
@@ -526,6 +529,43 @@ The Vector2/3 distance search criterion can be used to score and filter based on
 |Vector2/3|distance_to_vector|The global position to compare the search space node distance to.|v1.3|
 |float|min_distance|Minimum distance. If the distance is less than this and filtering is applied, the tested node is filtered out.|v1.3|
 |float|max_distance|Maximum distance. If the distance is more than this and filtering is applied, the tested node is filtered out.|v1.3|
+
+
+#### Methods 
+
+None.
+
+
+### UtilityAIDotProductVector2SearchCriterion and UtilityAIDotProductVector3SearchCriterion
+
+The Vector2/3 dot product search criterion can be used to score and filter based the angle the set `dot_product_vector` has compared to the search space node direction (`-global_transform.basis.z` for 3D, Vector2(1,0) rotated by rotation for 2D).
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|Vector2/3|dot_product_vector|The global direction vector to compare the search space node direction vectors to.|v1.3|
+|float|filtering_value|If filtering is in use, the result given by the dot product is compared to this value for filtering.|v1.3|
+|int|filtering_rule|If filtering is in use, this is the comparison that is done to decide on the filtering. The choices are: "LessThan:0,LessOrEqual:1,Equal:2,MoreOrEqual:3,MoreThan:4". For instance, if LessThan is chosen then any node that gets a dot product value of less than the value of `filtering_value` will be filtered out.|v1.3|
+
+
+#### Methods 
+
+None.
+
+
+### UtilityAIDotProductToPositionVector2SearchCriterion and UtilityAIDotProductToPositionVector3SearchCriterion
+
+The Vector2/3 dot product to position search criterion can be used to check if a specific position is in front of or behind a search space node. It calculates a direction vector using the  `dot_product_position_vector` and the node global position. Then, it calculates a dot product using the direction vector and the search space node direction (`-global_transform.basis.z` for 3D, Vector2(1,0) rotated by rotation for 2D).
+
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|Vector2/3|dot_product_position_vector|The global position to use in the dot product calculation.|v1.3|
+|float|filtering_value|If filtering is in use, the result given by the dot product is compared to this value for filtering.|v1.3|
+|int|filtering_rule|If filtering is in use, this is the comparison that is done to decide on the filtering. The choices are: "LessThan:0,LessOrEqual:1,Equal:2,MoreOrEqual:3,MoreThan:4". For instance, if LessThan is chosen then any node that gets a dot product value of less than the value of `filtering_value` will be filtered out.|v1.3|
 
 
 #### Methods 
