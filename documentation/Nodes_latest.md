@@ -556,14 +556,14 @@ None.
 
 ### UtilityAIDotProductToPositionVector2SearchCriterion and UtilityAIDotProductToPositionVector3SearchCriterion
 
-The Vector2/3 dot product to position search criterion can be used to check if a specific position is in front of or behind a search space node. It calculates a direction vector using the  `dot_product_position_vector` and the node global position. Then, it calculates a dot product using the direction vector and the search space node direction (`-global_transform.basis.z` for 3D, Vector2(1,0) rotated by rotation for 2D).
+The Vector2/3 dot product to position search criterion can be used to check if a specific position is in front of or behind a search space node. It calculates a direction vector using the  `dot_product_position` and the node global position. Then, it calculates a dot product using the direction vector and the search space node direction (`-global_transform.basis.z` for 3D, Vector2(1,0) rotated by rotation for 2D).
 
 
 #### Properties
 
 |Type|Name|Description|Version|
 |--|--|--|--|
-|Vector2/3|dot_product_position_vector|The global position to use in the dot product calculation.|v1.3|
+|Vector2/3|dot_product_position|The global position to use in the dot product calculation.|v1.3|
 |float|filtering_value|If filtering is in use, the result given by the dot product is compared to this value for filtering.|v1.3|
 |int|filtering_rule|If filtering is in use, this is the comparison that is done to decide on the filtering. The choices are: "LessThan:0,LessOrEqual:1,Equal:2,MoreOrEqual:3,MoreThan:4". For instance, if LessThan is chosen then any node that gets a dot product value of less than the value of `filtering_value` will be filtered out.|v1.3|
 

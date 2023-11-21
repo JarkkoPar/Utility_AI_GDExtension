@@ -88,6 +88,6 @@ The fourth example shows how to add vision and hearing sensors to an AI agent, t
 The fith example is a 3D example that shows how to use the Node Query System to find a cover point to hide from the player. It uses an Area3D Search Space with a set of criteria to find the best places to hide, and the AI agent will try and hide from you.
 |Example 5|
 |---------|
-|![Example 5 - Hide and seek](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/screenshots/example_4.png)|
+|![Example 5 - Hide and seek](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/screenshots/example_5.png)|
 
  
