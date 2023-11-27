@@ -459,8 +459,8 @@ The Vector2/3 angle search criterion can be used to score and filter based on th
 |Type|Name|Description|Version|
 |--|--|--|--|
 |Vector2/3|angle_to_direction_vector|The direction vector compare the search space node facing to.|v1.3|
-|float|min_distance|Minimum distance. If the distance is less than this and filtering is applied, the tested node is filtered out.|v1.3|
-|float|max_distance|Maximum distance. If the distance is more than this and filtering is applied, the tested node is filtered out.|v1.3|
+|float|min_angle_degrees|Minimum angle in degrees. If the angle is less than this and filtering is applied, the tested node is filtered out.|v1.3|
+|float|max_angle_degrees|Maximum angle in degrees. If the angle is more than this and filtering is applied, the tested node is filtered out.|v1.3|
 
 
 #### Methods 
@@ -477,8 +477,8 @@ The Vector3 XZ angle search criterion can be used to score and filter based on t
 |Type|Name|Description|Version|
 |--|--|--|--|
 |Vector2/3|angle_to_direction_vector|The direction vector compare the search space node facing to.|v1.3|
-|float|min_distance|Minimum distance. If the distance is less than this and filtering is applied, the tested node is filtered out.|v1.3|
-|float|max_distance|Maximum distance. If the distance is more than this and filtering is applied, the tested node is filtered out.|v1.3|
+|float|min_angle_degrees|Minimum angle in degrees. If the angle is less than this and filtering is applied, the tested node is filtered out.|v1.3|
+|float|max_angle_degrees|Maximum angle in degrees. If the angle is more than this and filtering is applied, the tested node is filtered out.|v1.3|
 
 
 #### Methods 
