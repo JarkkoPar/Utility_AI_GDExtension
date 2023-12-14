@@ -2,16 +2,16 @@
 
 This section describes the nodes, their properties and methods in detail. After each property and method you can find the version tag when the given property/method was introduced or last changed.
 
-This document describes the version **1.3** of Utility AI GDExtension. 
+This document describes the version **1.4** of Utility AI GDExtension. 
 
-Documentation of earlier versions: [1.2](Nodes_v1_2.md)
+Documentation of earlier versions: [1.3](Nodes_v1_3.md), [1.2](Nodes_v1_2.md)
 
 
-## The two node groups - Agent behaviours and Node Query System
+## The three node groups - Agent behaviours, Behaviour Tree and the Node Query System
 
-There are two main node groups in Utility AI GDExtension: Agent behaviours and Node Query System (NQS). Both are utility-based systems for implementing robust AI systems to your games. 
+There are three main node groups in Utility AI GDExtension: Agent behaviours, Behaviour Tree, and the Node Query System (NQS). All are utility-based systems for implementing robust AI systems to your games. 
 
-The *Agent behaviours* focus on utility based behaviours for a single AI agent. They answer the question "What is the best *behaviour* for the current situation?". Use the agent behaviours when you want to choose what an AI should do.
+The *Agent behaviours* and *Utility enabled Behaviour Tree* focus on defining *behaviours* for AI agents. They answer the question "What is the best *behaviour* for the current situation?". Use these nodes when you want to choose what an AI should do. 
 
 The *Node Query System* focuses on using utility functions to score and filter any type of Godot nodes. They answer the question "What is the *best node* for the job?". Use the NQS when you want to choose the best tile to move to, the biggest threat to attack, the best healing item to consumer, for example.
 
@@ -29,6 +29,10 @@ This is the main node that is used to manage the UtilityAI. A UtilityAIAgent nod
 |bool|is_active|This property can be used to include or exlude the node from processing.|v1.0|
 |int|num_behaviours_to_select|Pick a behaviour out of top `num_behaviours_to_select` behaviours found after reasoning.|v1.0|
 |float|thinking_delay_in_seconds|Delay time forced between calls to the method `evaluate_options`.|v1.0|
+|String|top_scoring_behaviour_name|This property shows what was the top scoring behaviour after the latest `evaluate_options()` method call.|v1.0|
+|string|current_behaviour_name|This property shows what was the selected behaviour after the latest `evaluate_options()` method call.|v1.0|
+|int|total_evaluate_options_usec|This property shows how many microseconds (usec) the latest `evaluate_options()` method call required to complete.|v1.4|
+
 
 #### Methods 
 
@@ -180,6 +184,8 @@ The sensor will store a list of the found Area3D's that are within the defined v
 |TypedArray<float>|squared_distances_to_unoccluded_areas|Squared distances from the `from_vector` to an area's `global_position` within or intersecting with the `visibility_volume` and that are not blocked by any geometry that is set to the layer(s) defined in `collision_mask`.|v1.2|
 |int|closest_unoccluded_area_index|Index of the closest area to `from_vector` within the `unoccluded_areas` array.|v1.2|
 |TypedArray<RID>|occlusion_test_exclusion_list|Used during occlusion testing to exclude listed nodes from the raycast collision test.|v1.2|
+|bool|use_owner_global_position|If set, the `owner` node's global position is used. IMPORTANT! The scene root node must in that case be a node that has the global_position property.|v1.3|
+
 
 
 ##### Methods 
@@ -334,11 +340,241 @@ The `UtilityAIActionGroup` has the following properties:
 None.
 
 
+## Utility enabled Behaviour Tree nodes
+
+### Shared properties
+
+All the Behaviour Tree nodes have the following shared properties.
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|bool|is_active|This property can be used to include or exlude the node from processing.|v1.4|
+|int|evaluation_method|Used with Utility-based Behaviour Tree nodes. This defines how the `UtilityAIConsideration` nodes (assigned as child nodes of the behaviour tree node) are evaluated to calculate the score for the node.|v1.4|
+|int|reset_rule|Defines how the Behaviour Tree node is reset. The following choices are possible: "WhenTicked:0,WhenCompleted:1,WhenTickedAfterBeingCompleted:2,Never:3".|v1.4|
+|float|score|The score this node received from the Utility-based evaluation.|v1.4|
+|int|tick_result|Result after the tick. The following choices are possible: "Running:0,Success:1,Failure:-1,Skip:-2".|v1.4|
+|int|internal status|The current internal status of the node, useful for debugging and seeing how the execution progresses. The following choices are possible: "Unticked:0,Ticked:1,Completed:2".|v1.4|
+
+#### Shared methods 
+
+All the Behaviour Tree nodes have the following shared methods:
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|void|_tick(Variant user_data, float delta)|This is the internal behaviour tree tick-method. You can provide any Godot variant type as a parameter (usually a node used as an actor or a dictionary used as a blackboard), along with a delta-time. These parameters are passed to all the child nodes of the behaviour tree during ticks. This method starts with an underscore as you usually don't need to call it.|v1.4|
+
+
+### UtilityAIBTRoot
+
+This is the main node for the Utility AI Behaviour Tree nodes. The root node is ticked to update the state of the behaviour tree.
+
+#### Properties
+
+The `UtilityAIBTRoot` has the following properties:
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|bool|is_active|This property can be used to include or exlude the node from processing.|v1.4|
+|int|total_tick_usec|This is the total time in microseconds the call to the `tick()` method used.|v1.4|
+
+
+#### Methods 
+
+The `UtilityAIBTRoot` has the following methods:
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|void|tick(Variant user_data, float delta)|This is the behaviour tree tick-method you should be using to tick the tree. You can provide any Godot variant type as a parameter (usually a node used as an actor or a dictionary used as a blackboard), along with a delta-time. These are passed to all the child nodes of the behaviour tree during ticks.|v1.4|
+
+## Composite nodes
+
+### UtilityAIBTSequence and UtilityAIBTRandomSequence
+
+These two node types are used to create sequences. 
+
+The UtilityAIBTSequence node executes its child nodes from top-to-bottom order until either all of the succeed (returning 1) or one of them fails (returning -1). If a child returns running (0) the sequence will return running to its parent.
+
+The UtilityAIBTRandomSequence works similarly, it just shuffles the nodes into a random order before ticking them.
+ 
+
+### UtilityAIBTSelector and UtilityAIBTRandomSelector
+
+These two node types are used to create fallbacks. 
+
+The UtilityAIBTSelector node executes its child nodes from top-to-bottom order until one of them succeeds (returning 1) or all of them fail (returning -1). If a child returns running (0) the selector will return running to its parent.
+
+The UtilityAIBTRandomSelector works similarly, it just shuffles the nodes into a random order before ticking them.
+
+
+### UtilityAIBTParallel
+
+The parallel node ticks all its child nodes. If any of the nodes returns failure (-1) or running (0), the parallel node returns it back to its parent. If the child nodes return both failure and running statuses, the running status is returned to the parent node.
+
+
+### UtilityAIBTScoreBasedPicker
+
+The score based picker node evaluates its direct child nodes and calculates a score for each of them based on `UtilityAIConsideration` and `UtilityAIConsiderationGroup` nodes that are set as the childs of them. The direct child node with the highest score is chosen and then ticked.
+
+
+## Decorator nodes
+
+### UtilityAIBTCooldownMsec, UtilityAICooldownUsec and UtilityAICooldownTicks
+
+The cooldown nodes can be used to set a branch of the behaviour tree into a cooldown after it has been ticked. The types are cooldown in milliseconds (msec), cooldown in microseconds (usec) and cooldown for a given number of ticks. All of them work similarly: when the cooldown node is ticked, it ticks its child node, starts the cooldown and returns what ever the child node returned. It will return the set `cooldown_return_value` until the cooldown expires. 
+ 
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|int|cooldown_msec/usec/tics|The cooldown period after the cooldown node is ticked.|v1.4|
+|int|cooldown_return_value|The result that is returned during cooldown. Can be either -1=Failure, 0=Running or 1=Success.|v1.4|
+
+
+### UtilityAIBTFixedResult
+
+The fixed result node ticks the first behaviour tree child node it has and regardless of what the child returns, the fixed result node returns what ever value you have set as its `fixed_result` property back to its parent. This node can also be used as a leaf-node.
+ 
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|int|fixed_result|The result that should always be returned. Can be either -1=Failure, 0=Running or 1=Success.|v1.4|
+
+### UtilityAIBTInverter
+
+The inverter node ticks the first behaviour tree child node it has and returns back to its parent the result of the child node, inverted. So success becomes failure, a failure a success. If Running is returned, the inverter returns running back to its parent.
+
+
+### UtilityAIBTLimiter
+
+The limiter node ticks its child for `max_repeat_times` and then returns -1 (failure) until the node is reset.
+ 
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|int|max_repeat_times|The maximum times the limiter node can be ticked.|v1.4|
+
+
+### UtilityAIBTPassThrough
+
+The passthrough node calls the user-defined tick-method and then calls the tick-method of its child node, returning what ever the child node tick result is. If no child node has been defined, it returns what ever you choose for the tick-result.
+
+You can use this node to do preparations for a behaviour tree branch, for instance calculate some angles or distances that all the nodes within a branch will be using and putting them to user_data.
+
+
+### UtilityAIBTRepeatUntil
+
+The RepeatUntil node ticks its child either until the `expected_tick_result` is returned by its child or `max_repeat_times`. If `max_repeat_times` is set to -1, only the `expected_tick_result` will end the loop.
+
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|int|max_repeat_times|The maximum times the limiter node can be ticked.|v1.4|
+|int|expected_tick_result|The result that the child node should return to end the loop. Can be either -1=Failure, 0=Running or 1=Success.|v1.4|
+
+
+### UtilityAIBTRepeater
+
+The Repeater node ticks its child until `max_repeat_times` is reached. If `max_repeat_times` is set to -1 the child will be ticked indefinitely.
+
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|int|max_repeat_times|The maximum times the limiter node can be ticked.|v1.4|
+
+
+## Task nodes
+
+
+### UtilityAIBTLeaf
+
+The leaf node is used for conditions and actions. You should define your own `tick()` method where you do your logic. 
+
+You can either return the tick result or set the `tick_result` property. Examples:
+
+```gdscript
+
+func tick(blackboard, delta) -> int:
+    return 1
+
+```
+
+
+```gdscript
+
+func tick(blackboard, delta):
+    tick_result = 1
+
+```
+
+
+### UtilityAIBTNodeReference
+
+The node reference node can be used to reference any behaviour tree node type anywhere in your scene. This gives a lot of flexibility when designing your AI behaviours.
+
+For instance, you can have an AI agent that has a node reference in its behaviour tree for any items it picks up. Each item can then contain a sub behaviour tree that describes how the item can be used by the AI. When the AI picks up an item, the node reference is set to point to the sub-tree within the item node, and immediately the AI agent can use the item. 
+ 
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|NodePath|node_reference_nodepath|A nodepath to a behaviour tree node.|v1.4|
+
+
+
+### UtilityAIBTPassBy
+
+The PassBy node can be used to run a user-defined `tick()` method without returning any result value. The purpose of this node is to allow running any additional logic during a `tick()` without affecting the flow of the Behaviour Tree. In essence, the functionality is similar to the PassThrough node, but this node can be placed within a sequence, for example.
+
+
+### UtilityAIBTRunNQSQuery
+
+The Run NQS Query node can be used to initialite Node Query System queries. They return running until the query has completed.
+ 
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|NodePath|nqs_search_space_nodepath|A nodepath to a NQS Search Space node.|v1.4|
+|int|top_n_to_find|The number of results the search should return. Overrides the setting on the search space.|v1.4|
+
+
 ## The Node Query System (NQS)
 
 The Utility AI Node Query System is a set of nodes that can be used to score and filter any set of Godot nodes to find the top N best nodes given a set of search criteria. The two main node types for the Node Query System are `UtilityAINQSSearchSpaces` and `UtilityAINQSSearchCriteria`. The *Search Spaces* nodes define a set of nodes as a "search space". The `execute_query()` method of the Search Space is used to apply the child *Search Criteria* nodes to filter and score the nodes within the "search space". Similarly to Considerations an *activation curve* can be set to further customize the scoring of each criteria to fit the needs of your game.
 
 The Node Query System has been designed to be as flexible as possible and to allow **any** node property to be used as a scoring or filtering criterion. This allows the use of the system for spatial reasoning ("what is the best cover point/tile to move to?"), but also any other type of quantitative reasoning or ranking a game could need for the AI ("what is the best inventory item to use?, "who is the biggest threat?"). 
+
+### NodeQuerySystem-singleton
+
+A singleton has been added that allows *time budgeting* for the NQS queries. See the included example project for an example of how to use the singleton.
+
+The NodeQuerySystem-singleton has the following properties:
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|int|run_queries_time_budget_per_frame|This is the time the `run_queries()` method is allowed to run per frame.|v1.4|
+|float|time_allocation_pct_to_high_priority_queries|Value between 0..1, determines how much of the `run_queries_time_budget_per_frame` is used for high-priority queries.|v1.4|
+
+
+And the following methods:
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|void|post_query(Node search_space, bool is_high_priority)|This adds the given search space to the list of queries to be executed when the method `run_queries()` is called.|v1.4|
+|void|run_queries()|Runs the posted queries. Call this once per frame in your main scene.|v1.4|
+|void|clear_queries()|Empties the list of queries to run per frame. Call this when you need to clean up, i.e. in the `_ready()` and `_exit_tree()` methods.|v1.4|
+|void|initialize_performance_counters()|Initializes the counters that can then be seen in the Debug/Monitors tab in the editor.|v1.4|
 
 ### UtilityAISearchSpaces nodes 
 
@@ -360,10 +596,15 @@ The search space nodes are used to define the set of nodes that will be included
 
 The search space nodes need to have the `UtilityAISearchCriteria` nodes as their children. For performance, when adding the search criteria add the **filtering** criteria first if possible to reduce the number of nodes as early as possible. After those, add the score-based criteria to filter and rank the remaining nodes. 
 
+When the query finishes, the search spaces emit the `query_completed`-signal.
 The search spaces fill in a TypedArray `_query_results` and a PackedFloat64Array `_query_result_scores`. These are sorted by the score in a descending order. This means that the first node in the `_query_results` array is also the one with the highest score.
+
+The `execute_query()` method average runtime and other metrics (see below) are available for debugging and finetuning your queries. 
+
+Each search space can be run by itself, by calling its `execute_query()` method until it returns true (completed), or by using the `NodeQuerySystem`-singleton. If the singleton is used, you should not use the `execute_query()` method at all, but simply post the query using `NodeQuerySystem.post_query()`-method instead.
  
 
-#### Properties
+#### Shared properties
 
 All the search spaces have the following general properties.
 
@@ -373,14 +614,29 @@ All the search spaces have the following general properties.
 |int|top_n_to_find|The number of nodes to return (at maximum)|v1.3|
 |TypedArray<Node>|_query_results|The resulting array of nodes, sorted in descending order based on the score.|v1.3|
 |PackedFloat64Array|_query_result_scores|The resulting array of node scores.|v1.3|
+|int|average_call_runtime_usec|Used for debugging and tuning, the average time a single call to `execute_query()` method takes.|v1.4|
+|int|total_query_runtime_usec|The total time to complete the query. Note that this calculates the time from starting the query to finishing it, which means that for queries that take several frames this includes processing time used **outside** of the `execute_query()` method (i.e. *all* your other code you run per frame).|v1.4|
+|int|completed_signal_time_usec|The time it takes to handle the `query_completed` signal (i.e. your result handling code).|v1.4|
+|int|search_space_fetch_time_usec|The time it takes to fetch all the nodes that will be filtered and scored in the query.|v1.4|
+|int|total_query_node_visits|The total number of node visits done when running the query.|v1.4|
+|int|total_query_call_count|The number of times the `execute_query()` method was called to finish the query.|v1.4|
 
 
-#### Methods
+#### Shared methods
 
 |Type|Name|Description|Version|
 |--|--|--|--|
 |void|initialize_search_space()|If you override the `_ready()` method, you have to call `initialize_search_space()` in your overridden _ready() method.|v1.3|
-|void|execute_query()|The `execute_query()` method fetches the search space nodes based on its configuration and then applies the search criteria in top-down order.|v1.3|
+|bool|execute_query(int time_budget_usec)|The `execute_query()` method fetches the search space nodes based on its configuration and then applies the search criteria in top-down order. A time budget can be set to limit the time the method uses for the query. Returns false if the query hasn't finished (time has run out) and true otherwise.|v1.4|
+|void|start_query()|The `start_query()` method prepares the search space for a query, but does not yet apply any criteria.|v1.4|
+
+
+#### Shared signals
+
+|Signal|Parameters|Description|Version|
+|--|--|--|--|
+|query_completed|search_space|Emitted when the query execution is completed.|v1.4|
+
 
 
 ### UtilityAINodeGroupSearchSpace

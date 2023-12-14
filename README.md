@@ -1,5 +1,10 @@
 # Utility_AI_GDExtension
+<p align="center">
+Utility AI | Behaviour Tree with Utility support | Node Query System
+</p>
 This repository contains the binaries and example project for the Utility AI GDExtension for Godot Engine.
+
+The extension contains Utility AI Agent Behaviour, Behaviour Tree with Utility support and Node Query System nodes. Together these nodes can be used to create versatile AI to your games.
 
 If you don't know what Utility AI is, here is what Wikipedia says about it:
 
@@ -7,21 +12,36 @@ If you don't know what Utility AI is, here is what Wikipedia says about it:
 
 If you want the source code, you can find it here: [Utility AI Source Code repository](https://github.com/JarkkoPar/Utility_AI).
 
+# Features
+
+ - [x] Utility based AI Agent and Behaviour nodes to allow reasoning for situation-approriate behaviours
+ - [x] Sensors for visibility, distance, angle, and other information gathering for the AI Agent
+ - [x] Node Query System (NQS) for flexible utility-based node selection amongs **any** Godot node within a scene
+ - [x] Time Budgeting support for NQS to allocate a set time per frame for Utility based queries 
+ - [x] Behaviour Tree with Utility and Node Query System support
+ - [x] Properties in Behaviour Tree nodes to control node reset rules, to see debug status
+ - [x] Behaviour Tree Sub-tree referencing support that allows easy, run-time tree changes and modularity
+
 
 # Compatibility
 Works on Godot 4.1.2 or newer versions. 
 Currently 64bit Windows and Linux versions are available.
 
+
 # Installation
+
 Just copy the addons-folder with all its contents to your Godot project root folder. 
-NOTE! If you have the version 1.1 bin-folder already installed in your Godot project root folder, you will need to delete it before you copy the addons folder to your project root folder.
+
 
 # Documentation
 
 You can find the documentation [here](documentation/Nodes_latest.md) and the tutorials [here](tutorial/readme.md).
 
+
 # Example project
-The example project contains four example scenes. With these examples you get to know the nodes of the Utility AI GDExtension: 
+
+The example project contains example scenes that show how to use the various nodes. With these examples you get to know the nodes of the Utility AI GDExtension: 
+
 
 **Agent behaviour nodes**
 
@@ -34,9 +54,30 @@ The example project contains four example scenes. With these examples you get to
 
 There are also specialized sensor nodes for adding vision to the AI agents, handling ranges, booleans, for instance.
 
+
+**Utility enabled Behaviour Tree nodes**
+
+The UtilityAI Behaviour Tree nodes can be used independelty as a regular behaviour tree. However, they have been designed to work with Utility based Considerations and the Node Query System, which allows for more complex behaviour for your AI agents. The available nodes are:
+
+ * UtilityAIBTRoot node that is the "main" node when using the Utility enabled Behaviour Trees
+ * UtilityAIBTSequence node and UtilityAIBTRandomSequence node 
+ * UtilityAIBTSelector node and UtilityAIBTRandomSelector node
+ * UtilityAIBTParallel node
+ * UtilityAIBTScoreBasedPicker node for picking child nodes based on their utility
+ * UtilityAIBTRunNQSQuery node for running NQS Queries
+ * UtilityAIBTInverter node
+ * UtilityAIBTRepeater and UtilityAIBTRepeatUntil nodes
+ * UtilityAIBTLimiter node
+ * UtilityAIBTLeaf node you use to create your own actions
+ * UtilityAIBTFixedResult node that serves as both AlwaysSucceed and AlwaysFail nodes
+ * UtilityAIBTNodeReference node to allow referencing subtrees and modular behaviour tree development
+ * UtilityAIBTPassThrough node and UtilityAIBTPassBy node 
+ * UtilityAIBTCooldownMsec, UtilityAIBTCooldownUsec and UtilityAICooldownTicks nodes
+
+
 **Node Query System nodes**
 
-The UtilityAI Node Query System is used to perform utility based queries to find Top N nodes that fit the set criteria. It as two types of nodes: Search Spaces and Search Criteria.
+The UtilityAI Node Query System is used to perform utility based queries to find Top N nodes that fit the set criteria. It as two types of nodes: Search Spaces and Search Criteria. A NodeQuerySystem-singleton can be used to set a per physics frame time budget for all the queries and to control the CPU-time of all the queries.
 
 A Search Space defines a set of nodes you will use in your query: 
 
@@ -83,11 +124,17 @@ The fourth example shows how to add vision and hearing sensors to an AI agent, t
 |Example 4|
 |---------|
 |![Example 4 - Adding perception](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/screenshots/example_4.png)|
- 
-## Example 5 - Hide and seek
-The fith example is a 3D example that shows how to use the Node Query System to find a cover point to hide from the player. It uses an Area3D Search Space with a set of criteria to find the best places to hide, and the AI agent will try and hide from you.
+
+## Example 5 - Behaviour Tree with Utility
+The fifth example is a 2D example that shows how to use the Utility enabled Behaviour Trees together with the Node Query System.
 |Example 5|
 |---------|
-|![Example 5 - Hide and seek](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/screenshots/example_5.png)|
-
+|![Example 5 - Behaviour Tree with Utility](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/screenshots/example_5.png)|
  
+## Example 6 - Hide and seek
+The sixth example is a 3D example that shows how to use the Node Query System to find a cover point to hide from the player. It uses the NodeQuerySystem-singleton to manage time budget of the queries and an Area3D Search Space with a set of criteria to find the best places for the AI to hide from you. Utility AI Agent behaviours are used to select the main behaviour and one of these behaviours uses a Behaviour Tree to handle the how the behaviour is realized and how errors are handled.
+|Example 6|
+|---------|
+|![Example 6 - Hide and seek](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/main/screenshots/example_6.png)|
+
+
