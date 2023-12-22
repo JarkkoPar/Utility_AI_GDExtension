@@ -40,7 +40,7 @@ You can find the documentation [here](documentation/Nodes_latest.md) and the tut
 
 # Authors
 
-JarkkoPar with [Contributors](https://github.com/JarkkoPar/Utility_AI/graphs/contributors). Big thank you for all of you who've helped out!
+JarkkoPar with [Contributors](https://github.com/JarkkoPar/Utility_AI/graphs/contributors). Big thank you to all of you who've helped out!
 
 # Example project
 
