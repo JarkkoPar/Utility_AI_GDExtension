@@ -558,13 +558,15 @@ User-defined methods `on_enter_condition(user_data, delta) -> bool`, `on_enter_s
 
 The states are changed by calling the `transition_to()` method and by providing a *NodePath* to a child node of the State Tree root node as a target state. The child nodes of the target node are evaluated, all the way down the tree, until a leaf State Tree node is activated. If no active leaf node is found, the state transition fails and the State Tree remains in the existing state.
 
+> [!NOTE]
+> When a scene with a State Tree is first run, during the first call to the `tick()` method the State Tree will automatically transition to the root node to find the initial set of active states. 
+
 When the state changes, the `on_exit_state()` method is called for existing state nodes that are not included in the new state. Similarly, for new state nodes that were not included in the existing state, the `on_enter_state()` method is called. 
 
 During a tick, the `on_tick()` method is called for all the active states.
 
 You construct a State Tree by first adding a `UtilityAISTRoot` node to your scene. Under the root node you add `UtilityAISTNode`s, and you can keep adding further `UtilityAISTNode`s until you have the state structure you need. 
 
-When a scene with a State Tree is first run, during the first call to the `tick()` method the State Tree will automatically transition to the root node. 
 
 
 ### Shared properties for all the State Tree nodes
