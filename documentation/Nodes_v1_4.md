@@ -2,16 +2,16 @@
 
 This section describes the nodes, their properties and methods in detail. After each property and method you can find the version tag when the given property/method was introduced or last changed.
 
-This document describes the version **1.5** of Utility AI GDExtension. 
+This document describes the version **1.4** of Utility AI GDExtension. 
 
-Documentation of earlier versions: [1.4](Nodes_v1_4.md),[1.3](Nodes_v1_3.md), [1.2](Nodes_v1_2.md)
+Documentation of earlier versions: [1.3](Nodes_v1_3.md), [1.2](Nodes_v1_2.md)
 
 
-## The four node groups - Agent behaviours, Behaviour Tree, State Tree and the Node Query System
+## The three node groups - Agent behaviours, Behaviour Tree and the Node Query System
 
-There are four main node groups in Utility AI GDExtension: Agent behaviours, Behaviour Tree, State Tree, and the Node Query System (NQS). All are utility-based systems for implementing robust AI systems to your games. 
+There are three main node groups in Utility AI GDExtension: Agent behaviours, Behaviour Tree, and the Node Query System (NQS). All are utility-based systems for implementing robust AI systems to your games. 
 
-The *Agent behaviours*, *State Tree* and *Utility enabled Behaviour Tree* focus on defining *behaviours* for AI agents. They answer the question "What is the best *behaviour* for the current situation?". Use these nodes when you want to choose what an AI should do. 
+The *Agent behaviours* and *Utility enabled Behaviour Tree* focus on defining *behaviours* for AI agents. They answer the question "What is the best *behaviour* for the current situation?". Use these nodes when you want to choose what an AI should do. 
 
 The *Node Query System* focuses on using utility functions to score and filter any type of Godot nodes. They answer the question "What is the *best node* for the job?". Use the NQS when you want to choose the best tile to move to, the biggest threat to attack, the best healing item to consumer, for example.
 
@@ -547,61 +547,6 @@ The Run NQS Query node can be used to initialite Node Query System queries. They
 |--|--|--|--|
 |NodePath|nqs_search_space_nodepath|A nodepath to a NQS Search Space node.|v1.4|
 |int|top_n_to_find|The number of results the search should return. Overrides the setting on the search space.|v1.4|
-
-## The State Tree
-
-The Utility AI State Tree is just two nodes: `UtilityAISTRoot` and `UtilityAISTNode`. Together they enable you to create hierarchical state machines with a similar node structure and state selection to a Behaviour Tree. The Utility AI State Tree nodes are utility-enabled, which means that if desired, the node selection for a state can be done by using UtilityAIConsideration nodes or resources. Alternatively a `on_enter_condition()` method can be defined for the State Tree nodes for the selection.
-
-A StateTree is a state management structure that is a hybrid of a behaviour tree and a hierarchical state machine. When the tree is *ticked* for the first time, a set of active states is selected by evaluating the child nodes of the root node, and the childs of the child nodes, until a *leaf node* is found that can be activated. All the State Tree nodes from the root node all the way down to the leaf node are then considered as "active". On subsequent calls to the root node `tick()` method, all the active nodes are ticked in top-to-down order from the root to the leaf node. This allows you to create a hierarchy of states with shared logic on the top-level nodes and more specific logic on the leaf nodes. 
-
-User-defined methods `on_enter_condition(user_data, delta) -> bool`, `on_enter_state(user_data, delta)`, `on_exit_state(user_data, delta)` and `on_tick(user_data, delta)` can be defined to create your custom state activation and handling logic.
-
-The states are changed by calling the `transition_to()` method and by providing a *NodePath* to a child node of the State Tree root node as a target state. The child nodes of the target node are evaluated, all the way down the tree, until a leaf State Tree node is activated. If no active leaf node is found, the state transition fails and the State Tree remains in the existing state.
-
-When the state changes, the `on_exit_state()` method is called for existing state nodes that are not included in the new state. Similarly, for new state nodes that were not included in the existing state, the `on_enter_state()` method is called. 
-
-During a tick, the `on_tick()` method is called for all the active states.
-
-You construct a State Tree by first adding a `UtilityAISTRoot` node to your scene. Under the root node you add `UtilityAISTNode`s, and you can keep adding further `UtilityAISTNode`s until you have the state structure you need. 
-
-When a scene with a State Tree is first run, during the first call to the `tick()` method the State Tree will automatically transition to the root node. 
-
-
-### Shared properties for all the State Tree nodes
-
-All the State Tree nodes have the following shared properties:
-
-|Type|Name|Description|Version|
-|--|--|--|--|
-|int|child_state_selection_rule|Defines how the child state is chosen. Can be one of the following: "OnEnterConditionMethod:0,UtilityScoring:1", where "OnEnterConditionMethod" means that the user-defined `on_enter_condition()` method is called and if it returns true, the state is selected. "UtilityScoring" option uses the considerations set in the properties of the state and/or as child nodes. The highest-scoring state will be chosen.|v1.5|
-|int|evaluation_method|Defines how the considerations are aggregated. Can be one of the following: "Sum:0,Min:1,Max:2,Mean:3,Multiply:4,FirstNonZero:5".|v1.5|
-|Array<UtilityAIConsiderationResources>|considerations|Considerations set as a property of the state. These are used if the "UtilityScoring" option is selected for the `child_state_selection_rule`.|v1.5|
-
-
-#### Shared methods for all the State Tree nodes
-
-All the State Tree nodes have the following shared methods:
-
-|Type|Name|Description|Version|
-|--|--|--|--|
-|void|transition_to(NodePath new_state_nodepath, Variant user_data, float delta)|This method is used to transition between states in the Stae Tree. You must provide the NodePath (relative to the State Tree root node) for the target state and you can provide any Godot variant type as a parameter (usually a node used as an actor or a dictionary used as a blackboard), along with a delta-time. User_data and delta are passed to the `on_enter_condition()`-method when selecting the active states.|v1.5|
-
-
-### UtilityAISTRoot
-
-This is the root node for a State Tree. To update the tree, you call the `tick()`-method of its root node. This will tick all the child nodes.
-
-#### Properties
-
-|Type|Name|Description|Version|
-|--|--|--|--|
-|int|total_tick_usec|The time to complete a tick in usec.|v1.5|
-
-#### Methods
-
-|Type|Name|Description|Version|
-|--|--|--|--|
-|void|tick(Variant user_data, float delta)|The `tick()`-method is used to update the State Tree state. You can provide any Godot variant type as a parameter (usually a node used as an actor or a dictionary used as a blackboard), along with a delta-time. User_data and delta are passed to the `on_enter_state()`, `on_exit_state()`, `on_tick()` and `on_enter_condition()` methods of the child nodes.|v1.5|
 
 
 ## The Node Query System (NQS)
