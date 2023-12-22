@@ -38,6 +38,9 @@ Just copy the addons-folder with all its contents to your Godot project root fol
 
 You can find the documentation [here](documentation/Nodes_latest.md) and the tutorials [here](tutorial/readme.md).
 
+# Authors
+
+JarkkoPar with [Contributors](https://github.com/JarkkoPar/Utility_AI/graphs/contributors). Big thank you for all of you who've helped out!
 
 # Example project
 
