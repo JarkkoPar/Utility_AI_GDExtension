@@ -1,10 +1,10 @@
 # Utility_AI_GDExtension
 <p align="center">
-Utility AI | Behaviour Tree with Utility support | Node Query System
+Utility AI | Behaviour Tree with Utility support | State Tree with Utility support | Node Query System
 </p>
 This repository contains the binaries and example project for the Utility AI GDExtension for Godot Engine.
 
-The extension contains Utility AI Agent Behaviour, Behaviour Tree with Utility support and Node Query System nodes. Together these nodes can be used to create versatile AI to your games.
+The extension contains Utility AI Agent Behaviour, Behaviour Tree with Utility support, State Tree with Utility support and Node Query System nodes. Together these nodes can be used to create versatile AI to your games.
 
 If you don't know what Utility AI is, here is what Wikipedia says about it:
 
@@ -21,6 +21,7 @@ If you want the source code, you can find it here: [Utility AI Source Code repos
  - [x] Behaviour Tree with Utility and Node Query System support
  - [x] Properties in Behaviour Tree nodes to control node reset rules, to see debug status
  - [x] Behaviour Tree Sub-tree referencing support that allows easy, run-time tree changes and modularity
+ - [x] State Tree nodes with Utility for flexible, hierarchical state management
 
 
 # Compatibility
@@ -73,6 +74,14 @@ The UtilityAI Behaviour Tree nodes can be used independelty as a regular behavio
  * UtilityAIBTNodeReference node to allow referencing subtrees and modular behaviour tree development
  * UtilityAIBTPassThrough node and UtilityAIBTPassBy node 
  * UtilityAIBTCooldownMsec, UtilityAIBTCooldownUsec and UtilityAICooldownTicks nodes
+
+
+**Utility enabled State Tree nodes**
+
+The UtilityAI State Tree nodes can be used independently as a regular state tree. However, similarly to the Behaviour Tree nodes, they have been designed to work with Utility based Considerations. The available nodes are:
+
+ * UtilityAISTRoot node that is the "main" node when using the Utility enabled State Trees
+ * UtilityAISTNode that is used to define the state hierarchy
 
 
 **Node Query System nodes**
