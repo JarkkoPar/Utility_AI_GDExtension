@@ -16,6 +16,11 @@ The *Agent behaviours*, *State Tree* and *Utility enabled Behaviour Tree* focus 
 The *Node Query System* focuses on using utility functions to score and filter any type of Godot nodes. They answer the question "What is the *best node* for the job?". Use the NQS when you want to choose the best tile to move to, the biggest threat to attack, the best healing item to consume, for example.
 
 
+# Agent Behaviours
+
+## 
+
+
 ## Agent behaviour nodes
 
 ### UtilityAIAgent 
@@ -338,6 +343,20 @@ The `UtilityAIActionGroup` has the following properties:
 #### Methods 
 
 None.
+
+# Utility enabled Behaviour Tree
+
+**Behaviour Trees** are a commonly used structure that can be used to create artificial intelligence in games for the non-playable characters. A behaviour tree has a *root node* and under it a tree structure, where the branches of the tree define the behaviour for the AI.
+
+The **utility enabled Behaviour Trees** in Utility AI GDExtension extend the traditional Behaviour Tree with utility functions. The Behaviour Tree nodes *can* be used as a regular behaviour tree, but the extended utility features allow you to add utility-based branch selection and execution of the *Node Query System* queries within your trees. 
+
+As an example, in a traditional behaviour tree the prioritization of branches under a Selector is usually done by setting the order of the child nodes so that the highest priority node is first and the priority of the following nodes is less than the ones before them. While this works for many situations, there are times when more flexible and situation-aware criteria for branch selection is needed. 
+
+Consider a situation you may bump in to a game like Fortnite. One of your teammates has been downed and the other team is pinning you down with active fire. You've lost some health and are soon out of ammo. You have many choices in this situation, for instance: revive your teammate, attack the opposing team, heal yourself, pickup your team mate and carry them to safety, find ammo, use some item in your inventory, etc. What you pick depends on things like how far away the opposing team are, how many of them are still fighting, how much health you have, what items you have in your inventory, what kind of gear you have, and the list goes on. 
+
+For traditional behaviour trees the prioritization of the various choices would be static and encoded in the tree using various conditions and branches. With Utility enabled behaviour tree, the various choices can be scored by the afore mentioned metrics and the choice made more flexibly based on the situation at hand.
+
+
 
 
 ## Utility enabled Behaviour Tree nodes
