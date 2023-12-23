@@ -6,6 +6,15 @@ This document describes the version **1.5** of Utility AI GDExtension.
 
 Documentation of earlier versions: [1.4](Nodes_v1_4.md),[1.3](Nodes_v1_3.md), [1.2](Nodes_v1_2.md)
 
+**Contents**
+
+ * [Agent behaviours](Nodes_latest.md#agent-behaviours)
+ * [Utility enabled Behaviour Tree](Nodes_latest.md#utility-enabled-behaviour-tree)
+ * [Utility enabled State Tree](Nodes_latest.md#utility-enabled-state-tree)
+ * [The Node Query System](Nodes_latest.md#the-node-query-system-nqs)
+
+
+# Overview
 
 ## The four node groups - Agent behaviours, Behaviour Tree, State Tree and the Node Query System
 
@@ -567,7 +576,7 @@ The Run NQS Query node can be used to initialite Node Query System queries. They
 |NodePath|nqs_search_space_nodepath|A nodepath to a NQS Search Space node.|v1.4|
 |int|top_n_to_find|The number of results the search should return. Overrides the setting on the search space.|v1.4|
 
-## The State Tree
+## Utility enabled State Tree
 
 The Utility AI State Tree is just two nodes: `UtilityAISTRoot` and `UtilityAISTNode`. Together they enable you to create hierarchical state machines with a similar node structure and state selection to a Behaviour Tree. The Utility AI State Tree nodes are utility-enabled, which means that if desired, the node selection for a state can be done by using UtilityAIConsideration nodes or resources. Alternatively a `on_enter_condition()` method can be defined for the State Tree nodes for the selection.
 
