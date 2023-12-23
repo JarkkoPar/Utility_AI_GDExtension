@@ -8,6 +8,7 @@ Documentation of earlier versions: [1.4](Nodes_v1_4.md),[1.3](Nodes_v1_3.md), [1
 
 **Contents**
 
+ * [Overview](Nodes_latest.md#overview)
  * [Agent behaviours](Nodes_latest.md#agent-behaviours)
  * [Utility enabled Behaviour Tree](Nodes_latest.md#utility-enabled-behaviour-tree)
  * [Utility enabled State Tree](Nodes_latest.md#utility-enabled-state-tree)
@@ -576,7 +577,7 @@ The Run NQS Query node can be used to initialite Node Query System queries. They
 |NodePath|nqs_search_space_nodepath|A nodepath to a NQS Search Space node.|v1.4|
 |int|top_n_to_find|The number of results the search should return. Overrides the setting on the search space.|v1.4|
 
-## Utility enabled State Tree
+# Utility enabled State Tree
 
 The Utility AI State Tree is just two nodes: `UtilityAISTRoot` and `UtilityAISTNode`. Together they enable you to create hierarchical state machines with a similar node structure and state selection to a Behaviour Tree. The Utility AI State Tree nodes are utility-enabled, which means that if desired, the node selection for a state can be done by using UtilityAIConsideration nodes or resources. Alternatively a `on_enter_condition()` method can be defined for the State Tree nodes for the selection.
 
@@ -634,7 +635,7 @@ This is the root node for a State Tree. To update the tree, you call the `tick()
 |void|tick(Variant user_data, float delta)|The `tick()`-method is used to update the State Tree state. You can provide any Godot variant type as a parameter (usually a node used as an actor or a dictionary used as a blackboard), along with a delta-time. User_data and delta are passed to the `on_enter_state()`, `on_exit_state()`, `on_tick()` and `on_enter_condition()` methods of the child nodes.|v1.5|
 
 
-## The Node Query System (NQS)
+# The Node Query System (NQS)
 
 The Utility AI Node Query System is a set of nodes that can be used to score and filter any set of Godot nodes to find the top N best nodes given a set of search criteria. The two main node types for the Node Query System are `UtilityAINQSSearchSpaces` and `UtilityAINQSSearchCriteria`. The *Search Spaces* nodes define a set of nodes as a "search space". The `execute_query()` method of the Search Space is used to apply the child *Search Criteria* nodes to filter and score the nodes within the "search space". Similarly to Considerations an *activation curve* can be set to further customize the scoring of each criteria to fit the needs of your game.
 
