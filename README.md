@@ -8,7 +8,7 @@ This repository contains the binaries and example project for the Utility AI GDE
 The extension contains 
  * ![Utility AI Agent](addons/utility_ai/icons/UtilityAIAgent.svg) Utility AI Agent Behaviours 
  * ![Utility AI Behaviour Tree](addons/utility_ai/icons/UtilityAIBehaviourTreeNodes.svg)Behaviour Tree with Utility support
- * ![Utility AI State Tree](addons/utility_ai/icons/UtilityAISTRoot.svg)State Tree with Utility support 
+ * ![Utility AI State Tree](addons/utility_ai/icons/UtilityAIStateTreeNode.svg)State Tree with Utility support 
  * ![Utility AI Agent](addons/utility_ai/icons/UtilityAISearchSpaces.svg)The Node Query System
 
 Together these nodes can be used to create versatile AI to your games.
