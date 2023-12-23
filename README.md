@@ -6,7 +6,7 @@ Utility AI | Behaviour Tree with Utility support | State Tree with Utility suppo
 This repository contains the binaries and example project for the Utility AI GDExtension for Godot Engine.
 
 The extension contains 
- * ![Utility AI Agent](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/8de1ee0e1cc2abda7ff519f4eee614605ee0b43b/addons/utility_ai/icons/UtilityAIAgent.svg) Utility AI Agent Behaviours 
+ * ![Utility AI Agent](addons/utility_ai/icons/UtilityAIAgent.svg) Utility AI Agent Behaviours 
  * ![Utility AI Behaviour Tree](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/8de1ee0e1cc2abda7ff519f4eee614605ee0b43b/addons/utility_ai/icons/UtilityAIBehaviourTreeNodes.svg)Behaviour Tree with Utility support
  * ![Utility AI State Tree](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/8de1ee0e1cc2abda7ff519f4eee614605ee0b43b/addons/utility_ai/icons/UtilityAISTRoot.svg)State Tree with Utility support 
  * ![Utility AI Agent](https://raw.githubusercontent.com/JarkkoPar/Utility_AI_GDExtension/8de1ee0e1cc2abda7ff519f4eee614605ee0b43b/addons/utility_ai/icons/UtilityAISearchSpaces.svg)The Node Query System
