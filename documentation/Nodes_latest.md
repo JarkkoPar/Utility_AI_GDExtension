@@ -6,6 +6,7 @@ This document describes the version **1.5** of Utility AI GDExtension.
 
 Documentation of earlier versions: [1.4](Nodes_v1_4.md),[1.3](Nodes_v1_3.md), [1.2](Nodes_v1_2.md)
 
+
 **Contents**
 
  * [Overview](Nodes_latest.md#overview)
@@ -21,9 +22,9 @@ Documentation of earlier versions: [1.4](Nodes_v1_4.md),[1.3](Nodes_v1_3.md), [1
 
 There are four main node groups in Utility AI GDExtension: Agent behaviours, Behaviour Tree, State Tree, and the Node Query System (NQS). All are utility-based systems for implementing robust AI systems to your games. 
 
-The *Agent behaviours*, *State Tree* and *Utility enabled Behaviour Tree* focus on defining *behaviours* for AI agents. They answer the question "What is the best *behaviour* for the current situation?". Use these nodes when you want to choose what an AI should do. 
+The *Agent behaviours*, *Utility enabled State Tree* and *Utility enabled Behaviour Tree* focus on defining *behaviours* for AI agents. They answer the question "What is the best *behaviour* for the current situation?". Use these nodes when you want to choose what an AI should do. 
 
-The *Node Query System* focuses on using utility functions to score and filter any type of Godot nodes. They answer the question "What is the *best node* for the job?". Use the NQS when you want to choose the best tile to move to, the biggest threat to attack, the best healing item to consume, for example.
+The *Node Query System* focuses on using utility functions to score and filter any type of Godot nodes. They answer the question "What is the *best node for the job*?". Use the NQS when you want to choose the best tile to move to, the biggest threat to attack, the best healing item to consume, for example.
 
 
 # Agent Behaviours
@@ -360,11 +361,18 @@ None.
 
 The **utility enabled Behaviour Trees** in Utility AI GDExtension extend the traditional Behaviour Tree with utility functions. The Behaviour Tree nodes *can* be used as a regular behaviour tree, but the extended utility features allow you to add utility-based branch selection and execution of the *Node Query System* queries within your trees. 
 
-As an example, in a traditional behaviour tree the prioritization of branches under a Selector is usually done by setting the order of the child nodes so that the highest priority node is first and the priority of the following nodes is less than the ones before them. While this works for many situations, there are times when more flexible and situation-aware criteria for branch selection is needed. 
+The Behaviour Tree in Utility AI GDExtension allows you to tick the tree by giving `user_data` as input. This `user_data` can be a dictionary that you want to use as the *blackboard* or the *AI actor node* itself. Or any other type of Variant. Or just `null`.
 
-Consider a situation you may bump in to a game like Fortnite. One of your teammates has been downed and the other team is pinning you down with active fire. You've lost some health and are soon out of ammo. You have many choices in this situation, for instance: revive your teammate, attack the opposing team, heal yourself, pickup your team mate and carry them to safety, find ammo, use some item in your inventory, etc. What you pick depends on things like how far away the opposing team are, how many of them are still fighting, how much health you have, what items you have in your inventory, what kind of gear you have, and the list goes on. 
+If you are new to behaviour trees, go through the [Getting started with Behaviour Trees](../tutorial/Getting_started_with_Behaviour_Trees.md) tutorial. 
 
-For traditional behaviour trees the prioritization of the various choices would be static and encoded in the tree using various conditions and branches. With Utility enabled behaviour tree, the various choices can be scored by the afore mentioned metrics and the choice made more flexibly based on the situation at hand.
+
+## Why being utility enabled matters
+
+In a traditional behaviour tree the prioritization of branches under a Selector (or commonly also called the Fallback node) is usually done by setting the order of the child nodes so that the highest priority child is first, the next highest priority as second, and so on, with the last node having the lowest priority. While this works for many situations, there are times when more flexible and situation-aware criteria for branch selection is needed. 
+
+Consider a situation you may bump in to a game like Fortnite. One of your teammates has been downed and the other team is pinning you down with active fire. You've lost some health and are soon out of ammo. You have many choices in this situation, for instance: revive your teammate, attack the opposing team, heal yourself, pickup your teammate and carry them to safety, find ammo, use some item in your inventory, etc. What you pick depends on things like how far away the opposing team are, how many of them are still fighting, how much health you have, what items you have in your inventory, what kind of gear you have, and the list goes on. 
+
+Consider now that you need to build an AI that should be able to handle a similar situation. For traditional behaviour trees the prioritization of the various choices would be static and encoded in the tree using the ordering of the branches and configuration of conditions that either succeed or fail. Concepts like "near", "far", "weak" and "strong" can become quite rigid. With Utility enabled behaviour tree, the various choices can be scored by the afore mentioned metrics (distance, strength, health, quality of weapons, ...) and the choice made more flexibly based on the situation at hand.
 
 
 
