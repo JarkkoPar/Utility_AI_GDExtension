@@ -15,6 +15,30 @@ The basic loop that Utility AI GDExtension builds upon is the classic **Sense - 
 
 How frequently you run this loop depends on your game. For a real-time game your AI agents will likely be running it a few times a second. For a turn-based game you will likely run it for a unit once at the beginning of its turn. 
 
+## AI cannot have intelligence without a goal
+
+What should the AI sense, think and act about then? You likely have some goals for the AI in your game. In a shooter game - or most games in general - the goal of the AI enemies is usually to kill the player or slow the player down. In a tactical shooter, some enemies may have goals such as healing and keeping their team mates alive, keeping the player on the move, and so on. Once you know the goals of your AI entities, it will be easier to plan what behaviours and actions they should take to reach their goals. 
+
+Let's examine the tactical shooter example a bit more. Usually in these games you have AI enemies that have different roles, for example: 
+
+ * Defenders that try and keep the player from reaching a certain position
+ * Attackers, who charge the player
+ * Flankers, who try to flank the player
+ * Medics, who heal their team mates
+ * Ambushers that wait for the player and try and surprise them 
+
+
+These roles have some shared goals (for example the ever present "kill the player") but their strategies to achieve these goals may be different. They also have unique goals specific to their role: 
+
+ * The defenders can have the goal of keeping the player away from the position they are defending and should not wander far away from the position.
+ * The Attackers, on the other hand, would have the goal of making the player move. They would achieve this by moving towards the player while attacking and thus forcing the player to change positions. 
+ * The Flankers would be much like the Attackers, but they would approach the player while avoiding the player's line-of-sight. 
+ * The Medics have the goal of keeping their team mates alive. A secondary goal could be to act like a Defender if all the other team members are in good health.
+ * The Ambushers have the goal of surprising the player with an unexpected attack. They would act like defenders, but they would seek a position to defend that is some distance away from the player's position, towards the the player's goal. They would keep hidden in the position until they can surprise the player. Once discovered they would either become Attackers or Defenders.
+
+
+Once you have a clearer picture of the goals you need for your AI entities, you can start thinking about behaviours that they need to achieve their goals.
+
 
 ## At what detail level does our AI think?
 
@@ -28,6 +52,8 @@ If we continue with the example "If the AI gets shot, it should take cover and s
 
 You should then implement the "Take cover" and "Shoot at the Player" actions in such a way that they achieve the goal in their name. And you can of course revise them later on to go to a more detailed level if it seems the best option for you. The key thing is to find a level of abstraction for the AI behaviours and actions that feels best for your project. 
 
+In terms of available components in Utility AI GDExtension, you can set use the Utility AI Behaviour nodes for selection of the goal related high-level behaviour and then the Behaviour Tree, State Tree and Action nodes to realize the actions.
+
 
 ## AI Agent updates and Calculating the Utility of a Behaviour
 
@@ -40,19 +66,11 @@ In most cases it makes sense to group your Behaviours using Behaviour groups and
 
 In the real world, things fail. And this can happen also to your AI Agents when they are executing actions for a behaviour - in fact it can happen quite easily when your AI agent is navigating to a new position, for instance. 
 
-To handle this situation in Utility AI GDExtension, the `has_failed` property is included as an assignable property for actions. If you set `has_failed=true` the action is marked as a failed action. Note that you still need to assign `is_finished=true` to allow UtilityAIAgent to step forward during the next behaviour update. When the action finishes and `has_failed=true`, the action emits a signal that it has failed and then you can decide what to do with the fail-situation. The ActionGroups also have a property `error_handling_rule` that you can use to define how they handle the situation when an action fails: should they just stop (EndExecution) or keep going and maybe let the following action node handle the error (ContinueExecution). 
+To handle this situation in Utility AI GDExtension using the Actions, the `has_failed` property is included as an assignable property for actions. If you set `has_failed=true` the action is marked as a failed action. Note that you still need to assign `is_finished=true` to allow UtilityAIAgent to step forward during the next behaviour update. When the action finishes and `has_failed=true`, the action emits a signal that it has failed and then you can decide what to do with the fail-situation. The ActionGroups also have a property `error_handling_rule` that you can use to define how they handle the situation when an action fails: should they just stop (EndExecution) or keep going and maybe let the following action node handle the error (ContinueExecution). 
 
 Together the `has_failed` property of the actions and the `error_handling_rule` of the action groups allow you to handle errors in various ways. If you decide to have the AI behaviours to have very simple action sequences, you can simply end the execution, maybe set some weights for the considerations, and then let the AI agent decide what should be the next behaviour to choose. If you want to have your behaviours more high-level and choose to use more complex action sequences, you can define the error handling logic using the action groups and actions. 
 
-You can see one way of handling failures in the Example 5 scene. As the AI agents run about and try and find a place to hide, they can bump into eachother and get stuck for a moment. If that happens, the movement action sets the `has_failed` property to `true`. The ActionGroup where the movement action is, has been set to continue on errors. The node after the movement action is another ActionGroup that is set to have an `execution_rule` IfElse, and when the "enemy" AI handles the has_failed-signal it sets the boolean value for the IfElse-actiongroup to true. As a result IfElse-ActionGroup chooses what to execute based on if the movement action failed or not. 
-
-Another way could be to just use your actions to handle the failures. You add a property to your AI agent's scene, say `did_previous_action_fail` and set this to true or false when you are executing your action logic. Then in the beginning of each action you check if `did_previous_action_fail` is true or not, and decide what to do then. For the movement example it could look like this:
- 
- * Action: ChooseTargetPositionForMovement
- * Action: MoveToTargetPosition
- * Action: HandleFailureOrEndMovement
-
-So in this case the last action (HandleFailureOrEndMovement) on the sequence would decide what it needs to do if the MoveToTargetPosition action had failed.
+For more complex actions, the Behaviour Tree nodes are a good solution. They allow for better error handling and more flexibility for handling different game situations. 
 
 
 ## Fiddling with the Curves
