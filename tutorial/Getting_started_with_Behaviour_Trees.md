@@ -56,6 +56,24 @@ todo: add asset guide
 
 ## 3. About Behaviour Trees
 
+Behaviour trees are probably the most popular system for building AI to games today. A behaviour tree consists of a **root node** that is the basis of the tree. The tree branches are created using **composite nodes** that define how the tree is traversed together with **decorator nodes**, and finally the branches of the behaviour tree end with **task nodes** that execute various actions. Using a behaviour tree a non-player character can make choices on what are the best actions it can take in the situation where it finds itself in.
+
+A behaviour tree is updated by **ticking** the tree. Simplified, this means that the root node of the tree is first run, which in turn runs its child node, and the child node runs its own child nodes and so on, until one or more task nodes are reached. You can think of ticking as *running what ever code the behaviour tree nodes have and returning if it succeeded or not*.
+
+Each behaviour tree node returns a value, which is either *success*, *failure* or *running*. Usually it is one of the task nodes that ultimately sets what value is returned but the decorator and composite nodes can affect the value that is returned to the root node in the end.
+ 
+> [!NOTE]
+> In Utility AI GDExtension the nodes can also return the *skip* value, but for the purposes of this tutorial we will only focus on the *success*, *failure* and *running* values. 
+
+The most commonly used composite nodes are the **selector** (also known as the *fallback*) node and the **sequence** node. 
+
+ * The selector *ticks* (= runs the code) its child nodes one by one and checks if any of its child nodes succeeds. When one does, it stops ticking and returns *success* back to its parent node. If all fail, it returns back *failure* to its parent.  
+ * The sequence *ticks* its child nodes one by one until one of them fails or until it has ticked all its child nodes. If a child node fails, the sequence returns *failure* back to its parent. If all succeed, it returns back *success*.
+
+Both the selector and sequence return back *running* if a child node they tick returns back running. Handing the *running* state can vary between Behaviour Tree implementations. In Utility AI GDExtension the default is that during the next tick the tree continues ticking from the node that returned running until it either succeeds or fails. This can be changed by changing the node settings, though.
+
+
+
 
 ## 4. Utility enabled Behaviour Trees in Utility AI GDExtension
 
