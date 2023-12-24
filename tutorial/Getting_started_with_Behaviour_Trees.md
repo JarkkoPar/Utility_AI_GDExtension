@@ -9,9 +9,34 @@ In this beginner tutorial, you will learn how Behaviour Trees work and you will 
 
 For this tutorial, we'll start with an empty Godot 4.1  project. 
 
+Before we can begin, we need to create and setup the project, and add the assets we are going to use.
 
-## 1. Project setup
+## 1. Project creation and installation of Utility AI GDExtension
 
-Before we can begin, we need to setup the project, install the Utility AI GDExtension and add some assets we will be using in this tutorial. 
+To create a new Godot Engine project that uses Utility AI GDExtension, follow these steps: 
 
- 1. 
+1. Open Godot Engine.
+
+2. Click **Create project**.
+![Create project](create_project_1.png)
+
+3. Then give the project a name and click the **Create folder** button.
+![Create project folder](create_project_2.png)
+
+4. Choose the renderer you want to use, and then click **Create & Edit**.
+
+5. The Godot Engine Editor main scene will open up.
+
+
+To install the Utility AI GDExtension addon, follow the [installation instructions](How_to_install_Utility_AI_GDExtension.md).
+
+Once you have installed the extension, we are ready to set up the project and prepare the assets.
+
+
+## 2. Setting up the project and assets
+
+For this project we are going to use the assets used in the *example project*. Go to the [Releases](https://github.com/JarkkoPar/Utility_AI_GDExtension/releases) and download the latest version of the example project.
+
+
+
+
