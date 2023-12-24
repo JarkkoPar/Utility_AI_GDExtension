@@ -11,7 +11,7 @@ The NodeQuerySystem-singleton has the following measures available:
 
 **Run queries time usec** is the total time per frame, in microseconds, used for running the NQS queries during the `run_queries()` method. The queries must have been posted to the NodeQuerySystem-singleton using the `post_query()` method. You can set a cap to the time the NodeQuerySystem-singleton uses per physics frame for running the queries, and this monitor is a good way to monitor how closely the set time budget is followed.
 
-**Post queries time usec** is the total time per frame, in microseconds, used for running the `post_query()` method of the NodeQuerySystem-singleton. It is not possible to set a time budget for this method per physics frame in the current version of Utility AI GDExtension. 
+**Post queries time usec** is the total time per frame, in microseconds, used to the calls of the `post_query()` method of the NodeQuerySystem-singleton. It is not possible to set a time budget for this method per physics frame in the current version of Utility AI GDExtension. 
 
 
 Note that one millisecond (ms) is 1000 microseconds (usec). If your game is running at 60 frames per second, one frame would have the theoretical time of 16.6 milliseconds, meaning 16,600 microseconds. 
