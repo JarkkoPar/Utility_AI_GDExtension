@@ -2,6 +2,25 @@
 
 The AIPerformanceMonitor-singleton included in the Utility AI GDExtension can be used to monitor the time the AI components you use consumer each frame. This allows you to optimize the frame time the AI consumes and to improve the performance of your game. 
 
+## Available monitors
+
+The AIPerformanceMonitor-singleton has the following measures available:
+
+ * AI Agent evaluate options time usec
+ * Behaviour Tree tick time usec
+ * State Tree tick time usec
+
+**AI Agent evalute options time usec** is the total time per frame, in microseconds, used for running the AI Agent's `evaluate_options()` method. 
+
+**Behaviour Tree tick time usec** is the total time per frame, in microseconds, used for running the `tick()` method of Behaviour Trees. 
+
+**State Tree tick time usec** is the total time per frame, in microseconds, used for running the `tick()` method of State Trees.
+
+
+Note that one millisecond (ms) is 1000 microseconds (usec). If your game is running at 60 frames per second, one frame would have the theoretical time of 16.6 milliseconds, meaning 16,600 microseconds. 
+
+In practice the time you have available for your AI is much less than 16,600 microseconds (usec). You likely have some other processing going on, Godot is doing its own processing and there usually are various inefficiencies that reduce the available time further. However, by being able to monitor how much time your AI is using per frame you can start optimizing and set a time budget per frame for your AI. 
+
 
 ## Setting up the AIPerformanceMonitor 
 
@@ -32,15 +51,9 @@ func _physics_process(delta):
 It doesn't matter where in the `_ready()` method the `initialize_performance_counters()` is called or where in the `_physics_process()` method the `update_performance_counters()` is called. What is important is that the initialization method is called once when your application is starting and the update method only once during each physics frame.
 
 
-## Available monitors
+## Enabling the monitors
 
-The AIPerformanceMonitor-singleton has the following measures available:
-
- * AI Agent evaluate options time usec
- * Behaviour Tree tick time usec
- * State Tree tick time usec
-
-You can enable them through the Debugger-menu as follows:
+You can enable the monitors through the Debugger-menu as follows:
 
  1. Click on the Debugger-menu at the bottom of the Godot Engine editor.
 
