@@ -49,7 +49,7 @@ Congratulations! You have now installed the Utility AI GDExtension to your Godot
 
 The extension can also be installed by downloading the package from the github page and installing it manually. Follow these steps to do so:
 
-1. Go to the url [https://github.com/JarkkoPar/Utility_AI_GDExtension(https://github.com/JarkkoPar/Utility_AI_GDExtension).
+1. Go to the url https://github.com/JarkkoPar/Utility_AI_GDExtension.
 
 ![https://github.com/JarkkoPar/Utility_AI_GDExtension](installation_b_1.png)
 
