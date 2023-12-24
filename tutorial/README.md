@@ -7,7 +7,7 @@ The goal of these tutorials is to help you learn how to use the Utility AI GDExt
 |Tutorial|Description|
 |--|--|
 |[How to install Utility AI GDExtension](How_to_install_Utility_AI_GDExtension.md)|Installation steps for Utility AI GDExtension using the Godot Asset Library or manually.|
-|[Using the AIPerformanceMonitor](Using_theAIPerformanceMonitor.md)|How to setup the AI Performance monitor to measure the performance of your game.|
+|[Using the AIPerformanceMonitor](Using_the_AIPerformanceMonitor.md)|How to setup the AI Performance monitor to measure the performance of your game.|
 
 
 ### Behaviour Trees
