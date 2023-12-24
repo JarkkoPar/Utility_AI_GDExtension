@@ -15,15 +15,22 @@ Before we can begin, we need to create and setup the project, and add the assets
 
 To create a new Godot Engine project that uses Utility AI GDExtension, follow these steps: 
 
+
 1. Open Godot Engine.
 
+
 2. Click **Create project**.
+
 ![Create project](create_project_1.png)
 
+
 3. Then give the project a name and click the **Create folder** button.
+
 ![Create project folder](create_project_2.png)
 
+
 4. Choose the renderer you want to use, and then click **Create & Edit**.
+
 
 5. The Godot Engine Editor main scene will open up.
 
