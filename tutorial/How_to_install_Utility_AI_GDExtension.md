@@ -73,7 +73,7 @@ The extension can also be installed by downloading the package from the github p
 6. To install the extension to your project, copy the addons-folder to your Godot project root folder. 
 
 
-When you open your Godot project,yYou should see in your FileSystem tab the `addons` folder and within it the utility_ai extension. The Utility AI nodes should be available when you add new nodes in to your scenes.
+When you open your Godot project, you should see in your FileSystem tab the `addons` folder and within it the utility_ai extension. The Utility AI nodes should be available when you add new nodes in to your scenes.
 
 ![addons folder](installation_6.png)
  
