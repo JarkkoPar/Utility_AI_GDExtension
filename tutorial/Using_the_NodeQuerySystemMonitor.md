@@ -1,6 +1,6 @@
 # Using the NodeQuerySystem performance monitoring
 
-The NodeQuerySystem-singleton included in the Utility AI GDExtension can be used to monitor the time the NQS-queries you use consumer each frame. This allows you to optimize the frame time the NodeQuerySystem consumes and to improve the performance of your game. 
+The NodeQuerySystem-singleton included in the Utility AI GDExtension can be used to monitor the time the NQS-queries you use consume each frame. This allows you to optimize the frame time the NodeQuerySystem consumes and to improve the performance of your game. 
 
 ## Available monitors
 

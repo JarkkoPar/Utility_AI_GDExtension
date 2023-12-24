@@ -1,6 +1,6 @@
 # Using the AIPerformanceMonitor
 
-The AIPerformanceMonitor-singleton included in the Utility AI GDExtension can be used to monitor the time the AI components you use consumer each frame. This allows you to optimize the frame time the AI consumes and to improve the performance of your game. 
+The AIPerformanceMonitor-singleton included in the Utility AI GDExtension can be used to monitor the time the AI components you use consume each frame. This allows you to optimize the frame time the AI consumes and to improve the performance of your game. 
 
 ## Available monitors
 
