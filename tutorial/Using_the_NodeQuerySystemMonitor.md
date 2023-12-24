@@ -9,7 +9,7 @@ The NodeQuerySystem-singleton has the following measures available:
  * Run queries time usec
  * Post queries time usec
 
-**Run queries time usec** is the total time per frame, in microseconds, used for running the NQS queries you have posted to the NodeQuerySystem-singleton using the `post_query()` method. You can set a cap to the time the NodeQuerySystem-singleton uses per physics frame for running the queries, and this monitor is a good way to monitor how closely the set time budget is followed.
+**Run queries time usec** is the total time per frame, in microseconds, used for running the NQS queries during the `run_queries()` method. The queries must have been posted to the NodeQuerySystem-singleton using the `post_query()` method. You can set a cap to the time the NodeQuerySystem-singleton uses per physics frame for running the queries, and this monitor is a good way to monitor how closely the set time budget is followed.
 
 **Post queries time usec** is the total time per frame, in microseconds, used for running the `post_query()` method of the NodeQuerySystem-singleton. It is not possible to set a time budget for this method per physics frame in the current version of Utility AI GDExtension. 
 
