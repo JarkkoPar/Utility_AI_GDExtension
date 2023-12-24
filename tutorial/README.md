@@ -10,6 +10,19 @@ The goal of these tutorials is to help you learn how to use the Utility AI GDExt
 |[Tutorial 2 - Simple AI](Tutorial_2.md)|A simple AI agent tutorial to get started with Utility AI GDExtension.|
 |[Tutorial 3 - Simple NQS Query](Tutorial_3.md)|A simple Node Query System tutorial to get started with the NQS in Utility AI GDExtension.|
 
+### Installation and setup
+
+|Tutorial|Description|
+|--|--|
+|[How to install Utility AI GDExtension](How_to_install_Utility_AI_GDExtension.md)|Installation steps for Utility AI GDExtension.|
+
+
+### Behaviour Trees
+
+|Tutorial|Description|
+|--|--|
+|[Getting started with Behaviour Trees](Getting_started_with_Behaviour_Trees.md)|Beginner tutorial on Behaviour Trees in general and in Utility AI GDExtension.|
+
 
 ## Node documentation
 
