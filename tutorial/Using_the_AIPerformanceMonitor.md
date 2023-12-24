@@ -21,6 +21,7 @@ func _ready():
 
 This will initialize the counters and add them to the Godot Engine performance monitor. The counters still need to be updated per frame. This is done by adding a call to the `update_performance_counters()` method in the `_physics_process()` method of your main scene:
 
+```gdscript
 func _physics_process(delta):
     AIPerformanceMonitor.update_performance_counters()
 
