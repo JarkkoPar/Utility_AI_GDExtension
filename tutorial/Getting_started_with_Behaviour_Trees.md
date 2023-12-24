@@ -11,10 +11,11 @@ For this tutorial, we'll start with an empty Godot 4.1  project.
 
 Contents:
 
- 1. [Project creation and installation of Utility AI GDExtension](Getting_started_with_Behaviour_Trees.md#project-creation-and-installation-of-utility-ai-gdextension)
- 2. [Setting up the project and assets](Getting_started_with_Behaviour_Trees.md#setting-up-the-project-and-assets)
- 3. [About Behaviour Trees](Getting_started_with_Behaviour_Trees.md#about-behaviour-trees)
- 4. [Utility enabled Behaviour Trees in Utility AI GDExtension](Getting_started_with_Behaviour_Trees.md#utility-enabled-behaviour-trees-in-utility-ai-gdextension)
+ 1. [Project creation and installation of Utility AI GDExtension](Getting_started_with_Behaviour_Trees.md#1-project-creation-and-installation-of-utility-ai-gdextension)
+ 2. [Setting up the project and assets](Getting_started_with_Behaviour_Trees.md#2-setting-up-the-project-and-assets)
+ 3. [About Behaviour Trees](Getting_started_with_Behaviour_Trees.md#3-about-behaviour-trees)
+ 4. [Utility enabled Behaviour Trees in Utility AI GDExtension](Getting_started_with_Behaviour_Trees.md#4-utility-enabled-behaviour-trees-in-utility-ai-gdextension)
+
 
 
 ## 1. Project creation and installation of Utility AI GDExtension
