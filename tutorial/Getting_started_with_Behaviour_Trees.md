@@ -56,7 +56,14 @@ todo: add asset guide
 
 ## 3. About Behaviour Trees
 
-Behaviour trees are probably the most popular system for building AI to games today. A behaviour tree consists of a **root node** that is the basis of the tree. The tree branches are created using **composite nodes** that define how the tree is traversed together with **decorator nodes**, and finally the branches of the behaviour tree end with **task nodes** that execute various actions. Using a behaviour tree a non-player character can make choices on what are the best actions it can take in the situation where it finds itself in.
+Behaviour trees are probably the most popular system for building AI to games today. They are easy to understand for many and intuitive to create, it is easy to make changes to them. You can think of a behaviour tree as a *plan* on how to reach a certain goal by choosing and executing various tasks. Its structure is modular and it is possible to execute very complex tasks just by composing them from simpler tasks. 
+
+While behaviour trees are very good at choosing which tasks to execute at each moment, they aren't very good at handling (or visually representing) *states*. Moving between states is usually **cyclic**, meaning that you can transition between various states and even go back and forth between them. For instance, your AI can start in a *Patrol* state and transition to an *Idle* or *Combat* states and back. Behaviour Trees, due to being a tree-structure, are **acyclic**. 
+
+
+### 3.1 The structure of a Behaviour Tree
+
+A behaviour tree consists of a **root node** that is the basis of the tree. The tree branches are created using **composite nodes** that define how the tree is traversed together with **decorator nodes**, and finally the branches of the behaviour tree end with **task nodes** that execute various actions. Using a behaviour tree a non-player character can make choices on what are the best actions it can take in the situation where it finds itself in.
 
 A behaviour tree is updated by **ticking** the tree. Simplified, this means that the root node of the tree is first run, which in turn runs its child node, and the child node runs its own child nodes and so on, until one or more task nodes are reached. You can think of ticking as *running what ever code the behaviour tree nodes have and returning if it succeeded or not*.
 
@@ -82,5 +89,5 @@ Both the selector and sequence return back *running* if a child node they tick r
 
 ## 4. Utility enabled Behaviour Trees in Utility AI GDExtension
 
-
+In Utility AI GDExtension you can use the utility enabled Behaviour Trees as the sole AI reasoning component, or as a sub-component of the AI Agent Behaviours
 
