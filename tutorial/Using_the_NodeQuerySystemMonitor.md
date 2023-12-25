@@ -56,16 +56,16 @@ You can enable the monitors through the Debugger-menu as follows:
 
  1. Click on the Debugger-menu at the bottom of the Godot Engine editor.
 
-![Debugger-menu](performance_monitor_0.png)
+![Debugger-menu](images/performance_monitor_0.png)
 
 
  2. Click on the Monitors-tab and scroll down until you see the NodeQuerySystem measures. Check the checkboxes on the ones you want to monitor.
 
-![Monitors-tab](performance_monitor_3.png)
+![Monitors-tab](images/performance_monitor_3.png)
 
  3. After checking the measures you want to follow, you will see the graphs of the measures to the right of the list of the monitors.
 
-![Graphs](performance_monitor_4.png)
+![Graphs](images/performance_monitor_4.png)
 
 
 
