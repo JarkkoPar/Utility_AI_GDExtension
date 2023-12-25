@@ -69,7 +69,8 @@ A behaviour tree is updated by **ticking** the tree. Simplified, this means that
 
 The ticking of the child nodes is done in a top-to-down order. The higher the node is in the list, the higher its priority. 
 
-![Behaviour Tree node priority order](images/getting_started_bt_1.png)
+![Behaviour Tree node priority order](images/getting_started_bt_1.png)<br>
+*Node priority is highest on the top, lowest on the bottom.*<br>
 
 
 Each behaviour tree node returns a value, which is either *success*, *failure* or *running*. Usually it is one of the task nodes that ultimately sets what value is returned but the decorator and composite nodes can affect the value that is returned to the root node in the end.
@@ -91,8 +92,9 @@ Both the selector and sequence return back *running* if a child node they tick r
 
 In Utility AI GDExtension you can use the utility enabled Behaviour Trees as the sole AI reasoning component, or as a sub-component of the AI Agent Behaviours. The **score based picker** node can be placed anywhere in the behaviour tree and during a *tick* it will first evaluate the *considerations* attached to its child nodes to find out which child node scores the highest, and then proceed to tick that node. 
 
-*Considerations as child nodes or in the Inspector as properties*<br>
-<img src="images/getting_started_bt_2.png" height="256px"><img src="images/getting_started_bt_3.png" height="256px">
+<img src="images/getting_started_bt_2.png" height="256px"><img src="images/getting_started_bt_3.png" height="256px"><br>
+*Considerations as child nodes or in the Inspector as properties.*<br>
+
 
 > [!NOTE]
 > The considerations can be attached to the nodes either as child nodes or as properties in the inspector.
