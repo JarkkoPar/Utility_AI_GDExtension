@@ -2,6 +2,7 @@
 
 The goal of these tutorials is to help you learn how to use the Utility AI GDExtension nodes.
 
+
 ### Installation and setup
 
 |Tutorial|Description|
@@ -10,11 +11,34 @@ The goal of these tutorials is to help you learn how to use the Utility AI GDExt
 |[Using the AIPerformanceMonitor](Using_the_AIPerformanceMonitor.md)|How to setup the AI Performance monitor to measure the performance of the AI you've built for your game.|
 |[Using the NodeQuerySystem performance monitors](Using_the_NodeQuerySystemMonitor.md)|How to setup the NodeQuerySystem Performance monitors to measure the performance of NQS queries.|
 
+
+### Agent Behaviours
+
+|Tutorial|Description|
+|--|--|
+|[Getting started with Agent Behaviours](Getting_started_with_Agent_Behaviours.md)|Beginner tutorial on utility-based Agent in Utility AI GDExtension.|
+
+
 ### Behaviour Trees
 
 |Tutorial|Description|
 |--|--|
 |[Getting started with Behaviour Trees](Getting_started_with_Behaviour_Trees.md)|Beginner tutorial on Behaviour Trees in general and in Utility AI GDExtension.|
+
+
+### State Trees
+
+|Tutorial|Description|
+|--|--|
+|[Getting started with State Trees](Getting_started_with_State_Trees.md)|Beginner tutorial on State Trees in general and in Utility AI GDExtension.|
+
+
+### Node Query System
+
+|Tutorial|Description|
+|--|--|
+|[Getting started with the Node Query System](Getting_started_with_nqs.md)|Beginner tutorial on the Node Query System in Utility AI GDExtension.|
+
 
 ## Older tutorials 
 
