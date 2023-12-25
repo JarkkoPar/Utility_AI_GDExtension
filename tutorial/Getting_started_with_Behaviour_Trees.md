@@ -91,7 +91,7 @@ Both the selector and sequence return back *running* if a child node they tick r
 
 In Utility AI GDExtension you can use the utility enabled Behaviour Trees as the sole AI reasoning component, or as a sub-component of the AI Agent Behaviours. The **score based picker** node can be placed anywhere in the behaviour tree and during a *tick* it will first evaluate the *considerations* attached to its child nodes to find out which child node scores the highest, and then proceed to tick that node. 
 
-![Score Based Picker and considerations](images/getting_started_bt_2.png height="256px")![Consideration as a property](images/getting_started_bt_3.png height="256px")
+![Score Based Picker and considerations](images/getting_started_bt_2.png | height="256px")![Consideration as a property](images/getting_started_bt_3.png |  height="256px")
 
 > [!NOTE]
 > The considerations can be attached to the nodes either as child nodes or as properties in the inspector.
