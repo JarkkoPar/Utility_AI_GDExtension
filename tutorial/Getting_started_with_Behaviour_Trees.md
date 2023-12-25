@@ -60,7 +60,7 @@ Behaviour trees are probably the most popular system for building AI to games to
 
 A behaviour tree is updated by **ticking** the tree. Simplified, this means that the root node of the tree is first run, which in turn runs its child node, and the child node runs its own child nodes and so on, until one or more task nodes are reached. You can think of ticking as *running what ever code the behaviour tree nodes have and returning if it succeeded or not*.
 
-The ticking of the child nodes is done in a top-to-down order.
+The ticking of the child nodes is done in a top-to-down order. The higher the node is in the list, the higher its priority. 
 
 ![Behaviour Tree node priority order](images/getting_started_bt_1.png)
 
