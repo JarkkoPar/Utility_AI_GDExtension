@@ -129,13 +129,16 @@ It is possible to start **Node Query System** queries from the Behaviour Trees b
 
 The behaviour tree nodes work with both 2D and 3D scenes. For this tutorial we are creating everything in 2D because setting up the assets for 2D scenes is much quicker.
 
+We will create two scenes: a **main scene** in which we will spawn our AI-entities in, and a **ai_entity** scene that is the AI-entity we will be creating.
+
+### 5.1 Creating the scene bases and adding animation to the AI-entity
 
 1. In your Godot Project, create a Node2D-based scene, name it as **tutorial_scene** and save it.
 
 ![Creating the tutorial_scene](images/getting_started_bt_4.png)<br>
 
-This will be our *main scene* and we will *instantiate* the AI entities in to this scene. 
-The AI entity itself will be a separate AnimatedSprite2D scene with a behaviour tree.
+This will be our *main scene* and we will *instantiate* the AI entities in to this scene.  The AI entity itself will be a separate AnimatedSprite2D scene with a behaviour tree.
+
 
 2. Create a new AnimatedSprite2D-based scene and name it as **ai_entity**.
 
@@ -181,5 +184,92 @@ The AI entity itself will be a separate AnimatedSprite2D scene with a behaviour 
 ![Enabling Autoplay on load](images/getting_started_bt_13.png)<br>
 
 
-11. 
+11. Create a new animation by clicking the **Add animation** button and set its name as **moving**. Then add movement frames similarly as we did for the *default* animation in the prior steps.
+
+![Adding the moving animation](images/getting_started_bt_14.png)<br>
+
+
+12. If you haven't saved your project yet after adding the new scenes, do it now.
+
+
+### 5.2 Adding spawning to the main scene
+
+1. Go to the **tutorial_scene** tab in the editor. In the **scene-tab** make sure the **tutorial_scene** Node2D is selected and then click the **Attach a new or existing script to the selected node** button.
+
+![Main scene attach script](images/getting_started_bt_15.png)<br>
+ 
+
+2. In the **Attach Node Script** dialog, you can leave everything to defaults and click the **Create** button.
+
+![Main scene attach script](images/getting_started_bt_16.png)<br>
+
+
+3. The **Script editor** should be automatically shown. If not, choose it from the menu at the top of the editor view. You should see the following code:
+
+```gdscript
+extends Node2D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+
+```
+
+This is the default code given if you kept the default settins when creating the script. Replace the code with the following:
+
+```gdscript
+
+extends Node2D
+
+@onready var ai_entity_template:PackedScene = preload("res://ai_entity.tscn")
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	# For convinience in changing the number of AI-entities to create
+	var num_entities:int = 1
+	
+	# Create all the entities.
+	for i in range(0, num_entities):
+		# Instantiates an AI-entity.
+		var new_ai_entity:Node2D = ai_entity_template.instantiate()
+		# Sets a random position somewhere on the screen for the AI-entity.
+		new_ai_entity.position = Vector2( randf() * get_viewport_rect().end.x, randf() * get_viewport_rect().end.y)
+		# Adds the AI-entity to the scene.
+		add_child(new_ai_entity)
+		
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+
+
+```
+
+This code will instantiate the given number of AI-entities to the main scene to random positions. 
+
+We are now done with the main scene. Next we will focus on creating the **ai_entity** scene with a Behaviour Tree based AI.
+
+
+## 6. Creating the AI-entity
+
+1. Select the **ai_entity** scene in the editor.
+
+
+2. In the **scene-tab**, right-click on the **ai_entity AnimatedSprite2D** node and choose **Add Child Node**.
+
+![AI-entity scene attach script](images/getting_started_bt_17.png)<br>
+
+
+3. Choose the **UtilitAIBTRoot** node and add it to the scene by clicking the **Create** button.
+
+![AI-entity scene attach script](images/getting_started_bt_18.png)<br>
+
+
+4. 
 
