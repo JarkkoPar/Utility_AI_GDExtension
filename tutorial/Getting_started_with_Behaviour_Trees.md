@@ -9,13 +9,13 @@ In this beginner tutorial, you will learn how Behaviour Trees work and you will 
 
 For this tutorial, we'll start with an empty Godot 4.1  project. 
 
-Contents:
+**Contents:**
 
  1. [Project creation and installation of Utility AI GDExtension](Getting_started_with_Behaviour_Trees.md#1-project-creation-and-installation-of-utility-ai-gdextension)
  2. [Setting up the project and assets](Getting_started_with_Behaviour_Trees.md#2-setting-up-the-project-and-assets)
  3. [About Behaviour Trees](Getting_started_with_Behaviour_Trees.md#3-about-behaviour-trees)
  4. [Utility enabled Behaviour Trees in Utility AI GDExtension](Getting_started_with_Behaviour_Trees.md#4-utility-enabled-behaviour-trees-in-utility-ai-gdextension)
-
+ 5. [Creating the scenes](Getting_started_with_Behaviour_Trees.md#5-creating-the-scenes)
 
 
 ## 1. Project creation and installation of Utility AI GDExtension
@@ -118,7 +118,26 @@ It is possible to start **Node Query System** queries from the Behaviour Trees b
 > When using the RunNQSQuery node, it is expected that you call the `NodeQuerySystem.run_queries()` method once per physics frame in your main scene.
 
 
-## 
+## 5. Creating the scenes
+
+The behaviour tree nodes work with both 2D and 3D scenes. For this tutorial we are creating a 2D main scene because setting up the assets for a 2D scene is much quicker.
+
+1. In your Godot Project, create a Node2D-based scene, name it as **tutorial_scene** and save it.
+
+![Creating the tutorial_scene](images/getting_started_bt_4.png)<br>
+
+This will be our *main scene* and we will *instantiate* the AI entities in to this scene. 
+The AI entity itself will be a separate AnimatedSprite2D scene with a behaviour tree.
+
+2. Create a new AnimatedSprite2D-based scene and name it as **ai_entity**.
+
+![Creating the tutorial_scene](images/getting_started_bt_5.png)<br>
+
+
+3. Create a new AnimatedSprite2D-based scene and name it as **ai_entity**.
+
+![Creating the tutorial_scene](images/getting_started_bt_5.png)<br>
+
 
 
 
