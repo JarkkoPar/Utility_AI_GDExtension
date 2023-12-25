@@ -6,19 +6,19 @@ To get started, we need a scene with some nodes to use in the query. Create a 2D
 
 |My Parent Node|
 |--|
-|![myparentnode](tutorial_3_pic_1.png)|
+|![myparentnode](images/tutorial_3_pic_1.png)|
 
 Under the searchspace node, add 5 Node2D's and name them as node1, node2, ..., node5. These are the nodes we will be searching through. 
 
 |Nodes to search through|
 |--|
-|![Nodes to search through](tutorial_3_pic_2.png)|
+|![Nodes to search through](images/tutorial_3_pic_2.png)|
 
 We'll adjust the properties of these nodes to make it more interesting for the search. Set a couple of the nodes as hidden.
 
 |Hidden nodes|
 |--|
-|![Hidden nodes](tutorial_3_pic_3.png)|
+|![Hidden nodes](images/tutorial_3_pic_3.png)|
 
 Now that we have a... kind of interesting search space, let's make add the Node Query System nodes to make queries about them.
 
@@ -26,19 +26,19 @@ Now that we have a... kind of interesting search space, let's make add the Node 
 The main node for the Node Query System is always the Search Space node. Add a `UtilityAINodeChildrenSearchSpace` node as the child of the scene root node (mine was called tutorial_scene). 
 |The Search Space|
 |--|
-|![The Search Space](tutorial_3_pic_4.png)|
+|![The Search Space](images/tutorial_3_pic_4.png)|
 
 The Search Space is used to define the set of nodes which you want to search through. In the case of the NodeChildrenSearchSpace it will be the direct children of some node. Look in the Inspector, and you can see the properties of this search space, and there you will se a node path you can set to a parent node.
 
 |The Search Space properties in the Inspector|
 |--|
-|![The Search Space properties](tutorial_3_pic_5.png)|
+|![The Search Space properties](images/tutorial_3_pic_5.png)|
 
 Set the `myparentnode` as the Parent Node Path. You have now defined what the search space is for the NodeChildrenSearchSpace.
 
 |The Search Space, defined|
 |--|
-|![The Search Space, defined](tutorial_3_pic_6.png)|
+|![The Search Space, defined](images/tutorial_3_pic_6.png)|
 
 The shared properties for all search spaces are the number of top N nodes to return (default is 1), and the query results (an array of nodes) and their scores (an array of floats). Setting the top N to a larger value allows you to take a random one of the best choices found, for instance. For this tutorial, change the top N to 4. This means that you will get at maximum a list of 4 nodes as the query results. The result can be less, though, if there aren't that many nodes left after filtering. 
 
@@ -50,7 +50,7 @@ Setting the top N to a larger value allows you to choose a random node amongst t
 The search space uses `Search Criteria` nodes when it is executing the search query. In this case we will use the `UtilityAICustomSearchCriterion` to write a custom search, but there are pre-made choices available as well.
 |Add the Search Criterion node|
 |--|
-|![The Search Criterion node](tutorial_3_pic_7.png)|
+|![The Search Criterion node](images/tutorial_3_pic_7.png)|
 
 The shared properties for all the search criteria are `Use for Scoring`, `Use for Filtering`, `Score`, `Is Filtered` and the `Activation Curve`. If `Use for Scoring` is checked, the search criterion is used to score the nodes in the search space. If `Use for Filtering` is checked, the criterion will filter out the nodes that do not match the properties of the search criterion. 
 
@@ -65,7 +65,7 @@ The last two things to do is to add the code to run the search space query and t
 Choose the UtilityAICustomSearchCriterion node and attach a script to it by using the Attach Script button or via the right-click menu.
 |Adding the script|
 |--|
-|![Adding the script](tutorial_3_pic_8.png)|
+|![Adding the script](images/tutorial_3_pic_8.png)|
 
 Then add the following code, which filters out the node if it is visible and sets the score of 0.5 to all the nodes:
 
@@ -98,12 +98,12 @@ This script runs the search space query every frame. In an actual game you don't
 We're now ready to test the query. Click on Run Current Scene (or press F6) and you are greeted with a gloriously empty screen. To see the query results, go to the Godot Editor and in the Scene-tab, click Remote, then choose the Search Space node.
 |Choosing Remote|
 |--|
-|![Choosing Remote](tutorial_3_pic_9.png)|
+|![Choosing Remote](images/tutorial_3_pic_9.png)|
 
 In the Inspector, expand the Query Results and the Query Result Scores. You can see the resulting nodes and their scores (which should be 0.5 for all of them). By double-clicking on the node you can check that the `visible` property is `false` for the nodes that were found (remember, the is_filtered property was set as the visible property).
 |The query results|
 |--|
-|![The query results](tutorial_3_pic_10.png)|
+|![The query results](images/tutorial_3_pic_10.png)|
 
 
 
