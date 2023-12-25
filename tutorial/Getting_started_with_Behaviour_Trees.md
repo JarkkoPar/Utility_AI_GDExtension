@@ -51,7 +51,14 @@ Once you have installed the extension, we are ready to set up the project and pr
 
 For this project we are going to use the assets used in the *example project*. Go to the [Releases](https://github.com/JarkkoPar/Utility_AI_GDExtension/releases) and download the latest version of the example project.
 
-todo: add asset guide
+1. Open your Godot project and create a folder named **Assets** in the project root folder.
+
+2. Open the example project folder you downloaded and copy the **"Standard sprites upd.png"** file to your own project, the Assets-folder.
+
+
+You now have all the assets we need for this tutorial. The setup in your FileSystem tab should look like this:
+
+![FileSystem](images/getting_started_bt_1_assets.png)<br>
 
 
 Before we get started with development, it is good review what Behaviour Trees are. If you already are experienced in using behaviour trees, you can hop on to [4. Utility enabled Behavour Trees in Utility AI GDExtension](Getting_started_with_Behaviour_Trees.md#4-utility-enabled-behaviour-trees-in-utility-ai-gdextension).
@@ -120,7 +127,8 @@ It is possible to start **Node Query System** queries from the Behaviour Trees b
 
 ## 5. Creating the scenes
 
-The behaviour tree nodes work with both 2D and 3D scenes. For this tutorial we are creating a 2D main scene because setting up the assets for a 2D scene is much quicker.
+The behaviour tree nodes work with both 2D and 3D scenes. For this tutorial we are creating everything in 2D because setting up the assets for 2D scenes is much quicker.
+
 
 1. In your Godot Project, create a Node2D-based scene, name it as **tutorial_scene** and save it.
 
