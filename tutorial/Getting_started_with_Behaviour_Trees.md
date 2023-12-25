@@ -61,16 +61,16 @@ You now have all the assets we need for this tutorial. The setup in your FileSys
 ![FileSystem](images/getting_started_bt_1_assets.png)<br>
 
 
-Before we get started with development, it is good review what Behaviour Trees are. If you already are experienced in using behaviour trees, you can hop on to [4. Utility enabled Behavour Trees in Utility AI GDExtension](Getting_started_with_Behaviour_Trees.md#4-utility-enabled-behaviour-trees-in-utility-ai-gdextension).
+Before we get started with development, it is good review what Behaviour Trees are. If you already are experienced in using behaviour trees, you can hop on to [4. Utility enabled Behavour Trees in Utility AI GDExtension](Getting_started_with_Behaviour_Trees.md#4-utility-enabled-behaviour-trees-in-utility-ai-gdextension) to learn how the utility enabled behaviour trees in Utility AI GDExtension expand the classical Behaviour Tree functionality. Otherwise, read on.
 
 
 ## 3. About Behaviour Trees
 
 Behaviour trees are probably the most popular system for AI in games today. They are easy to understand and intuitive to create for many and it is easy to make changes to them. You can think of a behaviour tree as a *plan* on how to reach a certain goal by choosing and executing various tasks. Its structure is modular and it is possible to execute very complex tasks just by composing them from simpler tasks. 
 
-While behaviour trees are very good at choosing which tasks to execute at each moment, they aren't very good at handling (or visually representing) *states*. Moving between states is usually **cyclic**, meaning that you can transition between various states and even go back and forth between them. For instance, your AI can start in a *Patrol* state and transition to an *Idle* or *Combat* states and back. Behaviour Trees, due to being a tree-structure, are **acyclic**. They start from the root node and then land on some task that may be within a branch that realizes *Patrol*, *Idle* or *Combat* behaviour. You usually don't explicitly transition between the states.
+While behaviour trees are very good at choosing which tasks to execute at each moment, they aren't very good at handling (or visually representing) *states*. Moving between states is usually **cyclic**, meaning that you can transition between various states and even go back and forth between them. For instance, your AI can start in a *Patrol* state and transition to *Idle* or *Combat* states and back to *Patrol* state again. Behaviour Trees are **acyclic**. They start from the root node and then land on some task that may be within a branch that realizes *Patrol*, *Idle* or *Combat* behaviour. 
 
-If you find yourself wanting to move between such states while building your behaviour tree, you should read up on [**State Trees**](Getting_started_with_State_Trees.md). 
+If you find yourself wanting to move between states while building your behaviour tree, you should read up on [**State Trees**](Getting_started_with_State_Trees.md) and consider implementing your logic there instead. 
 
 
 ### 3.1 The structure of a Behaviour Tree
@@ -142,12 +142,34 @@ The AI entity itself will be a separate AnimatedSprite2D scene with a behaviour 
 ![Creating the tutorial_scene](images/getting_started_bt_5.png)<br>
 
 
-3. Create a new AnimatedSprite2D-based scene and name it as **ai_entity**.
+3. In the **ai_entity** scene, click the ai_entity AnimatedSprite2D and expand the **Animation** group in the **Inspector**.
 
-![Creating the tutorial_scene](images/getting_started_bt_5.png)<br>
+![Creating the tutorial_scene](images/getting_started_bt_6.png)<br>
 
 
+4. In the popup menu, choose New SpriteFrames.
 
+![Creating the tutorial_scene](images/getting_started_bt_7.png)<br>
+
+
+5. In the popup menu, choose New SpriteFrames, and then click the created SpriteFrames again to select it. This will open up the SpriteFrames menu on the bottom of the Godot Editor. The next steps will take place in that menu.
+
+<img src="images/getting_started_bt_8.png" height="256px"><br>
+
+
+6. Make sure the "default" animation is selected, then click on the "Add frames from sprite sheet" icon.
+
+![Creating the tutorial_scene](images/getting_started_bt_9.png)<br>
+
+
+6. Make sure the "default" animation is selected, then click on the "Add frames from sprite sheet" icon.
+
+![Creating the tutorial_scene](images/getting_started_bt_9.png)<br>
+
+
+7. Open file dialog will open up. Go to the Assets-folder and select the file **Standard sprites upd.png**, then click **Open**.
+
+![Creating the tutorial_scene](images/getting_started_bt_10.png)<br>
 
 
 
