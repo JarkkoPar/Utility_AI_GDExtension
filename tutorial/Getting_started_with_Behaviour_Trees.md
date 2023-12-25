@@ -142,35 +142,44 @@ The AI entity itself will be a separate AnimatedSprite2D scene with a behaviour 
 ![Creating the tutorial_scene](images/getting_started_bt_5.png)<br>
 
 
-3. In the **ai_entity** scene, click the ai_entity AnimatedSprite2D and expand the **Animation** group in the **Inspector**.
+3. In the **ai_entity** scene, select the ai_entity AnimatedSprite2D in the **Scene-tab** and then in the **Inspector-tab** expand the **Animation** group.
 
-![Creating the tutorial_scene](images/getting_started_bt_6.png)<br>
-
-
-4. In the popup menu, choose New SpriteFrames.
-
-![Creating the tutorial_scene](images/getting_started_bt_7.png)<br>
+![Editing the AnimatedSprite2D](images/getting_started_bt_6.png)<br>
 
 
-5. In the popup menu, choose New SpriteFrames, and then click the created SpriteFrames again to select it. This will open up the SpriteFrames menu on the bottom of the Godot Editor. The next steps will take place in that menu.
+4. In the popup menu, choose **New SpriteFrames**. This will create a new SpriteFrames resource for the AnimatedSprite2D.
+
+![Creating the SpriteFrames](images/getting_started_bt_7.png)<br>
+
+
+5. Click the created SpriteFrames again to select it. This will open up the **SpriteFrames menu** at the bottom of the Godot Editor. The next steps will take place in that menu.
 
 <img src="images/getting_started_bt_8.png" height="256px"><br>
 
 
 6. Make sure the "default" animation is selected, then click on the "Add frames from sprite sheet" icon.
 
-![Creating the tutorial_scene](images/getting_started_bt_9.png)<br>
-
-
-6. Make sure the "default" animation is selected, then click on the "Add frames from sprite sheet" icon.
-
-![Creating the tutorial_scene](images/getting_started_bt_9.png)<br>
-
+![Adding frames to the default animation](images/getting_started_bt_9.png)<br>
 
 7. Open file dialog will open up. Go to the Assets-folder and select the file **Standard sprites upd.png**, then click **Open**.
 
-![Creating the tutorial_scene](images/getting_started_bt_10.png)<br>
+![The Open file dialog](images/getting_started_bt_10.png)<br>
 
 
+8. The **Select frames** will open up. On the right-side of the dialog, change the **Size** to 16px in width and 16px in height. The grid should then match the sprites on the spritesheet.
 
+![The Select frames dialog](images/getting_started_bt_11.png)<br>
+
+
+9. The **default** animation will be the idle-pose for the **ai_entity**. Choose which ever creature you want from the sprite sheet and select its idle animation frames, then click the **Add X Frame(s)** button (X will be the number of frames you've selected.
+
+![Selecting animation frames](images/getting_started_bt_12.png)<br>
+
+
+10. In the **SpriteFrames menu**, make sure that the **Autoplay on Load** has been selected for the **default** animation.
+
+![Enabling Autoplay on load](images/getting_started_bt_13.png)<br>
+
+
+11. 
 
