@@ -72,6 +72,7 @@ The ticking of the child nodes is done in a top-to-down order. The higher the no
 ![Behaviour Tree node priority order](images/getting_started_bt_1.png)<br>
 *Node priority is highest on the top, lowest on the bottom.*<br>
 
+### 3.2 The return values of the Behaviour Tree nodes
 
 Each behaviour tree node returns a value, which is either *success*, *failure* or *running*. Usually it is one of the task nodes that ultimately sets what value is returned but the decorator and composite nodes can affect the value that is returned to the root node in the end.
  
