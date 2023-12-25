@@ -268,7 +268,7 @@ We are now done with the main scene. Next we will focus on creating the **ai_ent
 ![AI-entity scene attach script](images/getting_started_bt_17.png)<br>
 
 
-3. Choose the **UtilitAIBTRoot** node and add it to the scene by clicking the **Create** button.
+3. Choose the **UtilitAIBTRoot** node and add it to the scene by clicking the **Create** button. The root-node will be the node we will be *ticking* later in code.
 
 ![AI-entity scene attach script](images/getting_started_bt_18.png)<br>
 
