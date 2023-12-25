@@ -54,11 +54,16 @@ For this project we are going to use the assets used in the *example project*. G
 todo: add asset guide
 
 
+Before we get started with development, it is good review what Behaviour Trees are. If you already are experienced in using behaviour trees, you can hop on to [4. Utility enabled Behavour Trees in Utility AI GDExtension](Getting_started_with_Behaviour_Trees.md#4-utility-enabled-behaviour-trees-in-utility-ai-gdextension).
+
+
 ## 3. About Behaviour Trees
 
-Behaviour trees are probably the most popular system for building AI to games today. They are easy to understand for many and intuitive to create, it is easy to make changes to them. You can think of a behaviour tree as a *plan* on how to reach a certain goal by choosing and executing various tasks. Its structure is modular and it is possible to execute very complex tasks just by composing them from simpler tasks. 
+Behaviour trees are probably the most popular system for AI in games today. They are easy to understand and intuitive to create for many and it is easy to make changes to them. You can think of a behaviour tree as a *plan* on how to reach a certain goal by choosing and executing various tasks. Its structure is modular and it is possible to execute very complex tasks just by composing them from simpler tasks. 
 
-While behaviour trees are very good at choosing which tasks to execute at each moment, they aren't very good at handling (or visually representing) *states*. Moving between states is usually **cyclic**, meaning that you can transition between various states and even go back and forth between them. For instance, your AI can start in a *Patrol* state and transition to an *Idle* or *Combat* states and back. Behaviour Trees, due to being a tree-structure, are **acyclic**. 
+While behaviour trees are very good at choosing which tasks to execute at each moment, they aren't very good at handling (or visually representing) *states*. Moving between states is usually **cyclic**, meaning that you can transition between various states and even go back and forth between them. For instance, your AI can start in a *Patrol* state and transition to an *Idle* or *Combat* states and back. Behaviour Trees, due to being a tree-structure, are **acyclic**. They start from the root node and then land on some task that may be within a branch that realizes *Patrol*, *Idle* or *Combat* behaviour. You usually don't explicitly transition between the states.
+
+If you find yourself wanting to move between such states while building your behaviour tree, you should read up on [**State Trees**](Getting_started_with_State_Trees.md). 
 
 
 ### 3.1 The structure of a Behaviour Tree
