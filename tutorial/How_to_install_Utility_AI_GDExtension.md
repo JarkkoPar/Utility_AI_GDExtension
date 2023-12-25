@@ -17,7 +17,7 @@ To install the Utility AI GDExtension within the Godot Engine do the following s
 
 2. The AssetLib interface should open up. In the AssetLib inteface, search for Utility AI. Then click on the Utility AI (GDExtension) icon.
 
-![Search for Utility AI in the AssetLib interface](installation_2.png)
+![Search for Utility AI in the AssetLib interface](images/installation_2.png)
 
 
 3. The dialog for downloading the extension will open. Click the Download-button to download the extension.
