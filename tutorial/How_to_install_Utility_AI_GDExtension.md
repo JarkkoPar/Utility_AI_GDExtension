@@ -12,7 +12,7 @@ To install the Utility AI GDExtension within the Godot Engine do the following s
 
 1. In the menu on the top of the screen, click on AssetLib.
 
-![Click on AssetLib](installation_1.png)
+![Click on AssetLib](images/installation_1.png)
 
 
 2. The AssetLib interface should open up. In the AssetLib inteface, search for Utility AI. Then click on the Utility AI (GDExtension) icon.
@@ -22,21 +22,21 @@ To install the Utility AI GDExtension within the Godot Engine do the following s
 
 3. The dialog for downloading the extension will open. Click the Download-button to download the extension.
 
-![Download the extension](installation_3.png)
+![Download the extension](images/installation_3.png)
 
 
 4. After the download finishes, you will be shown all the files included in the extension. You will need all of the files, so just click the Install-button.
 
-![Click on AssetLib](installation_4.png)
+![Click on AssetLib](images/installation_4.png)
 
 
 5. The files will be installed and after a successful installation you should see a message box with the text: `Asset "Utility AI (GDExtension)" installed successfully!`. Click on OK to close the message box.
 
-![Click on AssetLib](installation_5.png)
+![Click on AssetLib](images/installation_5.png)
 
 You should see in your FileSystem tab the `addons` folder and within it the utility_ai extension. The Utility AI nodes should be available when you add new nodes in to your scenes.
 
-![addons folder](installation_6.png)
+![addons folder](images/installation_6.png)
 
 
 Congratulations! You have now installed the Utility AI GDExtension to your Godot project. 
@@ -51,17 +51,17 @@ The extension can also be installed by downloading the package from the github p
 
 1. Go to the url https://github.com/JarkkoPar/Utility_AI_GDExtension.
 
-![https://github.com/JarkkoPar/Utility_AI_GDExtension](installation_b_1.png)
+![https://github.com/JarkkoPar/Utility_AI_GDExtension](images/installation_b_1.png)
 
 
 2. On the right-hand side of the page you should see **Releases**. The latest release is shown under the Releases-heading (note that the text may be different from the image for the latest release), so click on the latest release.
 
-![Releases](installation_b_2.png)
+![Releases](images/installation_b_2.png)
 
 
 3. You will go to the page with information about the latest release. Scroll down on the page until you see the **Assets**. To download only the extension, click on the `Source code (zip)` link. You can also download the example project to see implementation examples.
 
-![Assets](installation_b_3.png)
+![Assets](images/installation_b_3.png)
 
 
 4. Once the download completes, extract all the files in the zip-file to a folder and open the folder.
@@ -75,7 +75,7 @@ The extension can also be installed by downloading the package from the github p
 
 When you open your Godot project, you should see in your FileSystem tab the `addons` folder and within it the utility_ai extension. The Utility AI nodes should be available when you add new nodes in to your scenes.
 
-![addons folder](installation_6.png)
+![addons folder](images/installation_6.png)
  
 
 
