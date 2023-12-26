@@ -28,7 +28,7 @@ Before we can begin, we need to create and setup the project, and add the assets
 1. Open Godot Engine.
 
 
-2. Click **Create project**.
+2. Click **New project**.
 
 ![Create project](images/create_project_1.png)
 
@@ -268,10 +268,14 @@ We are now done with the main scene. Next we will focus on creating the **ai_ent
 ![AI-entity scene attach script](images/getting_started_bt_17.png)<br>
 
 
-3. Choose the **UtilitAIBTRoot** node and add it to the scene by clicking the **Create** button. The root-node will be the node we will be *ticking* later in code.
+3. Choose the **UtilityAIBTRoot** node and add it to the scene by clicking the **Create** button. The root-node will be the node we will be *ticking* later in code.
 
 ![AI-entity scene attach script](images/getting_started_bt_18.png)<br>
 
 
-4. 
+4. We'll use a **Sensor** to track the distance to the mouse cursor. Right-click on the **UtilityaiBTRoot** node you created and add a **UtilityAIDistanceVector2Sensor** as its child node.
+
+![AI-entity scene attach script](images/getting_started_bt_19.png)<br>
+
+
 
