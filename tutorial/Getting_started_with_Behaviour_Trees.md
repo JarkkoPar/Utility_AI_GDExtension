@@ -277,12 +277,21 @@ We are now done with the main scene. Next we will focus on creating the **ai_ent
 
 ![Add the distance sensor](images/getting_started_bt_19.png)<br>
 
-5. Add another child node to the UtilityAIBTRoot node, this time a **UtilityAIBTSelector**. 
+5. Add another child node to the UtilityAIBTRoot node, this time a **UtilityAIBTSelector**. The selector will try to tick its child nodes one by one, starting from the top-most one. 
 
 ![Add the selector node](images/getting_started_bt_20.png)<br>
 
+6. Select the **UtilityAIBTSelector** in the **Scene-tab** and then add 3 **UtilityAIBTSequenceNode**s as childs of the selector node. 
 
-6. Add another child node to the UtilityAIBTRoot node, this time a **UtilityAIBTSelector**. 
+![Add the sequence nodes](images/getting_started_bt_21.png)<br>
 
-![Add the selector node](images/getting_started_bt_20.png)<br>
+7. Rename the **Selector** node as **Keep a fixed distance to the cursor**, and the sequence nodes (starting from the top-most one) as follows: **Move closer to the cursor**, **Move away from the cursor** and **Wait**. 
+
+![Add the sequence nodes](images/getting_started_bt_22.png)<br>
+
+8. Rename the **Selector** node as **Keep a fixed distance to the cursor**, and the sequence nodes (starting from the top-most one) as follows: **Move closer to the cursor**, **Move away from the cursor** and **Wait**. 
+
+![Add the sequence nodes](images/getting_started_bt_22.png)<br>
+
+
 
