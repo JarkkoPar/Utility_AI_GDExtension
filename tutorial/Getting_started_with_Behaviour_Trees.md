@@ -70,32 +70,40 @@ Before we get started with development, it is good review what Behaviour Trees a
 
 Behaviour trees are probably the most popular system for AI in games today. They are easy to understand and intuitive to create for many and it is easy to make changes to them. You can think of a behaviour tree as a *plan* on how to reach a certain goal by choosing and executing various tasks. Its structure is modular and it is possible to execute very complex tasks just by composing them from simpler tasks. 
 
-While behaviour trees are very good at choosing which tasks to execute at each moment, they aren't very good at handling (or visually representing) *states*. Moving between states is usually **cyclic**, meaning that you can transition between various states and even go back and forth between them. For instance, your AI can start in a *Patrol* state and transition to *Idle* or *Combat* states and back to *Patrol* state again. Behaviour Trees are **acyclic**. They start from the root node and then land on some task that may be within a branch that realizes *Patrol*, *Idle* or *Combat* behaviour. 
-
-If you find yourself wanting to move between states while building your behaviour tree, you should read up on [**State Trees**](Getting_started_with_State_Trees.md) and consider implementing your logic there instead. 
+The flexibility of behaviour trees allows you to develop your AI iteratively: you start by creating basic behaviour and decision making, then add more detail and alternative ways of reaching goals to the tree by adding new branches. 
 
 
 ### 3.1 The structure of a Behaviour Tree
 
-A behaviour tree consists of a **root node** that is the basis of the tree. The tree branches are created using **composite nodes** that define how the tree is traversed together with **decorator nodes**, and finally the branches of the behaviour tree end with **task nodes** that execute various actions. Using a behaviour tree a non-player character can make choices on what are the best actions it can take in the situation where it finds itself in.
+The structure of the behaviour tree controls the flow of decision making for your AI entity. A behaviour tree consists of a **root node** that is the basis of the tree. The tree branches are created using **composite nodes** that define how the tree is traversed together with **decorator nodes**, and finally the branches of the behaviour tree end with **task nodes** that execute various actions. Using a behaviour tree a non-player character can make choices on what are the best actions it can take in the situation where it finds itself in.
 
-A behaviour tree is updated by **ticking** the tree. Simplified, this means that the root node of the tree is first run, which in turn runs its child node, and the child node runs its own child nodes and so on, until one or more task nodes are reached. You can think of ticking as *running what ever code the behaviour tree nodes have and returning if it succeeded or not*.
+A behaviour tree is updated by **ticking** the tree. Simplified, this means that the root node of the tree is first updated, which in turn updates its child node, and the child node updates its own child nodes and so on, until one or more *task nodes* are reached. You can think of ticking as *executing what ever code the behaviour tree nodes have and returning if it succeeded or not*. 
+
+For most of the nodes the ticking code is pre-defined by the behaviour tree implementation. For example the *sequence* and *selector* have a set logic they execute during a tick. You usually add your own code to the *task nodes* by defining the `on_tick()` method.
 
 The ticking of the child nodes is done in a top-to-down order. The higher the node is in the list, the higher its priority. 
 
 ![Behaviour Tree node priority order](images/getting_started_bt_1.png)<br>
 *Node priority is highest on the top, lowest on the bottom.*<br>
 
+
 ### 3.2 The return values of the Behaviour Tree nodes
 
 Each behaviour tree node returns a value, which is either *success*, *failure* or *running*. Usually it is one of the task nodes that ultimately sets what value is returned but the decorator and composite nodes can affect the value that is returned to the root node in the end.
  
+The return value is predetermined for most of the node types, but you decide what each *task node* will return. In Utility AI GDExtension the numerical values for these are as follows:
+
+ * **Running** 0
+ * **Succeeded** 1
+ * **Failed** -1
+
 > [!NOTE]
-> In Utility AI GDExtension the nodes can also return the *skip* value, but for the purposes of this tutorial we will only focus on the *success*, *failure* and *running* values. 
+> In Utility AI GDExtension the nodes can also return the *skip* value, but for the purposes of this tutorial we will only focus on the *success*, *failure* and *running* values. The numerical value for *skip* is -2.
+
 
 ### 3.3 Commonly used nodes
 
-All behaviour trees need the **root** node. The root node is the *main node* for behaviour trees. The root node always has only one behaviour tree child node (in Utility AI GDExtension it may have **Sensor** nodes as well, though).
+All behaviour trees need the **root** node. The root node is the *main node* for behaviour trees. The root node always has only one behaviour tree child node (in Utility AI GDExtension it may have **Sensor** nodes as well).
 
 In addition to the root node, **task** or **leaf** nodes are always needed. As the *task* node's name implies, these nodes usually execute actions and other logic.
 
@@ -104,12 +112,21 @@ The most commonly used *composite* nodes are the **selector** (also known as the
  * The selector *ticks* (= runs the code) its child nodes one by one and checks if any of its child nodes succeeds. When one does, it stops ticking and returns *success* back to its parent node. If all fail, it returns back *failure* to its parent.  
  * The sequence *ticks* its child nodes one by one until one of them fails or until it has ticked all its child nodes. If a child node fails, the sequence returns *failure* back to its parent. If all succeed, it returns back *success*.
 
-Both the selector and sequence return back *running* if a child node they tick returns back running. Handing the *running* state can vary between Behaviour Tree implementations. In Utility AI GDExtension the default is that during the next tick the tree continues ticking from the node that returned running until it either succeeds or fails. This can be changed by changing the node settings, though.
+Both the selector and sequence return back *running* if a child node they tick returns back running. Handing the *running* state can vary between Behaviour Tree implementations. In Utility AI GDExtension the default is that during the next tick the tree continues ticking from the node that returned running until it either succeeds or fails. This can be changed by editing the `reset_rule` property.
 
-There are also *decorator* nodes, which usually have only one child node. The **inverter** is a very common one, and it changes the return value of its child node to the opposite value (a *success* becomes a *failure* and a *failure* a *success*). Other common decorator nodes are the **repeat until** node that repeats its child node until it either succeeds or fails, **cooldown** nodes run their child nodes and then allow it only to run after a certain cooldown period.
+There are also *decorator* nodes, which usually have only one child node. The **inverter** is a very common one, and it changes the return value of its child node to the opposite value (a *success* becomes a *failure* and a *failure* a *success*; *running* stays as *running*). Other common decorator nodes are the **repeat until** node that repeats its child node until it either succeeds or fails, **cooldown** nodes run their child nodes and then allow it only to run after a certain cooldown period.
 
 > [!NOTE]
 > The *AlwaysSucceed* and *AlwaysFail* nodes are replaced by the **FixedResult** decorator node in Utility AI GDExtension, where you can choose what result the node always returns.
+
+
+### 3.3 Challenges with behaviour trees
+
+While behaviour trees are very good at choosing which tasks to execute at each moment, they aren't very good at handling (or visually representing) *states*. 
+
+Moving between states is usually **cyclic**, meaning that you can transition between various states and even go back and forth between them. For instance, your AI can start in a *Patrol* state and transition to *Idle* or *Combat* states and back to *Patrol* state again. Behaviour Trees are **acyclic**. They start from the root node and then plummet down the tree, ticking the nodes, until they land on some task node. The task node may be within a branch that realizes the behaviour that can be associated with a *Patrol*, *Idle* or *Combat* state, but the tree itself is oblivious of this state. 
+
+If you find yourself wanting to move between states while building your behaviour tree, you should read up on [**State Trees**](Getting_started_with_State_Trees.md) and consider implementing your logic there instead. 
 
 
 ## 4. Utility enabled Behaviour Trees in Utility AI GDExtension
@@ -289,9 +306,27 @@ We are now done with the main scene. Next we will focus on creating the **ai_ent
 
 ![Add the sequence nodes](images/getting_started_bt_22.png)<br>
 
-8. Rename the **Selector** node as **Keep a fixed distance to the cursor**, and the sequence nodes (starting from the top-most one) as follows: **Move closer to the cursor**, **Move away from the cursor** and **Wait**. 
+8. In the **Scene-tab** select the **Move closer to the cursor** node and then add two **UtilityAIBTLeaf** nodes as its childs. 
 
-![Add the sequence nodes](images/getting_started_bt_22.png)<br>
+![Add the sequence nodes](images/getting_started_bt_23.png)<br>
 
+
+9. Rename the first child leaf-node as **Is too far from the cursor** and the second one as **Move closer**. 
+
+![Add the sequence nodes](images/getting_started_bt_24.png)<br>
+
+
+10. Add two more child nodes to under the **Move away from the cursor** and name them **Is too close to the cursor** and **Move away**. And under the **Wait** sequence add one leaf-node and name it as **Set to idle animation**. 
+
+![Add the sequence nodes](images/getting_started_bt_25.png)<br>
+
+
+We have now created the structure for the AI's logic. The behaviour tree will 
+
+Now we'll add 
+
+11. 
+
+![Add the sequence nodes](images/getting_started_bt_26.png)<br>
 
 
