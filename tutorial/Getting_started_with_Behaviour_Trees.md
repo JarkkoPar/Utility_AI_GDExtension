@@ -265,17 +265,24 @@ We are now done with the main scene. Next we will focus on creating the **ai_ent
 
 2. In the **scene-tab**, right-click on the **ai_entity AnimatedSprite2D** node and choose **Add Child Node**.
 
-![AI-entity scene attach script](images/getting_started_bt_17.png)<br>
+![Add child node to the ai_entity node](images/getting_started_bt_17.png)<br>
 
 
 3. Choose the **UtilityAIBTRoot** node and add it to the scene by clicking the **Create** button. The root-node will be the node we will be *ticking* later in code.
 
-![AI-entity scene attach script](images/getting_started_bt_18.png)<br>
+![The Behaviour Tree root node](images/getting_started_bt_18.png)<br>
 
 
-4. We'll use a **Sensor** to track the distance to the mouse cursor. Right-click on the **UtilityaiBTRoot** node you created and add a **UtilityAIDistanceVector2Sensor** as its child node.
+4. We'll use a **Sensor** to track the distance and direction vector to the mouse cursor. Right-click on the **UtilityaiBTRoot** node you created and add a **UtilityAIDistanceVector2Sensor** as its child node.
 
-![AI-entity scene attach script](images/getting_started_bt_19.png)<br>
+![Add the distance sensor](images/getting_started_bt_19.png)<br>
+
+5. Add another child node to the UtilityAIBTRoot node, this time a **UtilityAIBTSelector**. 
+
+![Add the selector node](images/getting_started_bt_20.png)<br>
 
 
+6. Add another child node to the UtilityAIBTRoot node, this time a **UtilityAIBTSelector**. 
+
+![Add the selector node](images/getting_started_bt_20.png)<br>
 
