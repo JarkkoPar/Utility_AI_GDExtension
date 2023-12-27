@@ -484,6 +484,9 @@ This node sets the movement_speed to 0, so that the AI entity will be standing s
 
 Now that we've added the logic for the AI in the form of the behaviour tree and the `on_tick()` methods, you can select the **tutorial_scene** and run it. As you move the mouse cursor, the AI entity should move closer to the cursor if it is too far away and farther away if the cursor gets too close. 
 
+To change the number of AI entities created, change the `num_entities` variable to a larger value in the **tutorial_scene**.
+
+
 ## 9. Next steps
 
 This concludes the tutorial, but there are things you can try to learn more. For instance:
