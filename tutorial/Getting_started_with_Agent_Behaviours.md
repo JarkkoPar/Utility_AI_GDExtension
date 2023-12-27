@@ -75,16 +75,23 @@ You now have all the assets we need for this tutorial. The setup in your FileSys
 Before we get started with development, it is good review what Behaviour Trees are. If you already are experienced in using behaviour trees, you can hop on to [4. Utility enabled Behavour Trees in Utility AI GDExtension](Getting_started_with_Agent_Behaviours.md#4-utility-enabled-behaviour-trees-in-utility-ai-gdextension) to learn how the utility enabled behaviour trees in Utility AI GDExtension expand the classical Behaviour Tree functionality. Otherwise, read on.
 
 
-## 3. About State Trees
+## 3. About Agent Behaviours
 
-State trees are a new solution to AI that combine the flexibility and tree-structure of Behaviour Trees to the state management of State Machines. The state tree defines a hierarchical set of states and allows you to define transitions to any level of the hierarchy. The state tree will then determine which child states are activated.
+Agent Behaviours are a utility-function based AI system for creating AI to your non-playable characters. The system uses **sensors** to get data about the game world, **behaviours** and **considerations** to choose the correct behaviour, and **actions** to realize the selected behaviour.
 
 
-### 3.1 The structure of a State Tree
 
-The structure of the state tree controls the state selection flow for your AI entity. A state tree consists of a **root node** that is the basis of the tree and the tree branches are created using **state nodes**. The state nodes can have zero or more child state nodes. If a state node does not have any child state nodes, it is considered to be a *leaf* node.
+### 3.1 The structure of the Agent Behaviours
 
-A state tree is updated by **ticking** the tree. When there are no states active, a **transition** is started with the **root** node as the transition target. This causes the states in the tree to be evaluated starting from the root node and descending down the tree until a leaf state node is found that can be activated. When a leaf node is found, all its parent nodes up until the root node will be marked as active nodes.
+The structure of the agent behaviours controls the decision making for your AI entity. Agent behaviours consists of a **AI Agent** node that is the basis of the structure. The AI Agent gets input from the game world by using **sensors**. The sensor nodes are added as the child nodes of the AI Agent node.
+
+The *behaviours* the AI Agent will choose from are defined using the **Behaviour** nodes. The behaviours are added as child nodes to the AI Agent.
+
+Each behaviour needs **Considerations** as either their child nodes or as a property in the *Inspector*. The considerations are used to **score** the behaviours. The AI Agent will choose its behaviour amongst the top-scoring behaviours.
+
+The *considerations* can be grouped and the score for a behaviour will be aggregated based on the consideration structure created for it. Each consideration has an **activation curve** property, that affects its **score**. 
+
+The AI Agent is updated by calling its **ticking** method. When there are no states active, a **transition** is started with the **root** node as the transition target. This causes the states in the tree to be evaluated starting from the root node and descending down the tree until a leaf state node is found that can be activated. When a leaf node is found, all its parent nodes up until the root node will be marked as active nodes.
 
 After the initial state has been chosen, the state transitions must be explicitly started by calling the `transition_to(new_state_nodepath:NodePath, user_data:Variant, delta:float)` method. The transition target can be any of the nodes in the tree, including the root node. The target is defined by the **NodePath relative to the root node of the state tree**. In the image below, if the `transition_to()` was called with the following parameters: `transition_to("/Child state 1/Sub child state 2", null, delta)`, it would cause the child states of *Sub child state 2* to be evaluated to find a new leaf state.
 
