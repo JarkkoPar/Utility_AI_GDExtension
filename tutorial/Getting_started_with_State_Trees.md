@@ -124,7 +124,9 @@ For any of the **UtilityAISTNode** state nodes you can control how they will eva
 
 ![Choosing the Child State Selection Rule](images/getting_started_st_gen_2.png)<br>
 
-If **OnEnterConditionMethod** is selected, the user-defined `on_enter_condition()` method will be called for the childs of the state node. If **UtilityScoring** is selected, the *considerations* attached to the child state nodes as either their child nodes or in the *Considerations* property will be evaluated and the highest-scoring state node will be selected. 
+If **OnEnterConditionMethod** is selected, the user-defined `on_enter_condition()` method will be called for the childs of the state node. If the method has not been defined, the evaluation will always return *true*.
+
+If **UtilityScoring** is selected, the *considerations* attached to the child state nodes as either their child nodes or in the *Considerations* property will be evaluated and the highest-scoring state node will be selected. 
 
 
 
