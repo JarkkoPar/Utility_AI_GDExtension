@@ -420,7 +420,7 @@ func on_tick(actor, delta):
 
 Again, we define the `on_tick()` method and this time we set the `movement_speed` of the actor (which is the AI entity) to -100 and play the "moving" animation. The method always returns 1 (success). 
 
-The behaviour tree is a structure used for **making decisions about what to do** so it makes sense to keep the behaviour tree nodes as light as possible, setting properties that steer the AI entity's behaviour, and then implement the *realization* of that logic in the AI entity or some other node. This allows you to *tick* the tree less often and decoupling the decision making from the realization will also allow for a more opportunities to reuse the behaviour tree nodes you create.
+The behaviour tree is a structure used for **making decisions about what to do** so it makes sense to keep the behaviour tree nodes as light as possible, setting properties that steer the AI entity's behaviour, and then implement the *realization* of that logic in the AI entity or some other node. This allows you to *tick* the tree less often and decoupling the decision making from the realization will also allow for more opportunities to reuse the behaviour tree nodes you create.
 
 
 4. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **Is too close to the cursor** node. Replace the code with the following code (see explanation for it below):
