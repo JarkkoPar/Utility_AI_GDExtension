@@ -17,7 +17,7 @@ For this tutorial, we'll start with an empty Godot 4.1  project.
  4. [Utility enabled State Trees in Utility AI GDExtension](Getting_started_with_State_Trees.md#4-utility-enabled-state-trees-in-utility-ai-gdextension)
  5. [Creating the scenes](Getting_started_with_State_Trees.md#5-creating-the-scenes)
  6. [Creating the State Tree for the AI-entity](Getting_started_with_State_Trees.md#6-creating-the-state-tree-for-the-ai-entity)
- 7. [Adding the on_tick() methods](Getting_started_with_State_Trees.md#7-adding-the-on_tick-methods)
+ 7. [Adding the state handling methods](Getting_started_with_State_Trees.md#7-adding-the-state-handling-methods)
  8. [Running the main scene](Getting_started_with_State_Trees.md#8-running-the-main-scene)
  9. [Next steps](Getting_started_with_State_Trees.md#9-next-steps)
 
