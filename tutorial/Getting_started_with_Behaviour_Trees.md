@@ -492,7 +492,7 @@ To change the number of AI entities created, change the `num_entities` variable 
 This concludes the tutorial, but there are things you can try to learn more. For instance:
 
  * Try adding some more logic to the tutorial scene, for instance a point that the AI entities want to avoid, an animation they will some times play when they are not moving or an item they can pick up.
- * Try adding another AI entity that has some other logic for its behaviour. 
+ * Try adding another type of AI entity that has some other logic for its behaviour. 
  * Try setting the the `num_entities` to a larger value in the **tutorial_scene**. How many AI entities you can add without it affecting performance? 
 
 In 7.1 it was noted that you usually don't want to tick the tree every physics frame. There are several reasons for this. For one, the game world usually doesn't change dramatically each frame and as a result the behaviour tree would end up to the same task node as it did on the previous frame. Secondly, ticking the behaviour tree each frame has of course a cost. If the ticking doesn't result in a change in the behaviour and it costs some frame time, it doesn't make sense to tick the tree unless it is necessary. Thirdly, we humans (and also animals in general) have various *reaction times* that cause some delay when we are reacting to the changes in our environment. Adding some delay may make your AI entities more *believable* and fun. Finally, ticking the tree every frame can lead to a practice of adding per-frame logic inside the behaviour tree which in turn can lead to a unnecessarily complex tree. 
