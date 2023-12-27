@@ -240,16 +240,18 @@ func _process(delta):
 
 ```
 
-This is the default code given if you kept the default settins when creating the script. Replace the code with the following:
+This is the default code given if you kept the default settins when creating the script. Replace the code with the following (see explanation for it below):
 
 ```gdscript
-
 extends Node2D
 
 @onready var ai_entity_template:PackedScene = preload("res://ai_entity.tscn")
+var mouse_position:Vector2
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	randomize()
 	# For convinience in changing the number of AI-entities to create
 	var num_entities:int = 1
 	
@@ -261,21 +263,26 @@ func _ready():
 		new_ai_entity.position = Vector2( randf() * get_viewport_rect().end.x, randf() * get_viewport_rect().end.y)
 		# Adds the AI-entity to the scene.
 		add_child(new_ai_entity)
-		
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+
+func _physics_process(delta):
+	# Set the mouse cursor position as the to-vector.
+	mouse_position = get_viewport().get_mouse_position()
 
 
 ```
 
 This code will instantiate the given number of AI-entities to the main scene to random positions. 
 
+ * On the row The `@onready var ai_entity_template:PackedScene = preload("res://ai_entity.tscn)` we load the **ai_entity** scene which we will use to instantiate the AI entities in the **_ready()** method.
+ * After that we create a variable **mouse_position** that the AI entities will use to check where the mouse cursor is.
+ * In the **_ready()** method we first set the number of entities to instantiate as 1 in `var num_entities:int = 1`. Then in the **for-loop** we first use the `instantiate()` method of the loaded *ai_entity* scene to create a new instance of the AI entity, we then set a random position for it, and finally add it to the *main scene* by adding it as a child using the `add_child(new_ai_entity)` method. 
+ * In the **_physics_process(delta)** method the only thing we do is set the `mous_position` variable as the current position. We do this once in the main scene, as finding the mouse position is a surprisingly costly operation and calling this method for each AI entity can get quite costly when you add more AI entities.
+
 We are now done with the main scene. Next we will focus on creating the **ai_entity** scene with a Behaviour Tree based AI.
 
 
-## 6. Creating the AI-entity
+## 6. Creating the Behaviour Tree for the AI entity
 
 1. Select the **ai_entity** scene in the editor.
 
@@ -321,12 +328,210 @@ We are now done with the main scene. Next we will focus on creating the **ai_ent
 ![Add the sequence nodes](images/getting_started_bt_25.png)<br>
 
 
-We have now created the structure for the AI's logic. The behaviour tree will 
-
-Now we'll add 
-
-11. 
-
-![Add the sequence nodes](images/getting_started_bt_26.png)<br>
+We have now created the structure for the AI's logic. On each tick, the behaviour tree will choose some task node based on the structure. What is missing are the `on_tick()` methods, and we will add them in the next step.
 
 
+## 7. Adding the on_tick() methods
+
+
+1. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **ai_entity** node. Replace the code with the following code (see explanation for it below):
+
+```gdscript
+extends AnimatedSprite2D
+
+# This is the distance sensor. 
+@onready var sensor_distance:UtilityAIDistanceVector2Sensor = $UtilityAIBTRoot/UtilityAIDistanceVector2Sensor
+var movement_speed:float = 0.0
+
+
+func _physics_process(delta):
+	# Set the AI-entity position as the from-vector.
+	sensor_distance.from_vector = global_position
+	
+	# Set the mouse cursor position as the to-vector.
+	sensor_distance.to_vector = get_parent().mouse_position 
+	
+	# Update the AI.
+	$UtilityAIBTRoot.tick(self, delta)
+	
+	# Move based on movement speed.
+	self.global_position += sensor_distance.direction_vector * movement_speed * delta
+	
+	# Flip the sprite horizontally based on the direction vector horizontal (x)
+	# value.
+	flip_h = (sensor_distance.direction_vector.x < 0)
+	# If the movement speed is negative, the entity is moving away so
+	# we should flip the sprite again.
+	if movement_speed < 0.0:
+		flip_h = !flip_h
+
+
+```
+
+What this code does:
+ * The row `@onready var sensor_distance:UtilityAIDistanceVector2Sensor = $UtilityAIBTRoot/UtilityAIDistanceVector2Sensor` gets a reference to the Vector2 based distance sensor of the AI entity. This sensor is used to check the distance and to get the direction vector towards the target.
+ * The row `var movement_speed:float = 0.0` defines a variable that we will use to control the movement speed of the AI entity.
+ * In the `_physics_process(delta)` method we first set the distance sensor **from-position** as the global position of the AI entity, and the **to-position** as the location of the mouse cursor from the parent node. The sensor will use these two positions to calculate the distance from the AI entity to the mouse cursor, and also the direction vector that we will use later for movement.
+ * `$UtilityAIBTRoot.tick(self, delta)` ticks the behaviour tree. As **user_data** we give the root node of the AI entity scene which in this case is the **self** keyword. This gives the behaviour tree node `on_tick()` methods access to all the properties of the AI entity node.
+ * After *ticking* the root node, the row `self.global_position += sensor_distance.direction_vector * movement_speed * delta` moves the AI entity based on the direction vector calculated by the distance sensor. Delta time is used to scale the movement amount.
+ * The final rows of the method make sure the character sprite is facing the direction it is moving to by flipping the sprite horizontally when needed.
+
+> [!NOTE]
+> For this tutorial we are calling the root node `tick()` method every physics frame. This isn't what you usually want to do in a real game. See section [9. Next steps](Getting_started_with_Behaviour_Trees.md#9-next-steps) for more information.
+
+
+2. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **Is too far from the cursor** node. Replace the code with the following code (see explanation for it below):
+
+```gdscript
+extends UtilityAIBTLeaf
+
+
+func on_tick(actor, delta):
+	# Check if the distance is greater than expected.
+	if actor.sensor_distance.distance > 150.0:
+		return 1 # Success = Far
+	return -1 # Failure = Not far
+
+```
+
+We define the `on_tick()` method and name the **user_data** parameter as the **actor**. You can set the name to anything you want. In this case the name "actor" was chosen because in step 7.1 we use the **ai_entity** node in the root node `tick()` method.
+
+All the `on_tick()` method does is that it checks what the distance to the mouse cursor is based on the sensor. If it is greater than the expected value 1 is returned. This means that the leaf node succeeded. If not, -1 (failure) is returned. 
+
+What we have defined is called a **conditional** node for the behaviour tree. A conditional node returns *success* if the condition passes and *failure* if it doesn't. Because the **Is too far from the cursor** node is within a sequence, returning *success* means that the sequence will continue to the next node, **Move closer**. The logic we've described is therefore: "If the AI entity is too far from the cursor, move closer to it".
+
+
+3. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **Move closer** node. Replace the code with the following code (see explanation for it below):
+
+```gdscript
+extends UtilityAIBTLeaf
+
+
+func on_tick(actor, delta):
+	actor.movement_speed = -100.0
+	actor.play("moving")
+	return 1
+
+
+```
+
+Again, we define the `on_tick()` method and this time we set the `movement_speed` of the actor (which is the AI entity) to -100 and play the "moving" animation. The method always returns 1 (success). 
+
+The behaviour tree is a structure used for **making decisions about what to do** so it makes sense to keep the behaviour tree nodes as light as possible, setting properties that steer the AI entity's behaviour, and then implement the *realization* of that logic in the AI entity or some other node. This allows you to *tick* the tree less often and decoupling the decision making from the realization will also allow for a more opportunities to reuse the behaviour tree nodes you create.
+
+
+4. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **Is too close to the cursor** node. Replace the code with the following code (see explanation for it below):
+
+```gdscript
+extends UtilityAIBTLeaf
+
+
+func on_tick(actor, delta):
+	# Check if the distance is less than expected.
+	if actor.sensor_distance.distance < 90:
+		return 1 # Success = Too close
+	return -1 # Failure = Not too close
+
+
+```
+
+This again is a **conditional** node. This time we are checking if the AI entity is too close to the cursor and if so, return 1 (success) and otherwise -1 (failure).
+
+
+5. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **Move away** node. Replace the code with the following code (see explanation for it below):
+
+```gdscript
+extends UtilityAIBTLeaf
+
+
+func on_tick(actor, delta):
+	actor.movement_speed = 100.0
+	actor.play("moving")
+	return 1
+
+
+```
+
+This is the almost the same code as we had in step 7.3 but instead of the movement_speed being -100, it is now 100. This means we are moving the other direction. Together with the **Is too close to the cursor** conditional node this node describes the logic: "If the AI entity is too close to the cursor, move away from it".
+
+
+6. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **Set to idle animation** node. Replace the code with the following code (see explanation for it below):
+
+```gdscript
+extends UtilityAIBTLeaf
+
+
+func on_tick(actor, delta):
+	actor.movement_speed = 0.0
+	actor.play("default")
+	return 1
+
+
+```
+
+This node set sthe movement_speed to 0, so that the AI entity will be standing still. The animation is set as the default animation, which was the idle-animation. Again, the node only returns 1 (success).
+
+
+7. Your **ai_entity** scene should now look like the image below, with scripts added to the **ai_entity**, **Is too far from the cursor**, **Move closer**, **Is too close to the cursor**, **Move away** and **Set to idle animation** nodes. 
+
+![Add the sequence nodes](images/getting_started_bt_25.png)<br>
+
+
+## 8. Running the main scene
+
+Now that we've added the logic for the AI in the form of the behaviour tree and the `on_tick()` methods, you can select the **tutorial_scene** and run it. As you move the mouse cursor, the AI entity should move closer to the cursor if it is too far away and farther away if the cursor gets too close. 
+
+## 9. Next steps
+
+This concludes the tutorial, but there are things you can try to learn more. For instance:
+
+ * Try adding some more logic to the tutorial scene, for instance a point that the AI entities want to avoid, an animation they will some times play when they are not moving or an item they can pick up.
+ * Try adding another AI entity that has some other logic for its behaviour. 
+ * Try setting the the `num_entities` to a larger value in the **tutorial_scene**. How many AI entities you can add without it affecting performance? 
+
+In 7.1 it was noted that you usually don't want to tick the tree every physics frame. There are several reasons for this. For one, the game world usually doesn't change dramatically each frame and as a result the behaviour tree would end up to the same task node as it did on the previous frame. Secondly, ticking the behaviour tree each frame has of course a cost. If the ticking doesn't result in a change in the behaviour and it costs some frame time, it doesn't make sense to tick the tree unless it is necessary. Thirdly, we humans (and also animals in general) have various *reaction times* that cause some delay when we are reacting to the changes in our environment. Adding some delay may make your AI entities more *believable* and fun. Finally, ticking the tree every frame can lead to a practice of adding per-frame logic inside the behaviour tree which in turn can lead to a unnecessarily complex tree. 
+
+Some of the ways to tick the behaviour tree less often can be:
+ * Add a delay or cooldown. Each time you tick the tree, you set a variable in the **ai_entity** node to some short time duration and then tick the tree only after this thime has passed.
+ * Tick the tree based on **events**. For example, if you have an Area2D or Area3D that you use for sensing the environment, you can tick the tree when an enemy enters or exits the area. Another examples could be the AI entity losing or gaining more health, getting an alarm signal, and so on.
+
+To see the difference on adding some delay to ticking the tree. See how the code below for the **ai_entity** script changes the way the AI works. The only thing it adds is the `ticking_delay` variable that introduces a minimum delay plus a random variance to when the ticking occurs. 
+
+```gdscript
+extends AnimatedSprite2D
+
+# This is the distance sensor. 
+@onready var sensor_distance:UtilityAIDistanceVector2Sensor = $UtilityAIBTRoot/UtilityAIDistanceVector2Sensor
+var movement_speed:float = 0.0
+var ticking_delay:float = 0.0
+
+
+func _ready():
+	ticking_delay = randf() * 0.3
+
+
+func _physics_process(delta):
+	# Set the AI-entity position as the from-vector.
+	sensor_distance.from_vector = global_position
+	
+	# Set the mouse cursor position as the to-vector.
+	sensor_distance.to_vector = get_parent().mouse_position 
+	
+	# Update the AI.
+	ticking_delay -= delta
+	if ticking_delay <= 0.0:
+		ticking_delay = 0.3 + randf() * 0.3
+		$UtilityAIBTRoot.tick(self, delta)
+	
+	# Move based on movement speed.
+	self.global_position += sensor_distance.direction_vector * movement_speed * delta
+	
+	# Flip the sprite horizontally based on the direction vector horizontal (x)
+	# value.
+	flip_h = (sensor_distance.direction_vector.x < 0)
+	# If the movement speed is negative, the entity is moving away so
+	# we should flip the sprite again.
+	if movement_speed < 0.0:
+		flip_h = !flip_h
+
+```
