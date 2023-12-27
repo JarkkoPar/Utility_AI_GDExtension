@@ -276,7 +276,7 @@ This code will instantiate the given number of AI-entities to the main scene to 
  * On the row The `@onready var ai_entity_template:PackedScene = preload("res://ai_entity.tscn)` we load the **ai_entity** scene which we will use to instantiate the AI entities in the **_ready()** method.
  * After that we create a variable **mouse_position** that the AI entities will use to check where the mouse cursor is.
  * In the **_ready()** method we first set the number of entities to instantiate as 1 in `var num_entities:int = 1`. Then in the **for-loop** we first use the `instantiate()` method of the loaded *ai_entity* scene to create a new instance of the AI entity, we then set a random position for it, and finally add it to the *main scene* by adding it as a child using the `add_child(new_ai_entity)` method. 
- * In the **_physics_process(delta)** method the only thing we do is set the `mous_position` variable as the current position. We do this once in the main scene, as finding the mouse position is a surprisingly costly operation and calling this method for each AI entity can get quite costly when you add more of them.
+ * In the **_physics_process(delta)** method the only thing we do is set the `mouse_position` variable as the current position. We do this once in the main scene, as finding the mouse position is a surprisingly costly operation and calling this method for each AI entity can get quite costly when you add more of them.
 
 We are now done with the main scene. Next we will focus on creating the **ai_entity** scene with a State Tree based AI.
 
@@ -296,7 +296,7 @@ We are now done with the main scene. Next we will focus on creating the **ai_ent
 ![The State Tree root node](images/getting_started_st_1.png)<br>
 
 
-4. We'll use a **Sensor** to track the distance and direction vector to the mouse cursor. Right-click on the **UtilityaiBTRoot** node you created and add a **UtilityAIDistanceVector2Sensor** as its child node. 
+4. We'll use a **Sensor** to track the distance and direction vector to the mouse cursor. Right-click on the **UtilityaiSTRoot** node you created and add a **UtilityAIDistanceVector2Sensor** as its child node. 
 
 ![Add the distance sensor](images/getting_started_st_2.png)<br>
 
@@ -306,19 +306,19 @@ In the **Inspector** make sure to check the boxes for **Is Distance Calculated**
 
 5. Add another child node to the UtilityAISTRoot node, this time a **UtilityAISTNode**. This will be one of the states the AI entity will have. 
 
-![Add the selector node](images/getting_started_bt_3.png)<br>
+![Add the selector node](images/getting_started_st_3.png)<br>
 
 6. Rename the UtilityAISTNode as **Moving**. 
 
-![Add the sequence nodes](images/getting_started_bt_4.png)<br>
+![Add the sequence nodes](images/getting_started_st_4.png)<br>
 
 7. Add two UtilityAISTNodes under the **Moving** node and name them as **Moving away** and **Moving closer**. 
 
-![Add the sequence nodes](images/getting_started_bt_5.png)<br>
+![Add the sequence nodes](images/getting_started_st_5.png)<br>
 
 7. Add one more UtilityAISTNodes under the **UtilityAISTRoot** node and name it as **Waiting**. 
 
-![Add the sequence nodes](images/getting_started_bt_6.png)<br>
+![Add the sequence nodes](images/getting_started_st_6.png)<br>
 
 
 We have now created a simple state structure for the AI's logic. What is missing are ai_entity related code and the state handling methods `on_enter_condition()` `on_enter_state()`, `on_exit_state()` and `on_tick()` for all of the states. We will add them in the next step.

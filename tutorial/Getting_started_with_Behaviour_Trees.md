@@ -280,7 +280,7 @@ This code will instantiate the given number of AI-entities to the main scene to 
  * On the row The `@onready var ai_entity_template:PackedScene = preload("res://ai_entity.tscn)` we load the **ai_entity** scene which we will use to instantiate the AI entities in the **_ready()** method.
  * After that we create a variable **mouse_position** that the AI entities will use to check where the mouse cursor is.
  * In the **_ready()** method we first set the number of entities to instantiate as 1 in `var num_entities:int = 1`. Then in the **for-loop** we first use the `instantiate()` method of the loaded *ai_entity* scene to create a new instance of the AI entity, we then set a random position for it, and finally add it to the *main scene* by adding it as a child using the `add_child(new_ai_entity)` method. 
- * In the **_physics_process(delta)** method the only thing we do is set the `mous_position` variable as the current position. We do this once in the main scene, as finding the mouse position is a surprisingly costly operation and calling this method for each AI entity can get quite costly when you add more AI entities.
+ * In the **_physics_process(delta)** method the only thing we do is set the `mouse_position` variable as the current position. We do this once in the main scene, as finding the mouse position is a surprisingly costly operation and calling this method for each AI entity can get quite costly when you add more AI entities.
 
 We are now done with the main scene. Next we will focus on creating the **ai_entity** scene with a Behaviour Tree based AI.
 
