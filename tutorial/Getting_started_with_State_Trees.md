@@ -31,9 +31,11 @@ Before we can begin, we need to create and setup the project, and add the assets
 1. Open Godot Engine.
 
 
+
 2. Click **New project**.
 
 ![Create project](images/create_project_1.png)
+
 
 
 3. Then give the project a name and click the **Create folder** button.
@@ -41,7 +43,9 @@ Before we can begin, we need to create and setup the project, and add the assets
 ![Create project folder](images/create_project_2.png)
 
 
+
 4. Choose the renderer you want to use, and then click **Create & Edit**.
+
 
 
 5. The Godot Engine Editor main scene will open up.
@@ -56,7 +60,10 @@ Once you have installed the extension, we are ready to set up the project and pr
 
 For this project we are going to use the assets used in the *example project*. Go to the [Releases](https://github.com/JarkkoPar/Utility_AI_GDExtension/releases) and download the latest version of the example project.
 
+
 1. Open your Godot project and create a folder named **Assets** in the project root folder.
+
+
 
 2. Open the example project folder you downloaded and copy the **"Standard sprites upd.png"** file to your own project, the Assets-folder.
 
@@ -151,6 +158,7 @@ We will create two scenes: a **main scene** in which we will spawn our AI-entiti
 
 ### 5.1 Creating the scene bases and adding animation to the AI-entity
 
+
 1. In your Godot Project, create a Node2D-based scene, name it as **state_tree_tutorial_scene** and save it.
 
 ![Creating the tutorial_scene](images/getting_started_bt_4.png)<br>
@@ -158,9 +166,11 @@ We will create two scenes: a **main scene** in which we will spawn our AI-entiti
 This will be our *main scene* and we will *instantiate* the AI entities in to this scene.  The AI entity itself will be a separate AnimatedSprite2D scene with a state tree.
 
 
+
 2. Create a new AnimatedSprite2D-based scene and name it as **ai_entity**.
 
 ![Creating the tutorial_scene](images/getting_started_bt_5.png)<br>
+
 
 
 3. In the **ai_entity** scene, select the ai_entity AnimatedSprite2D in the **Scene-tab** and then in the **Inspector-tab** expand the **Animation** group.
@@ -168,9 +178,11 @@ This will be our *main scene* and we will *instantiate* the AI entities in to th
 ![Editing the AnimatedSprite2D](images/getting_started_bt_6.png)<br>
 
 
+
 4. In the popup menu, choose **New SpriteFrames**. This will create a new SpriteFrames resource for the AnimatedSprite2D.
 
 ![Creating the SpriteFrames](images/getting_started_bt_7.png)<br>
+
 
 
 5. Click the created SpriteFrames again to select it. This will open up the **SpriteFrames menu** at the bottom of the Godot Editor. The next steps will take place in that menu.
@@ -178,13 +190,17 @@ This will be our *main scene* and we will *instantiate* the AI entities in to th
 <img src="images/getting_started_bt_8.png" height="256px"><br>
 
 
+
 6. Make sure the "default" animation is selected, then click on the "Add frames from sprite sheet" icon.
 
 ![Adding frames to the default animation](images/getting_started_bt_9.png)<br>
 
+
+
 7. Open file dialog will open up. Go to the Assets-folder and select the file **Standard sprites upd.png**, then click **Open**.
 
 ![The Open file dialog](images/getting_started_bt_10.png)<br>
+
 
 
 8. The **Select frames** will open up. On the right-side of the dialog, change the **Size** to 16px in width and 16px in height. The grid should then match the sprites on the spritesheet.
@@ -192,9 +208,11 @@ This will be our *main scene* and we will *instantiate* the AI entities in to th
 ![The Select frames dialog](images/getting_started_bt_11.png)<br>
 
 
+
 9. The **default** animation will be the idle-pose for the **ai_entity**. Choose which ever creature you want from the sprite sheet and select its idle animation frames, then click the **Add X Frame(s)** button (X will be the number of frames you've selected.
 
 ![Selecting animation frames](images/getting_started_bt_12.png)<br>
+
 
 
 10. In the **SpriteFrames menu**, make sure that the **Autoplay on Load** has been selected for the **default** animation.
@@ -202,24 +220,30 @@ This will be our *main scene* and we will *instantiate* the AI entities in to th
 ![Enabling Autoplay on load](images/getting_started_bt_13.png)<br>
 
 
+
 11. Create a new animation by clicking the **Add animation** button and set its name as **moving**. Then add movement frames similarly as we did for the *default* animation in the prior steps.
 
 ![Adding the moving animation](images/getting_started_bt_14.png)<br>
 
 
+
 12. If you haven't saved your project yet after adding the new scenes, do it now.
 
 
+
 ### 5.2 Adding spawning to the main scene
+
 
 1. Go to the **tutorial_scene** tab in the editor. In the **scene-tab** make sure the **tutorial_scene** Node2D is selected and then click the **Attach a new or existing script to the selected node** button.
 
 ![Main scene attach script](images/getting_started_bt_15.png)<br>
  
 
+
 2. In the **Attach Node Script** dialog, you can leave everything to defaults and click the **Create** button.
 
 ![Main scene attach script](images/getting_started_bt_16.png)<br>
+
 
 
 3. The **Script editor** should be automatically shown. If not, choose it from the menu at the top of the editor view. You should see the following code:
@@ -283,7 +307,9 @@ We are now done with the main scene. Next we will focus on creating the **ai_ent
 
 ## 6. Creating the State Tree for the AI entity
 
+
 1. Select the **ai_entity** scene in the editor.
+
 
 
 2. In the **scene-tab**, right-click on the **ai_entity AnimatedSprite2D** node and choose **Add Child Node**.
@@ -291,9 +317,11 @@ We are now done with the main scene. Next we will focus on creating the **ai_ent
 ![Add child node to the ai_entity node](images/getting_started_bt_17.png)<br>
 
 
+
 3. Choose the **UtilityAISTRoot** node and add it to the scene by clicking the **Create** button. The root-node will be the node we will be *ticking* later in code.
 
 ![The State Tree root node](images/getting_started_st_1.png)<br>
+
 
 
 4. We'll use a **Sensor** to track the distance and direction vector to the mouse cursor. Right-click on the **UtilityaiSTRoot** node you created and add a **UtilityAIDistanceVector2Sensor** as its child node. 
@@ -304,24 +332,33 @@ In the **Inspector** make sure to check the boxes for **Is Distance Calculated**
 
 ![Add the distance sensor](images/getting_started_distance_vector_checks.png)<br>
 
+
+
 5. Add another child node to the UtilityAISTRoot node, this time a **UtilityAISTNode**. This will be one of the states the AI entity will have. 
 
 ![Add the selector node](images/getting_started_st_3.png)<br>
+
+
 
 6. Rename the UtilityAISTNode as **Moving**. 
 
 ![Add the sequence nodes](images/getting_started_st_4.png)<br>
 
+
+
 7. Add two UtilityAISTNodes under the **Moving** node and name them as **Moving away** and **Moving closer**. 
 
 ![Add the sequence nodes](images/getting_started_st_5.png)<br>
 
-7. Add one more UtilityAISTNodes under the **UtilityAISTRoot** node and name it as **Waiting**. 
+
+
+8. Add one more UtilityAISTNode under the **UtilityAISTRoot** node and name it as **Waiting**. 
 
 ![Add the sequence nodes](images/getting_started_st_6.png)<br>
 
 
 We have now created a simple state structure for the AI's logic. What is missing are ai_entity related code and the state handling methods `on_enter_condition()` `on_enter_state()`, `on_exit_state()` and `on_tick()` for all of the states. We will add them in the next step.
+
 
 
 ## 7. Adding the state handling methods
@@ -362,7 +399,7 @@ func _physics_process(delta):
 ```
 
 What this code does:
- * The row `@onready var sensor_distance:UtilityAIDistanceVector2Sensor = $UtilityAIBTRoot/UtilityAIDistanceVector2Sensor` gets a reference to the Vector2 based distance sensor of the AI entity. This sensor is used to check the distance and to get the direction vector towards the target.
+ * The row `@onready var sensor_distance:UtilityAIDistanceVector2Sensor = $UtilityAISTRoot/UtilityAIDistanceVector2Sensor` gets a reference to the Vector2 based distance sensor of the AI entity. This sensor is used to check the distance and to get the direction vector towards the target.
  * The row `var movement_speed:float = 0.0` defines a variable that we will use to control the movement speed of the AI entity.
  * In the `_physics_process(delta)` method we first set the distance sensor **from-position** as the global position of the AI entity, and the **to-position** as the location of the mouse cursor from the parent node. The sensor will use these two positions to calculate the distance from the AI entity to the mouse cursor, and also the direction vector that we will use later for movement.
  * `$UtilityAISTRoot.tick(self, delta)` ticks the state tree. As **user_data** we give the root node of the AI entity scene which in this case is the **self** keyword. This gives the state tree node state handling methods access to all the properties of the AI entity node.
@@ -371,6 +408,7 @@ What this code does:
 
 > [!NOTE]
 > For this tutorial we are calling the root node `tick()` method every physics frame. This isn't what you usually want to do in a real game. See section [9. Next steps](Getting_started_with_State_Trees.md#9-next-steps) for more information.
+
 
 
 2. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **Moving closer** node. Replace the code with the following code (see explanation for it below):
@@ -409,6 +447,7 @@ The **on_exit_state()** method is called when the state is exited. For this tuto
 The **on_tick()** method is called every time the state tree is ticked. This is where you usually add code to update the AI entity's properties related to state updates and also the conditions for transitioning away from this state using the `transition_to()` method. In this case, if the distance is less or equal to 200 pixels the `transition_to()` method is called with parameters `new_state_nodepath="."` and the actor and delta. The *"."* node path will evaluate the states to transition to starting from the **UtilityAISTRoot** node.
 
 
+
 3. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **Moving away** node. Replace the code with the following code (see explanation for it below):
 
 ```gdscript
@@ -436,6 +475,7 @@ func on_tick(actor, delta):
 ```
 
 Again, we define the state handling methods. This time the **on_enter_condition()** method checks if the AI entity is too close, and the **on_enter_state()** sets the movement speed to 100, which is the opposite direction to what we set for the *Moving closer* state.
+
 
 
 4. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **Waiting** node. Replace the code with the following code (see explanation for it below):
@@ -470,11 +510,13 @@ The **on_tick()** method does only a distance check and if the distance isn't wi
 ![Add the sequence nodes](images/getting_started_st_7.png)<br>
 
 
+
 ## 8. Running the main scene
 
 Now that we've added the logic for the AI in the form of a state tree and the needed state handling methods, you can select the **tutorial_scene** and run it. As you move the mouse cursor, the AI entity should move closer to the cursor if it is too far away and farther away if the cursor gets too close. 
 
 To change the number of AI entities created, change the `num_entities` variable to a larger value in the **tutorial_scene**.
+
 
 
 ## 9. Next steps
