@@ -472,7 +472,7 @@ func on_tick(actor, delta):
 
 ```
 
-This node set sthe movement_speed to 0, so that the AI entity will be standing still. The animation is set as the default animation, which was the idle-animation. Again, the node only returns 1 (success).
+This node sets the movement_speed to 0, so that the AI entity will be standing still. The animation is set as the default animation, which was the idle-animation. Again, the node only returns 1 (success).
 
 
 7. Your **ai_entity** scene should now look like the image below, with scripts added to the **ai_entity**, **Is too far from the cursor**, **Move closer**, **Is too close to the cursor**, **Move away** and **Set to idle animation** nodes. 
