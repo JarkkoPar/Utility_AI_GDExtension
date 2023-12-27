@@ -16,7 +16,7 @@ For this tutorial, we'll start with an empty Godot 4.1  project.
  3. [About Behaviour Trees](Getting_started_with_Behaviour_Trees.md#3-about-behaviour-trees)
  4. [Utility enabled Behaviour Trees in Utility AI GDExtension](Getting_started_with_Behaviour_Trees.md#4-utility-enabled-behaviour-trees-in-utility-ai-gdextension)
  5. [Creating the scenes](Getting_started_with_Behaviour_Trees.md#5-creating-the-scenes)
- 6. [Creating the AI-entity](Getting_started_with_Behaviour_Trees.md#6-creating-the-ai-entity)
+ 6. [Creating the Behaviour Tree for the AI-entity](Getting_started_with_Behaviour_Trees.md#6-creating-the-behaviour-tree-for-the-ai-entity)
  7. [Adding the on_tick() methods](Getting_started_with_Behaviour_Trees.md#7-adding-the-on_tick-methods)
  8. [Running the main scene](Getting_started_with_Behaviour_Trees.md#8-running-the-main-scene)
  9. [Next steps](Getting_started_with_Behaviour_Trees.md#9-next-steps)
