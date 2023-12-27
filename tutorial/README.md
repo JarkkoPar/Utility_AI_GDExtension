@@ -11,26 +11,36 @@ The goal of these tutorials is to help you learn how to use the Utility AI GDExt
 |[Using the AIPerformanceMonitor](Using_the_AIPerformanceMonitor.md)|How to setup the AI Performance monitor to measure the performance of the AI you've built for your game.|
 |[Using the NodeQuerySystem performance monitors](Using_the_NodeQuerySystemMonitor.md)|How to setup the NodeQuerySystem Performance monitors to measure the performance of NQS queries.|
 
+### Getting started
+
+These getting started tutorials create the same AI using AI Agent Behaviours, a Behaviour Tree and a State Tree. 
+
+|Tutorial|Description|
+|--|--|
+|[Getting started with Agent Behaviours](Getting_started_with_Agent_Behaviours.md)|Beginner tutorial on utility-based Agent in Utility AI GDExtension.|
+|[Getting started with Behaviour Trees](Getting_started_with_Behaviour_Trees.md)|Beginner tutorial on Behaviour Trees in general and in Utility AI GDExtension.|
+|[Getting started with State Trees](Getting_started_with_State_Trees.md)|Beginner tutorial on State Trees in general and in Utility AI GDExtension.|
+
 
 ### Agent Behaviours
 
 |Tutorial|Description|
 |--|--|
-|[Getting started with Agent Behaviours](Getting_started_with_Agent_Behaviours.md)|Beginner tutorial on utility-based Agent in Utility AI GDExtension.|
+|x|x|
 
 
 ### Behaviour Trees
 
 |Tutorial|Description|
 |--|--|
-|[Getting started with Behaviour Trees](Getting_started_with_Behaviour_Trees.md)|Beginner tutorial on Behaviour Trees in general and in Utility AI GDExtension.|
+|x|x|
 
 
 ### State Trees
 
 |Tutorial|Description|
 |--|--|
-|[Getting started with State Trees](Getting_started_with_State_Trees.md)|Beginner tutorial on State Trees in general and in Utility AI GDExtension.|
+|x|x|
 
 
 ### Node Query System

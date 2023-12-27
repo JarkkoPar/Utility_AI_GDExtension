@@ -304,6 +304,10 @@ We are now done with the main scene. Next we will focus on creating the **ai_ent
 
 ![Add the distance sensor](images/getting_started_bt_19.png)<br>
 
+In the **Inspector** make sure to check the boxes for **Is Distance Calculated** and **Is Direction Vector Calculated** for the distance sensor.
+
+![Add the distance sensor](images/getting_started_distance_vector_checks.png)<br>
+
 5. Add another child node to the UtilityAIBTRoot node, this time a **UtilityAIBTSelector**. The selector will try to tick its child nodes one by one, starting from the top-most one. 
 
 ![Add the selector node](images/getting_started_bt_20.png)<br>
@@ -331,7 +335,7 @@ We are now done with the main scene. Next we will focus on creating the **ai_ent
 ![Add the sequence nodes](images/getting_started_bt_25.png)<br>
 
 
-We have now created the structure for the AI's logic. On each tick, the behaviour tree will choose some task node based on the structure. What is missing are the `on_tick()` methods, and we will add them in the next step.
+We have now created the structure for the AI's logic. On each tick, the behaviour tree will choose some task node based on the structure. What is missing are the ai_entity handling code and the `on_tick()` methods for the behaviour tree tasks, and we will add them in the next step.
 
 
 ## 7. Adding the on_tick() methods
