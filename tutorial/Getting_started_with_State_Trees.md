@@ -90,7 +90,7 @@ A state tree is updated by **ticking** the tree. When there are no states active
 After the initial state has been chosen, the state transitions must be explicitly started by calling the `transition_to(new_state_nodepath:NodePath, user_data:Variant, delta:float)` method. The transition target can be any of the nodes in the tree, including the root node. The target is defined by the **NodePath relative to the root node of the state tree**. In the image below, if the `transition_to()` was called with the following parameters: `transition_to("/Child state 1/Sub child state 2", null, delta)`, it would cause the child states of *Sub child state 2* to be evaluated to find a new leaf state.
 
 ![Behaviour Tree node priority order](images/getting_started_st_gen_1.png)<br>
-*A state tree with some states. The evaluation during transition is done from top-to-down order.*<br>
+*A state tree with some states. The evaluation during transition is done in top-to-down order.*<br>
 
 > [!NOTE]
 > The node path *"."* means the root node, and causes the entire tree to be evaluated in a search for a new set of active states.
