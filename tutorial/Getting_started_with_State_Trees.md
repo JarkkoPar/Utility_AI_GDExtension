@@ -78,75 +78,54 @@ Before we get started with development, it is good review what Behaviour Trees a
 
 ## 3. About State Trees
 
-State trees are a new solution to AI that combine the flexibility and tree-structure of Behaviour Trees to the state management of State Machines. . 
+State trees are a new solution to AI that combine the flexibility and tree-structure of Behaviour Trees to the state management of State Machines. The state tree defines a hierarchical set of states and allows you to define transitions to any level of the hierarchy. The state tree will then determine which child states are activated.
 
 
-### 3.1 The structure of a Behaviour Tree
+### 3.1 The structure of a State Tree
 
-The structure of the behaviour tree controls the flow of decision making for your AI entity. A behaviour tree consists of a **root node** that is the basis of the tree. The tree branches are created using **composite nodes** that define how the tree is traversed together with **decorator nodes**, and finally the branches of the behaviour tree end with **task nodes** that execute various actions. Using a behaviour tree a non-player character can make choices on what are the best actions it can take in the situation where it finds itself in.
+The structure of the state tree controls the state selection flow for your AI entity. A state tree consists of a **root node** that is the basis of the tree and the tree branches are created using **state nodes**. The state nodes can have zero or more child state nodes. If a state node does not have any child state nodes, it is considered to be a *leaf* node.
 
-A behaviour tree is updated by **ticking** the tree. Simplified, this means that the root node of the tree is first updated, which in turn updates its child node, and the child node updates its own child nodes and so on, until one or more *task nodes* are reached. You can think of ticking as *executing what ever code the behaviour tree nodes have and returning if it succeeded or not*. 
+A state tree is updated by **ticking** the tree. When there are no states active, a **transition** is started with the **root** node as the transition target. This causes the states in the tree to be evaluated starting from the root node and descending down the tree until a leaf state node is found that can be activated. When a leaf node is found, all its parent nodes up until the root node will be marked as active nodes.
 
-For most of the nodes the ticking code is pre-defined by the behaviour tree implementation. For example the *sequence* and *selector* have a set logic they execute during a tick. You usually add your own code to the *task nodes* by defining the `on_tick()` method.
+After the initial state has been chosen, the state transitions must be explicitly started by calling the `transition_to(new_state_nodepath:NodePath, user_data:Variant, delta:float)` method. The transition target can be any of the nodes in the tree, including the root node. The target is defined by the **NodePath relative to the root node of the state tree**. In the image below, if the `transition_to()` was called with the following parameters: `transition_to("/Child state 1/Sub child state 1", null, delta)`, it would cause the child states of *Sub child state 1* to be evaluated to find a new leaf state.
 
-The ticking of the child nodes is done in a top-to-down order. The higher the node is in the list, the higher its priority. 
-
-![Behaviour Tree node priority order](images/getting_started_bt_1.png)<br>
-*Node priority is highest on the top, lowest on the bottom.*<br>
-
-
-### 3.2 The return values of the Behaviour Tree nodes
-
-Each behaviour tree node returns a value, which is either *success*, *failure* or *running*. Usually it is one of the task nodes that ultimately sets what value is returned but the decorator and composite nodes can affect the value that is returned to the root node in the end.
- 
-The return value is predetermined for most of the node types, but you decide what each *task node* will return. In Utility AI GDExtension the numerical values for these are as follows:
-
- * **Running** 0
- * **Succeeded** 1
- * **Failed** -1
+![Behaviour Tree node priority order](images/getting_started_st_gen_1.png)<br>
+*A state tree with some states. The evaluation during transition is done from top-to-down order.*<br>
 
 > [!NOTE]
-> In Utility AI GDExtension the nodes can also return the *skip* value, but for the purposes of this tutorial we will only focus on the *success*, *failure* and *running* values. The numerical value for *skip* is -2.
+> The node path *"."* means the root node, and causes the entire tree to be evaluated in a search for a new set of active states.
 
 
-### 3.3 Commonly used nodes
-
-All behaviour trees need the **root** node. The root node is the *main node* for behaviour trees. The root node always has only one behaviour tree child node (in Utility AI GDExtension it may have **Sensor** nodes as well).
-
-In addition to the root node, **task** or **leaf** nodes are always needed. As the *task* node's name implies, these nodes usually execute actions and other logic.
-
-The most commonly used *composite* nodes are the **selector** (also known as the *fallback*) node and the **sequence** node. 
-
- * The selector *ticks* (= runs the code) its child nodes one by one and checks if any of its child nodes succeeds. When one does, it stops ticking and returns *success* back to its parent node. If all fail, it returns back *failure* to its parent.  
- * The sequence *ticks* its child nodes one by one until one of them fails or until it has ticked all its child nodes. If a child node fails, the sequence returns *failure* back to its parent. If all succeed, it returns back *success*.
-
-Both the selector and sequence return back *running* if a child node they tick returns back running. Handing the *running* state can vary between Behaviour Tree implementations. In Utility AI GDExtension the default is that during the next tick the tree continues ticking from the node that returned running until it either succeeds or fails. This can be changed by editing the `reset_rule` property.
-
-There are also *decorator* nodes, which usually have only one child node. The **inverter** is a very common one, and it changes the return value of its child node to the opposite value (a *success* becomes a *failure* and a *failure* a *success*; *running* stays as *running*). Other common decorator nodes are the **repeat until** node that repeats its child node until it either succeeds or fails, **cooldown** nodes run their child nodes and then allow it only to run after a certain cooldown period.
-
-> [!NOTE]
-> The *AlwaysSucceed* and *AlwaysFail* nodes are replaced by the **FixedResult** decorator node in Utility AI GDExtension, where you can choose what result the node always returns.
+The hierarchy of active states is activated starting from the root node to the leaf node (i.e. going *down* the tree). When a set of states is no longer active, they are exited starting from the leaf node and going up towards the root node (i.e. going *up* the tree). When a transition occurs, only the states that are no longer active are deactivated, and only the states that were not previously active, get activated. 
 
 
-### 3.3 Challenges with behaviour trees
+### 3.2 The state handling methods of the state tree nodes
 
-While behaviour trees are very good at choosing which tasks to execute at each moment, they aren't very good at handling (or visually representing) *states*. 
+To handle state transitioning, entering, exiting and updating the states, four state handling methods can be defined for the state nodes: 
 
-Moving between states is usually **cyclic**, meaning that you can transition between various states and even go back and forth between them. For instance, your AI can start in a *Patrol* state and transition to *Idle* or *Combat* states and back to *Patrol* state again. Behaviour Trees are **acyclic**. They start from the root node and then plummet down the tree, ticking the nodes, until they land on some task node. The task node may be within a branch that realizes the behaviour that can be associated with a *Patrol*, *Idle* or *Combat* state, but the tree itself is oblivious of this state. 
+ * `func on_enter_condition(user_data, delta) -> bool` is used to check if the state can be entered. This method should **always** return either **true** or **false**. Alternatively the *utility-based considerations* can be used (see 4. Utility enabled State Trees in Utility AI GDExtension for more details). 
+ * `func on_enter_state(user_data, delta)` is used to run any initialization the state needs to run before it is *ticked*.
+ * `func on_exit_state(user_data, delta)` is used to run any clean up after the state is no longer active.
+ * `func on_tick(user_data, delta)` is used to run what ever code the state needs to do when it is *ticked*.
 
-If you find yourself wanting to move between states while building your behaviour tree, you should read up on [**State Trees**](Getting_started_with_State_Trees.md) and consider implementing your logic there instead. 
+The `transition_to()` method can be called anywhere in the state's script code. However, the usual place for it is in the `on_tick()` method.
+
+Any active state that is no longer active after the call to `transition_to()` will call its `on_exit_state()` method. Similarly, any inactive state that gets activated will call its `on_enter_state()` method. 
+
+When the root node `tick()` method is called, all the active states will call their `on_tick()` methods, starting from the root node and going down the tree to the leaf node.
+
 
 
 ## 4. Utility enabled State Trees in Utility AI GDExtension
 
 You can use the utility enabled State Trees as the sole AI reasoning component, or as a sub-component of the AI Agent Behaviours or Behaviour Trees. Utility-based considerations can be attached to all of the nodes in Utility AI GDExtension, including the State Tree nodes. The considerations can be attached either as child nodes or in the Inspector as a property.
 
-<img src="images/getting_started_bt_2.png" height="256px"><img src="images/getting_started_bt_3.png" height="256px"><br>
-*Considerations can be child nodes or in the Inspector as properties.*<br>
+For any of the **UtilityAISTNode** state nodes you can control how they will evaluate their child nodes during a `transition_to()` call. This is done by selecting the **Child State Selection Rule** in the **Inspector**.
 
-The **score based picker** node can be placed anywhere in the behaviour tree and during a *tick* it will first evaluate the *considerations* attached to its child nodes to find out which child node scores the highest, and then proceed to tick that node. 
+![Choosing the Child State Selection Rule](images/getting_started_st_gen_2.png)<br>
 
-It is possible to start **Node Query System** queries from the Behaviour Trees by using the **RunNQSQuery** node. To do this, you need a *Search Space* that has been setup elsewhere in your scene. The RunNQSQuery node will post the query and return *running* until the query completes, in which case the RunNQSQuery node returns *success*.
+If **OnEnterConditionMethod** is selected, the user-defined `on_enter_condition()` method will be called for the childs of the state node. If **UtilityScoring** is selected, the *considerations* attached to the child state nodes as either their child nodes or in the *Considerations* property will be evaluated and the highest-scoring state node will be selected. 
+
 
 
 ## 5. Creating the scenes
@@ -154,6 +133,7 @@ It is possible to start **Node Query System** queries from the Behaviour Trees b
 The state tree nodes work with both 2D and 3D scenes. For this tutorial we are creating everything in 2D because setting up the assets for 2D scenes is much quicker.
 
 We will create two scenes: a **main scene** in which we will spawn our AI-entities in, and a **ai_entity** scene that is the AI-entity we will be creating.
+
 
 
 ### 5.1 Creating the scene bases and adding animation to the AI-entity

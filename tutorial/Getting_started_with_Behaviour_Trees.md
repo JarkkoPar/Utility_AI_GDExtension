@@ -123,7 +123,7 @@ There are also *decorator* nodes, which usually have only one child node. The **
 > The *AlwaysSucceed* and *AlwaysFail* nodes are replaced by the **FixedResult** decorator node in Utility AI GDExtension, where you can choose what result the node always returns.
 
 
-### 3.3 Challenges with behaviour trees
+### 3.4 Challenges with behaviour trees
 
 While behaviour trees are very good at choosing which tasks to execute at each moment, they aren't very good at handling (or visually representing) *states*. 
 
