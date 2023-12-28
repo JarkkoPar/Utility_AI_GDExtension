@@ -2,15 +2,20 @@
 
 The AIPerformanceMonitor-singleton included in the Utility AI GDExtension can be used to monitor the time the AI components you use consume each frame. This allows you to optimize the frame time the AI consumes and to improve the performance of your game. 
 
+
+
 ## Available monitors
 
 The AIPerformanceMonitor-singleton has the following measures available:
 
  * AI Agent evaluate options time usec
+ * AI Agent update behaviour time usec
  * Behaviour Tree tick time usec
  * State Tree tick time usec
 
 **AI Agent evalute options time usec** is the total time per frame, in microseconds, used for running the AI Agent's `evaluate_options()` method. 
+
+**AI Agent update behaviour time usec** is the total time per frame, in microseconds, used for running the AI Agent's `update_behaviour()` method. 
 
 **Behaviour Tree tick time usec** is the total time per frame, in microseconds, used for running the `tick()` method of Behaviour Trees. 
 
@@ -66,7 +71,7 @@ You can enable the monitors through the Debugger-menu as follows:
 
  3. After checking the measures you want to follow, you will see the graphs of the measures to the right of the list of the monitors.
 
-![Graphs](images/performance_monitor_2.png)
+![Graphs](images/performance_monitor_5.png)
 
 
 

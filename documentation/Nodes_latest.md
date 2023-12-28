@@ -230,6 +230,7 @@ The `UtilityAIBehaviour` has the following properties:
 |float|score|The score for the behaviour after the behaviour has evaluated its considerations.|v1.0|
 |float|cooldown_seconds|If > 0.0, after the behaviour is chosen it will a score of 0.0 during the `evaluate_options` until the time has passed.|v1.0|
 |int|cooldown_turns|If > 0, after the behaviour is chosen it will a score of 0 during the `evaluate_options` until the given number of calls to the evaluation function has been done.|v1.0|
+|int|behaviour_id|A user-definable ID for the behaviour. Useful for identifying which behaviour is currently running.|v1.5|
 
 
 #### Methods 
