@@ -13,12 +13,11 @@ For this tutorial, we'll start with an empty Godot 4.1  project.
  1. [Project creation and installation of Utility AI GDExtension](Getting_started_with_Agent_Behaviours.md#1-project-creation-and-installation-of-utility-ai-gdextension)
  2. [Setting up the project and assets](Getting_started_with_Agent_Behaviours.md#2-setting-up-the-project-and-assets)
  3. [About Agent Behaviours](Getting_started_with_Agent_Behaviours.md#3-about-agent-behaviours)
- 4. [Utility based Agent Behaviours in Utility AI GDExtension](Getting_started_with_Agent_Behaviours.md#4-utility-based-agent-behaviours-in-utility-ai-gdextension)
- 5. [Creating the scenes](Getting_started_with_Agent_Behaviours.md#5-creating-the-scenes)
- 6. [Creating Agent Behaviours for the AI-entity](Getting_started_with_Agent_Behaviours.md#6-creating-agent-behaviours-for-the-ai-entity)
- 7. [Adding the code](Getting_started_with_Agent_Behaviours.md#7-adding-the-code)
- 8. [Running the main scene](Getting_started_with_Agent_Behaviours.md#8-running-the-main-scene)
- 9. [Next steps](Getting_started_with_Agent_Behaviours.md#9-next-steps)
+ 4. [Creating the scenes](Getting_started_with_Agent_Behaviours.md#5-creating-the-scenes)
+ 5. [Creating Agent Behaviours for the AI-entity](Getting_started_with_Agent_Behaviours.md#6-creating-agent-behaviours-for-the-ai-entity)
+ 6. [Adding the code](Getting_started_with_Agent_Behaviours.md#7-adding-the-code)
+ 7. [Running the main scene](Getting_started_with_Agent_Behaviours.md#8-running-the-main-scene)
+ 8. [Next steps](Getting_started_with_Agent_Behaviours.md#9-next-steps)
 
 
 
@@ -119,7 +118,7 @@ Another issue can be *oscillation* between behaviours. The AI entity moves betwe
 
 
 
-## 5. Creating the scenes
+## 4. Creating the scenes
 
 The agent behaviour nodes work with both 2D and 3D scenes. For this tutorial we are creating everything in 2D because setting up the assets for 2D scenes is much quicker.
 
@@ -127,7 +126,7 @@ We will create two scenes: a **main scene** in which we will spawn our AI-entiti
 
 
 
-### 5.1 Creating the scene bases and adding animation to the AI-entity
+### 4.1 Creating the scene bases and adding animation to the AI-entity
 
 
 1. In your Godot Project, create a Node2D-based scene, name it as **tutorial_scene** and save it.
@@ -276,7 +275,7 @@ This code will instantiate the given number of AI-entities to the main scene to 
 We are now done with the main scene. Next we will focus on creating the **ai_entity** scene with Agent Behaviour based AI.
 
 
-## 6. Creating the Agent Behaviour for the AI entity
+## 5. Creating the Agent Behaviour for the AI entity
 
 
 1. Select the **ai_entity** scene in the editor.
@@ -313,13 +312,13 @@ In the **Inspector** make sure to check the boxes for **Is Distance Calculated**
 
 
 
-6. Rename the UtilityAISTNode as **Approach**. 
+6. Rename the UtilityAIBehaviour node as **Approach**. 
 
 ![Rename to approach](images/getting_started_ab_4.png)<br>
 
 
 
-7. Add two UtilityAIBehaviour under the UtilityAIAgent node and name them as **Flee** and **Wait**. 
+7. Add two more UtilityAIBehaviour nodes under the UtilityAIAgent node and name them as **Flee** and **Wait**. 
 
 ![Add Flee and Wait behaviour nodes](images/getting_started_ab_5.png)<br>
 
@@ -358,7 +357,7 @@ We have now created the behaviour structure for the AI Agent. What is missing ar
 
 
 
-## 7. Adding the code
+## 6. Adding the code
 
 
 1. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **ai_entity** node. Replace the code with the following code (see explanation for it below):
@@ -421,7 +420,7 @@ What this code does:
 
 
 > [!NOTE]
-> For this tutorial we are calling the AI Agent node `evaluate_options()` method every physics frame. This isn't what you usually want to do in a real game. See section [9. Next steps](Getting_started_with_Agent_Behaviours.md#9-next-steps) for more information.
+> For this tutorial we are calling the AI Agent node `evaluate_options()` method every physics frame. This isn't what you usually want to do in a real game. See section [8. Next steps](Getting_started_with_Agent_Behaviours.md#8-next-steps) for more information.
 
 
 
@@ -437,7 +436,7 @@ What this code does:
 
 
 
-## 8. Running the main scene
+## 7. Running the main scene
 
 Now that we've added the logic for the AI in the form of the Agent Behaviours and the needed script code, you can select the **tutorial_scene** and run it. As you move the mouse cursor, the AI entity should move closer to the cursor if it is too far away and farther away if the cursor gets too close. 
 
@@ -445,7 +444,7 @@ To change the number of AI entities created, change the `num_entities` variable 
 
 
 
-## 9. Next steps
+## 8. Next steps
 
 This concludes the tutorial, but there are things you can try to learn more. For instance:
 
@@ -453,7 +452,7 @@ This concludes the tutorial, but there are things you can try to learn more. For
  * Try adding another type of AI entity that has some other logic for its behaviour. 
  * Try setting the the `num_entities` to a larger value in the **tutorial_scene**. How many AI entities you can add without it affecting performance? 
 
-In 7.1 it was noted that you usually don't want to tick the tree every physics frame. There are several reasons for this. For one, the game world usually doesn't change dramatically each frame and as a result the AI Agent would end up choosing the same behaviour as it did on the previous frame. Secondly, updating the AI Agent each frame has of course a cost. If the updating doesn't result in a change in the behaviour and it costs some frame time, it doesn't make sense to do the updating unless it is necessary. Thirdly, we humans (and also animals in general) have various *reaction times* that cause some delay when we are reacting to the changes in our environment. Adding some delay may make your AI entities more *believable* and fun. Finally, updating the AI Agent every frame can lead to a practice of adding per-frame logic inside the AI, which in turn can lead to a unnecessarily complex AI structure. 
+In 6.1 it was noted that you usually don't want to tick the tree every physics frame. There are several reasons for this. For one, the game world usually doesn't change dramatically each frame and as a result the AI Agent would end up choosing the same behaviour as it did on the previous frame. Secondly, updating the AI Agent each frame has of course a cost. If the updating doesn't result in a change in the behaviour and it costs some frame time, it doesn't make sense to do the updating unless it is necessary. Thirdly, we humans (and also animals in general) have various *reaction times* that cause some delay when we are reacting to the changes in our environment. Adding some delay may make your AI entities more *believable* and fun. Finally, updating the AI Agent every frame can lead to a practice of adding per-frame logic inside the AI, which in turn can lead to a unnecessarily complex AI structure. 
 
 Some of the ways to tick the state tree less often can be:
  * Add a delay or cooldown. Each time you update the AI Agent, you set a variable in the **ai_entity** node to some short time duration and then tick the tree only after this time has passed. An example of this is given below.
