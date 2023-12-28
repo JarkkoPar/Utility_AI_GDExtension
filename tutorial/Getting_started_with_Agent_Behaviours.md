@@ -14,7 +14,7 @@ For this tutorial, we'll start with an empty Godot 4.1  project.
  2. [Setting up the project and assets](Getting_started_with_Agent_Behaviours.md#2-setting-up-the-project-and-assets)
  3. [About Agent Behaviours](Getting_started_with_Agent_Behaviours.md#3-about-agent-behaviours)
  4. [Creating the scenes](Getting_started_with_Agent_Behaviours.md#4-creating-the-scenes)
- 5. [Creating Agent Behaviours for the AI-entity](Getting_started_with_Agent_Behaviours.md#5-creating-agent-behaviours-for-the-ai-entity)
+ 5. [Creating Agent Behaviours for the AI-entity](Getting_started_with_Agent_Behaviours.md#5-creating-the-agent-behaviour-for-the-ai-entity)
  6. [Adding the code](Getting_started_with_Agent_Behaviours.md#6-adding-the-code)
  7. [Running the main scene](Getting_started_with_Agent_Behaviours.md#7-running-the-main-scene)
  8. [Next steps](Getting_started_with_Agent_Behaviours.md#8-next-steps)
@@ -201,7 +201,7 @@ This will be our *main scene* and we will *instantiate* the AI entities in to th
 
 
 
-### 5.2 Adding spawning to the main scene
+### 4.2 Adding spawning to the main scene
 
 
 1. Go to the **tutorial_scene** tab in the editor. In the **scene-tab** make sure the **tutorial_scene** Node2D is selected and then click the **Attach a new or existing script to the selected node** button.
