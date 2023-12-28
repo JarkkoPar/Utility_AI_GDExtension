@@ -43,7 +43,7 @@ Just copy the addons-folder with all its contents to your Godot project root fol
 
 # Documentation
 
-You can find the documentation [here](documentation/Nodes_latest.md) and the tutorials [here](tutorial/readme.md).
+You can find the documentation [here](documentation/Nodes_latest.md) and the tutorials [here](tutorial/README.md).
 
 # Authors
 
