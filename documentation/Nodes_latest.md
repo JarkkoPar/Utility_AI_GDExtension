@@ -29,9 +29,6 @@ The *Node Query System* focuses on using utility functions to score and filter a
 
 # Agent Behaviours
 
-## 
-
-
 ## Agent behaviour nodes
 
 ### UtilityAIAgent 
@@ -226,7 +223,7 @@ The `UtilityAIBehaviour` has the following properties:
 |Type|Name|Description|Version|
 |--|--|--|--|
 |bool|is_active|This property can be used to include or exlude the node from processing.|v1.0|
-|bool|can_be_interrupted|A boolean value to determine if the behaviour can be interrupted or not. If a behaviour cannot be interrupted, the `evaluate_options` method of the `UtilityAIAgent` will not execute until the behaviour has completed all its actions.|v1.0|
+|bool|can_be_interrupted|A boolean value to determine if the behaviour can be interrupted or not. If a behaviour cannot be interrupted, the `evaluate_options` method of the `UtilityAIAgent` will not execute until the behaviour has completed all its actions. As of version 1.5 the default value for this property is **true**.|v1.0|
 |float|score|The score for the behaviour after the behaviour has evaluated its considerations.|v1.0|
 |float|cooldown_seconds|If > 0.0, after the behaviour is chosen it will a score of 0.0 during the `evaluate_options` until the time has passed.|v1.0|
 |int|cooldown_turns|If > 0, after the behaviour is chosen it will a score of 0 during the `evaluate_options` until the given number of calls to the evaluation function has been done.|v1.0|
@@ -534,13 +531,13 @@ The Repeater node ticks its child until `max_repeat_times` is reached. If `max_r
 
 ### UtilityAIBTLeaf
 
-The leaf node is used for conditions and actions. You should define your own `tick()` method where you do your logic. 
+The leaf node is used for conditions and actions. You should define your own `on_tick()` method where you do your logic. You can also define the method with the name `tick()` but this is only available for backwards compatibility to version 1.4.
 
 You can either return the tick result or set the `tick_result` property. Examples:
 
 ```gdscript
 
-func tick(blackboard, delta) -> int:
+func on_tick(blackboard, delta) -> int:
     return 1
 
 ```
@@ -548,7 +545,7 @@ func tick(blackboard, delta) -> int:
 
 ```gdscript
 
-func tick(blackboard, delta):
+func on_tick(blackboard, delta):
     tick_result = 1
 
 ```
@@ -585,6 +582,7 @@ The Run NQS Query node can be used to initialite Node Query System queries. They
 |--|--|--|--|
 |NodePath|nqs_search_space_nodepath|A nodepath to a NQS Search Space node.|v1.4|
 |int|top_n_to_find|The number of results the search should return. Overrides the setting on the search space.|v1.4|
+
 
 # Utility enabled State Tree
 
