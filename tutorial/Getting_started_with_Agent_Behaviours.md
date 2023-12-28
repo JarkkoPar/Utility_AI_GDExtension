@@ -13,11 +13,11 @@ For this tutorial, we'll start with an empty Godot 4.1  project.
  1. [Project creation and installation of Utility AI GDExtension](Getting_started_with_Agent_Behaviours.md#1-project-creation-and-installation-of-utility-ai-gdextension)
  2. [Setting up the project and assets](Getting_started_with_Agent_Behaviours.md#2-setting-up-the-project-and-assets)
  3. [About Agent Behaviours](Getting_started_with_Agent_Behaviours.md#3-about-agent-behaviours)
- 4. [Creating the scenes](Getting_started_with_Agent_Behaviours.md#5-creating-the-scenes)
- 5. [Creating Agent Behaviours for the AI-entity](Getting_started_with_Agent_Behaviours.md#6-creating-agent-behaviours-for-the-ai-entity)
- 6. [Adding the code](Getting_started_with_Agent_Behaviours.md#7-adding-the-code)
- 7. [Running the main scene](Getting_started_with_Agent_Behaviours.md#8-running-the-main-scene)
- 8. [Next steps](Getting_started_with_Agent_Behaviours.md#9-next-steps)
+ 4. [Creating the scenes](Getting_started_with_Agent_Behaviours.md#4-creating-the-scenes)
+ 5. [Creating Agent Behaviours for the AI-entity](Getting_started_with_Agent_Behaviours.md#5-creating-agent-behaviours-for-the-ai-entity)
+ 6. [Adding the code](Getting_started_with_Agent_Behaviours.md#6-adding-the-code)
+ 7. [Running the main scene](Getting_started_with_Agent_Behaviours.md#7-running-the-main-scene)
+ 8. [Next steps](Getting_started_with_Agent_Behaviours.md#8-next-steps)
 
 
 
