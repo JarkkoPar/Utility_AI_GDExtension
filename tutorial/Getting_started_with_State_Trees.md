@@ -141,7 +141,7 @@ We will create two scenes: a **main scene** in which we will spawn our AI-entiti
 ### 5.1 Creating the scene bases and adding animation to the AI-entity
 
 
-1. In your Godot Project, create a Node2D-based scene, name it as **state_tree_tutorial_scene** and save it.
+1. In your Godot Project, create a Node2D-based scene, name it as **tutorial_scene** and save it.
 
 ![Creating the tutorial_scene](images/getting_started_bt_4.png)<br>
 
@@ -306,7 +306,7 @@ We are now done with the main scene. Next we will focus on creating the **ai_ent
 
 
 
-4. We'll use a **Sensor** to track the distance and direction vector to the mouse cursor. Right-click on the **UtilityaiSTRoot** node you created and add a **UtilityAIDistanceVector2Sensor** as its child node. 
+4. We'll use a **Sensor** to track the distance and direction vector to the mouse cursor. Right-click on the **UtilityAISTRoot** node you created and add a **UtilityAIDistanceVector2Sensor** as its child node. 
 
 ![Add the distance sensor](images/getting_started_st_2.png)<br>
 
@@ -385,7 +385,7 @@ What this code does:
  * The row `var movement_speed:float = 0.0` defines a variable that we will use to control the movement speed of the AI entity.
  * In the `_physics_process(delta)` method we first set the distance sensor **from-position** as the global position of the AI entity, and the **to-position** as the location of the mouse cursor from the parent node. The sensor will use these two positions to calculate the distance from the AI entity to the mouse cursor, and also the direction vector that we will use later for movement.
  * `$UtilityAISTRoot.tick(self, delta)` ticks the state tree. As **user_data** we give the root node of the AI entity scene which in this case is the **self** keyword. This gives the state tree node state handling methods access to all the properties of the AI entity node.
- * After *ticking* the root node, the row `self.global_position += sensor_distance.direction_vector * movement_speed * delta` moves the AI entity based on the direction vector calculated by the distance sensor. Delta time is used to scale the movement amount.
+ * After *ticking* the root node, the row `self.global_position += sensor_distance.direction_vector * movement_speed * delta` moves the AI entity based on the direction vector calculated by the distance sensor. Delta time is used to scale the movement amount. The `movement_speed` is set by the active state.
  * The final rows of the method make sure the character sprite is facing the direction it is moving to by flipping the sprite horizontally when needed.
 
 > [!NOTE]
