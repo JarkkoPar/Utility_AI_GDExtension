@@ -16,7 +16,7 @@ For this tutorial, we'll start with an empty Godot 4.1  project.
  4. [Utility based Agent Behaviours in Utility AI GDExtension](Getting_started_with_Agent_Behaviours.md#4-utility-based-agent-behaviours-in-utility-ai-gdextension)
  5. [Creating the scenes](Getting_started_with_Agent_Behaviours.md#5-creating-the-scenes)
  6. [Creating Agent Behaviours for the AI-entity](Getting_started_with_Agent_Behaviours.md#6-creating-agent-behaviours-for-the-ai-entity)
- 7. [Adding the action methods](Getting_started_with_Agent_Behaviours.md#7-adding-the-action-methods)
+ 7. [Adding the code](Getting_started_with_Agent_Behaviours.md#7-adding-the-code)
  8. [Running the main scene](Getting_started_with_Agent_Behaviours.md#8-running-the-main-scene)
  9. [Next steps](Getting_started_with_Agent_Behaviours.md#9-next-steps)
 
@@ -358,7 +358,7 @@ We have now created the behaviour structure for the AI Agent. What is missing ar
 
 
 
-## 7. Adding the state handling methods
+## 7. Adding the code
 
 
 1. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **ai_entity** node. Replace the code with the following code (see explanation for it below):
