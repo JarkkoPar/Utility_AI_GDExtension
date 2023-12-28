@@ -77,8 +77,9 @@ Before we get started with development, it is good review what Behaviour Trees a
 
 ## 3. About Agent Behaviours
 
-Agent Behaviours are a utility-function based AI system for creating AI to your non-playable characters. The system uses **sensors** to get data about the game world, **behaviours** and **considerations** to choose the correct behaviour, and **actions** to realize the selected behaviour.
+Agent Behaviours are a utility-function based AI system for creating AI to your non-playable characters. The system uses **sensors** to get data about the game world, **behaviours** and **considerations** to choose the correct behaviour, and **actions** to realize the selected behaviour. The considerations use **curves** to weight the sensor input, allowing you to tune the importance of various inputs to your liking.
 
+The use of utility functions for the behaviours means that the AI entity can react to world state by weighting its options against one another. Where *behaviour trees* and *state trees* are more static when selecting which nodes to activate, the utility based agent behaviours can consider several options and even combine them to come to a conclusion on which behaviour is the most appropriate.
 
 
 ### 3.1 The structure of the Agent Behaviours
@@ -91,48 +92,27 @@ Each behaviour needs **Considerations** as either their child nodes or as a prop
 
 The *considerations* can be grouped and the score for a behaviour will be aggregated based on the consideration structure created for it. Each consideration has an **activation curve** property, that affects its **score**. 
 
-The AI Agent is updated by calling its **ticking** method. When there are no states active, a **transition** is started with the **root** node as the transition target. This causes the states in the tree to be evaluated starting from the root node and descending down the tree until a leaf state node is found that can be activated. When a leaf node is found, all its parent nodes up until the root node will be marked as active nodes.
-
-After the initial state has been chosen, the state transitions must be explicitly started by calling the `transition_to(new_state_nodepath:NodePath, user_data:Variant, delta:float)` method. The transition target can be any of the nodes in the tree, including the root node. The target is defined by the **NodePath relative to the root node of the state tree**. In the image below, if the `transition_to()` was called with the following parameters: `transition_to("/Child state 1/Sub child state 2", null, delta)`, it would cause the child states of *Sub child state 2* to be evaluated to find a new leaf state.
-
-![Behaviour Tree node priority order](images/getting_started_st_gen_1.png)<br>
-*A state tree with some states. The evaluation during transition is done in top-to-down order.*<br>
-
-> [!NOTE]
-> The node path *"."* means the root node, and causes the entire tree to be evaluated in a search for a new set of active states.
-
-
-The hierarchy of active states is activated starting from the root node to the leaf node (i.e. going *down* the tree). When a set of states is no longer active, they are exited starting from the leaf node and going up towards the root node (i.e. going *up* the tree). When a transition occurs, only the states that are no longer active are deactivated, and only the states that were not previously active, get activated. 
-
-
-### 3.2 The state handling methods of the state tree nodes
-
-To handle state transitioning, entering, exiting and updating the states, four state handling methods can be defined for the state nodes: 
-
- * `func on_enter_condition(user_data, delta) -> bool` is used to check if the state can be entered. This method should **always** return either **true** or **false**. Alternatively the *utility-based considerations* can be used (see 4. Utility enabled State Trees in Utility AI GDExtension for more details). 
- * `func on_enter_state(user_data, delta)` is used to run any initialization the state needs to run before it is *ticked*.
- * `func on_exit_state(user_data, delta)` is used to run any clean up after the state is no longer active.
- * `func on_tick(user_data, delta)` is used to run what ever code the state needs to do when it is *ticked*.
-
-The `transition_to()` method can be called anywhere in the state's script code. However, the usual place for it is in the `on_tick()` method.
-
-Any active state that is no longer active after the call to `transition_to()` will call its `on_exit_state()` method. Similarly, any inactive state that gets activated will call its `on_enter_state()` method. 
-
-When the root node `tick()` method is called, all the active states will call their `on_tick()` methods, starting from the root node and going down the tree to the leaf node.
+The *behaviours* contain **actions** that are executed when a behaviour is active. The use of actions isn't strictly necessary, but they allow the creation of sequences of actions.
 
 
 
-## 4. Utility enabled State Trees in Utility AI GDExtension
+### 3.2 The update methods for the Agent Behaviours
 
-You can use the utility enabled State Trees as the sole AI reasoning component, or as a sub-component of the AI Agent Behaviours or Behaviour Trees. Utility-based considerations can be attached to all of the nodes in Utility AI GDExtension, including the State Tree nodes. The considerations can be attached either as child nodes or in the Inspector as a property.
+The AI Agent is updated by calling its `evaluate_options()` method. This method will update all the **sensors** and evaluate all the **behaviour groups** and **behaviours** that are child nodes of the **AI agent**. Based on the evaluation it will choose a behaviour as the active behaviour. When this happens, the **behaviour_changed signal** is emitted. 
 
-For any of the **UtilityAISTNode** state nodes you can control how they will evaluate their child nodes during a `transition_to()` call. This is done by selecting the **Child State Selection Rule** in the **Inspector**.
+The `evaluate_options()` method evaluates the behaviours in top-to-down order and if two behaviours get the same score, the one that is evaluated first gets higher priority. As an example, this means that in a situation where you want to choose top 3 behaviours out of 10, and you already have evaluated 3 behaviours, if the later ones get the same score as the behaviour at third place, the fourth behaviour gets discarded. If they get the same score as the second one, they get placed third in the list.  
 
-![Choosing the Child State Selection Rule](images/getting_started_st_gen_2.png)<br>
+If *actions* are used, the `update_current_behaviour()` method is then called to choose an action to perform. When an action gets selected the **action_changed()** signal is emitted. If a behaviour has no actions set as its child nodes, the `update_current_behaviour()` will exit and emit the **behaviour_changed()** signal with a **null** behaviour.
 
-If **OnEnterConditionMethod** is selected, the user-defined `on_enter_condition()` method will be called for the childs of the state node. If the method has not been defined, the evaluation will always return *true*.
+When choosing the behaviour the `evaluate_options()` method will check if the **Can be interrupted** property of the currently active behaviour is set. If it is, the behaviours will be evaluated. If not, the `evaluate_options()` method will exit. When using the *can be interrupted* property for a behaviour you can end a behaviour by setting all its child actions as finished by assigning **is_finished=true**.
 
-If **UtilityScoring** is selected, the *considerations* attached to the child state nodes as either their child nodes or in the *Considerations* property will be evaluated and the highest-scoring state node will be selected. 
+
+
+### 3.3 Challenges with utility based systems
+
+One of the callenges with utility based systems comes from their strength: defining how the utility is calculated can be complex. The needed inputs can be many and setting a suitable curves or combinations of curves for them can be harder than you initially think. 
+
+Another issue can be *oscillation* between behaviours. The AI entity moves between two or more behaviours due to changes in the inputs and how the considerations weight them. This issue can be mitigated by using *cooldowns* and/or bias towards the currently active behaviour. 
 
 
 
