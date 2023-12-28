@@ -417,7 +417,7 @@ What this code does:
  * `$UtilityAIAgent.evaluate_options(delta)` evaluates which behaviour should be activated. It will **emit the behaviour_changed** signal when a behaviour changes.
  * After *evaluating the options* for the AI Agent node, the row `self.global_position += sensor_distance.direction_vector * movement_speed * delta` moves the AI entity based on the direction vector calculated by the distance sensor. Delta time is used to scale the movement amount. The `movement_speed` is set by the selected behaviour.
  * The final rows of the `_physics_process()` method make sure the character sprite is facing the direction it is moving to by flipping the sprite horizontally when needed.
- * At the end of the script, we have the method `_on_utility_ai_agent_behaviour_changed(behaviour_node)`. This is a signal hander for a signal we will shortly create. It checks that the new behaviour is not null, and then uses the behaviour **name** to determine how to set up the **movement_speed** and which animation to play. 
+ * At the end of the script, we have the method `_on_utility_ai_agent_behaviour_changed(behaviour_node)`. This is a signal hander for a signal we will shortly create. It checks that the new behaviour is not null, and then uses the behaviour **name** to determine how to set up the **movement_speed** and which animation to play. Alternatively the **Behaviour ID** property could be used to differentiate between the behaviours.
 
 
 > [!NOTE]
