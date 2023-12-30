@@ -644,19 +644,19 @@ This is the root node for a State Tree. To update the tree, you call the `tick()
 
 # The Node Query System (NQS)
 
-The Utility AI Node Query System is a set of nodes that can be used to score and filter any set of Godot nodes to find the top N best nodes given a set of search criteria. The two main node types for the Node Query System are `UtilityAINQSSearchSpaces` and `UtilityAINQSSearchCriteria`. The *Search Spaces* nodes define a set of nodes as a "search space". The `execute_query()` method of the Search Space is used to apply the child *Search Criteria* nodes to filter and score the nodes within the "search space". Similarly to Considerations an *activation curve* can be set to further customize the scoring of each criteria to fit the needs of your game.
+The Utility AI Node Query System is a set of nodes that can be used to score and filter any set of Godot nodes to find the top N best nodes given a set of search criteria. The two main node types for the Node Query System are `UtilityAINQSSearchSpaces` and `UtilityAINQSSearchCriteria`. The *Search Spaces* nodes define a set of nodes as a "search space". The *Search Criteria* nodes define **filtering** and **scoring** criteria. Similarly to Considerations an *activation curve* can be set to further customize the scoring of each criteria to fit the needs of your game.
 
 The Node Query System has been designed to be as flexible as possible and to allow **any** node property to be used as a scoring or filtering criterion. This allows the use of the system for spatial reasoning ("what is the best cover point/tile to move to?"), but also any other type of quantitative reasoning or ranking a game could need for the AI ("what is the best inventory item to use?, "who is the biggest threat?"). 
 
 ### NodeQuerySystem-singleton
 
-A singleton has been added that allows *time budgeting* for the NQS queries. See the included example project for an example of how to use the singleton.
+A singleton has been added that allows *time budgeting* for the NQS queries. See the included example project for an example of how to use the singleton. As of version **1.4** the singleton is the recommended way of executing the queries. It is still possible to execute them directly as well, if needed.
 
 The NodeQuerySystem-singleton has the following properties:
 
 |Type|Name|Description|Version|
 |--|--|--|--|
-|int|run_queries_time_budget_per_frame|This is the time the `run_queries()` method is allowed to run per frame.|v1.4|
+|int|run_queries_time_budget_per_frame|This is the time the `run_queries()` method is allowed to run per frame, in usec (microseconds).|v1.4|
 |float|time_allocation_pct_to_high_priority_queries|Value between 0..1, determines how much of the `run_queries_time_budget_per_frame` is used for high-priority queries.|v1.4|
 
 
@@ -665,6 +665,7 @@ And the following methods:
 |Type|Name|Description|Version|
 |--|--|--|--|
 |void|post_query(Node search_space, bool is_high_priority)|This adds the given search space to the list of queries to be executed when the method `run_queries()` is called.|v1.4|
+|void|stop_query(Node search_space)|This stops the search_space query by removing it from the list of queries to be executed when the method `run_queries()` is called.|v1.5|
 |void|run_queries()|Runs the posted queries. Call this once per frame in your main scene.|v1.4|
 |void|clear_queries()|Empties the list of queries to run per frame. Call this when you need to clean up, i.e. in the `_ready()` and `_exit_tree()` methods.|v1.4|
 |void|initialize_performance_counters()|Initializes the counters that can then be seen in the Debug/Monitors tab in the editor.|v1.4|
@@ -685,6 +686,7 @@ The search space nodes are used to define the set of nodes that will be included
 **3D search spaces** 
 
 * UtilityAIArea3DSearchSpace
+* UtilityAINavigation3DPointGridSearchSpace
 
 
 The search space nodes need to have the `UtilityAISearchCriteria` nodes as their children. For performance, when adding the search criteria add the **filtering** criteria first if possible to reduce the number of nodes as early as possible. After those, add the score-based criteria to filter and rank the remaining nodes. 
@@ -713,6 +715,7 @@ All the search spaces have the following general properties.
 |int|search_space_fetch_time_usec|The time it takes to fetch all the nodes that will be filtered and scored in the query.|v1.4|
 |int|total_query_node_visits|The total number of node visits done when running the query.|v1.4|
 |int|total_query_call_count|The number of times the `execute_query()` method was called to finish the query.|v1.4|
+|bool|is_run_in_debug_mode|If true, the search spaces add two variables in to the nodes they process: `is_filtered` and `score` and set their values based on the criteria.|v1.5|
 
 
 #### Shared methods
