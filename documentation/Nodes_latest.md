@@ -790,10 +790,34 @@ None.
 
 These nodes create and use a Node2D/3D point grid to define the search space. You need to set a Node2D/3D parent node where the nodes will be created as child nodes. The points are created relative to the parent node position and will inherit the transformations from the parent node. The parent node will be in the middle of the point grid.
 
-The points for the grid are created as pairs: a base point and a lattice point. For instance in a square grid, the base point settings are used to create a grid where there is a base point every 2*x and y point. The lattice point is a point relative to the base point and would have the vector (1,0). 
+The points for the grid are created as pairs: a **base point** and a **lattice point**. 
 
-Optionally a NavigationMesh can be used when the point grid is been queried. Then the points will be placed on the closest point on the NavigationMesh.
+For instance in a very dense 2D square grid, there could be a **base point** every 2*x and 1*y. This *spacing* between base points is controlled with the `point_grid_base_spacing_vector` property. The values of this property also control the **density** of the grid. The smaller the spacing between points, the more points needs to be created to fill the area/volume given with the **grid size** property.
 
+The **lattice point** is a point relative to the base point. For the 2D square grid mentioned earlier the `point_grid_lattice_vector` would be *(1,0)*. This will create the lattice point to the right of the base point.
+
+During the creation of the point grid the x and y axes are looped through starting from `-0.5 * grid_size.x`, `-0.5 * grid_size.y` and going up to `0.5 * grid_size.x`, `0.5 * grid_size.y`. On each loop iteration the `point_grid_base_spacing_vector` x and y components are added to the current position to get the next position for the next pair of points. So on each iteration, both the base point and the lattice point will be added. 
+
+<img src="../tutorial/images/point_grid_lattice_1.png"><br>
+*Square grid base point and lattice point.*
+
+To get a triangular grid, only the lattice point needs to be moved. If we move it 0.5 units upwards and set the `point_grid_lattice_vector` to *(1,0.5)* we would get a grid like in the image below.
+
+<img src="../tutorial/images/point_grid_lattice_2.png"><br>
+*Triangle grid base point and lattice point.*
+
+By adjusting the base point and lattice vector values, you can create various types of grids with the density you want.
+
+> [!WARNING]
+> When creating point grids, it is **very** easy to create a huge amount of points for a search space. 
+
+Optionally a NavigationMesh can be used when the point grid is been queried. Then the points will be placed on the closest point on the NavigationMesh. 
+
+To set a visible **debug shape** for the point grid, you can create a Node2D (or derived node, such as Sprite2D) for the UtilityAIPointGrid2DSearchSpace and a Node3D (or derived node, such as MeshInstance) for the UtilityAIPointGrid3DSearchSpace. The node should be added as a **child node** for the search space.
+
+<img src="../tutorial/images/point_grids_2d_and_2d_debug_shapes.png"><br>
+
+The point grid creation method will create two properties for the point grid nodes: `score` and `is_filtered`. These will be updated for the point grid nodes if the search space property `is_run_in_debug_mode` is set in the **Debugging** property group.
 
 #### Properties
 
@@ -804,7 +828,7 @@ Optionally a NavigationMesh can be used when the point grid is been queried. The
 |Vector2/3|grid_size|The grid width, height (and depth for 3D).|v1.5|
 |int|point_grid_lattice_type|The lattice type defines how the points are ordered.|v1.5|
 |Vector2/3|point_grid_base_spacing_vector|The base spacing of the point grid. Defines how rows and columns are created|v1.5|
-|Vector2/3|point_grid_lattice_vector|The "additional point" which defines the shape of the grid. 
+|Vector2/3|point_grid_lattice_vector|The "additional point" which defines the shape of the grid. |v1.5|
 
 
 #### Methods 
