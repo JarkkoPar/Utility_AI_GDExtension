@@ -656,9 +656,10 @@ The NodeQuerySystem-singleton has the following properties:
 
 |Type|Name|Description|Version|
 |--|--|--|--|
-|int|run_queries_time_budget_per_frame|This is the time the `run_queries()` method is allowed to run per frame, in usec (microseconds).|v1.4|
+|int|run_queries_time_budget_per_frame_usec|This is the time the `run_queries()` method is allowed to run per frame, in usec (microseconds).|v1.4|
 |float|time_allocation_pct_to_high_priority_queries|Value between 0..1, determines how much of the `run_queries_time_budget_per_frame` is used for high-priority queries.|v1.4|
-
+|int|high_priority_query_per_frame_execute_query_time_budget_usec|This is the time used by `run_queries()` method for each high priority query it updates per frame. Default value: 20 usec (microseconds).|v1.5|
+|int|regular_query_per_frame_execute_query_time_budget_usec|This is the time used by `run_queries()` method for each regular query it updates per frame. Default value: 10 usec (microseconds).|v1.5|
 
 And the following methods:
 
@@ -669,6 +670,12 @@ And the following methods:
 |void|run_queries()|Runs the posted queries. Call this once per frame in your main scene.|v1.4|
 |void|clear_queries()|Empties the list of queries to run per frame. Call this when you need to clean up, i.e. in the `_ready()` and `_exit_tree()` methods.|v1.4|
 |void|initialize_performance_counters()|Initializes the counters that can then be seen in the Debug/Monitors tab in the editor.|v1.4|
+|void|set_run_queries_time_budget_per_frame_usec(int time_budget)|This method is used to set the time budget for running the queries in usec (microseconds).|v1.4|
+|void|set_time_allocation_pct_to_high_priority_queries(float time_allocation_pct)|Value between 0..1, sets how much of the `run_queries_time_budget_per_frame` is used for high-priority queries.|v1.5|
+|void|set_high_priority_query_per_frame_execute_query_time_budget_usec(int time_budget_usec)|This sets the time used by `run_queries()` method for each high priority query it updates per frame. Default value: 20 usec (microseconds).|v1.5|
+|void|set_regular_query_per_frame_execute_query_time_budget_usec(int time_budget_usec)|This sets the time used by `run_queries()` method for each regular query it updates per frame. Default value: 10 usec (microseconds).|v1.5|
+
+
 
 ### UtilityAISearchSpaces nodes 
 

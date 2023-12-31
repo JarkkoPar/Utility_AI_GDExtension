@@ -1,4 +1,4 @@
-# Getting started with Behaviour Trees
+# Getting started with the Node Query System (NQS)
 
 In this beginner tutorial, you will learn how the Node Query System works and you will build a simple AI entity that reacts to some input. Once you have completed this tutorial, you will have understanding of the following: 
 
@@ -70,7 +70,7 @@ You now have all the assets we need for this tutorial. The setup in your FileSys
 
 In many games the AI must do **searches** in the game world to find things like *the best position to shoot from*, *the best item to use* or *the best tile to move to*, and so on. Behaviour Trees, State Machines and other systems used for reasoning don't usually cater for this need. One of the solutions is a **utility based querying system**.
 
-The Node Query System in Utility AI GDExtension aims to be a *generalized* querying system for all types of nodes in the Godot Engine. Somewhat similar system in other engines are the *Environment Query System* in *Unreal Engine* and the *Spatial Query System* in *CryEngine*. Many of the queries on games do focus on finding locations in 3D or 2D worlds and NQS in Utility AI GDExtension can be used to do these types of searches. 
+The Node Query System in Utility AI GDExtension aims to be a *generalized* querying system for all types of nodes in the Godot Engine. Somewhat similar systems in other engines are the *Environment Query System* in *Unreal Engine* and the *Spatial Query System* in *CryEngine*. Many of the queries in games do focus on finding locations in 3D or 2D worlds and NQS in Utility AI GDExtension can do these types of searches. It can do more, however, and search and rank any type of node in a scene.
 
 
 ### 3.1 The structure of query
@@ -79,52 +79,18 @@ The queries in NQS are created by combining **search spaces** and **search crite
 
 The **search spaces** define a set of nodes that will be used as the target nodes during a search. These can be *nodes that belong to a certain group*, *nodes that are child nodes of a certain node* or *generated point grids*, for example. Various properties can be set for the search spaces to guide the search, such as how many nodes should be returned.
 
-The **search criteria** define how the search space nodes are **scored** and **filtered** to find the **top N** nodes that fit the given criteria. They are placed as *child nodes of the search space nodes*. The prioritization of the search criteria is the order in which they are placed as the childs of a search space: the top-most node has the highest priority, the ones below it lower.
+The **search criteria** define how the search space nodes are **scored** and **filtered** to find the **top N** nodes that fit the given criteria. They are placed as **child nodes** of the search space nodes. The prioritization of the search criteria is the order in which they are placed as the childs of a search space: the top-most node has the highest priority, the ones below it lower. It makes usually sense to put **filtering** criteria as the top-most criteria nodes in the order of how effectively they filter out the nodes, and after those any nodes that **only are used for scoring**.
+
+
+### 3.2 Posting queries and retrieving their results
+
+The queries are posted using the `NodeQuerySystem` singleton's `post_query(search_space, is_high_priority)` method. The first parameter is a reference to the **search space node** and the second a boolean that defines if the query is high priority or not. The query system uses **time budgeting**, also commonly called *time slicing*. High priority queries get more time per physics frame for their execution than regular, non-high priority queries.
+
+When a query is posted it is added to a list of active queries. Queries in the active list are executed in a *round-robin* manner. Each high priority query gets to run for 20 microseconds per frame by default, and each regular priority query gets to run 10 microseconds per frame by default. 
 
 
 
-For most of the nodes the ticking code is pre-defined by the behaviour tree implementation. For example the *sequence* and *selector* have a set logic they execute during a tick. You usually add your own code to the *task nodes* by defining the `on_tick()` method.
-
-The ticking of the child nodes is done in a top-to-down order. The higher the node is in the list, the higher its priority. 
-
-![Behaviour Tree node priority order](images/getting_started_bt_1.png)<br>
-*Node priority is highest on the top, lowest on the bottom.*<br>
-
-
-### 3.2 The return values of the Behaviour Tree nodes
-
-Each behaviour tree node returns a value, which is either *success*, *failure* or *running*. Usually it is one of the task nodes that ultimately sets what value is returned but the decorator and composite nodes can affect the value that is returned to the root node in the end.
- 
-The return value is predetermined for most of the node types, but you decide what each *task node* will return. In Utility AI GDExtension the numerical values for these are as follows:
-
- * **Running** 0
- * **Succeeded** 1
- * **Failed** -1
-
-> [!NOTE]
-> In Utility AI GDExtension the nodes can also return the *skip* value, but for the purposes of this tutorial we will only focus on the *success*, *failure* and *running* values. The numerical value for *skip* is -2.
-
-
-### 3.3 Commonly used nodes
-
-All behaviour trees need the **root** node. The root node is the *main node* for behaviour trees. The root node always has only one behaviour tree child node (in Utility AI GDExtension it may have **Sensor** nodes as well).
-
-In addition to the root node, **task** or **leaf** nodes are always needed. As the *task* node's name implies, these nodes usually execute actions and other logic.
-
-The most commonly used *composite* nodes are the **selector** (also known as the *fallback*) node and the **sequence** node. 
-
- * The selector *ticks* (= runs the code) its child nodes one by one and checks if any of its child nodes succeeds. When one does, it stops ticking and returns *success* back to its parent node. If all fail, it returns back *failure* to its parent.  
- * The sequence *ticks* its child nodes one by one until one of them fails or until it has ticked all its child nodes. If a child node fails, the sequence returns *failure* back to its parent. If all succeed, it returns back *success*.
-
-Both the selector and sequence return back *running* if a child node they tick returns back running. Handing the *running* state can vary between Behaviour Tree implementations. In Utility AI GDExtension the default is that during the next tick the tree continues ticking from the node that returned running until it either succeeds or fails. This can be changed by editing the `reset_rule` property.
-
-There are also *decorator* nodes, which usually have only one child node. The **inverter** is a very common one, and it changes the return value of its child node to the opposite value (a *success* becomes a *failure* and a *failure* a *success*; *running* stays as *running*). Other common decorator nodes are the **repeat until** node that repeats its child node until it either succeeds or fails, **cooldown** nodes run their child nodes and then allow it only to run after a certain cooldown period.
-
-> [!NOTE]
-> The *AlwaysSucceed* and *AlwaysFail* nodes are replaced by the **FixedResult** decorator node in Utility AI GDExtension, where you can choose what result the node always returns.
-
-
-### 3.4 Challenges with behaviour trees
+### 3.3 Challenges with utility based queries
 
 While behaviour trees are very good at choosing which tasks to execute at each moment, they aren't very good at handling (or visually representing) *states*. 
 
