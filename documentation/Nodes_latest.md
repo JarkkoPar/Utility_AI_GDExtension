@@ -829,6 +829,11 @@ The point grid creation method will create two properties for the point grid nod
 |int|point_grid_lattice_type|The lattice type defines how the points are ordered.|v1.5|
 |Vector2/3|point_grid_base_spacing_vector|The base spacing of the point grid. Defines how rows and columns are created|v1.5|
 |Vector2/3|point_grid_lattice_vector|The "additional point" which defines the shape of the grid. |v1.5|
+|Vector2/3|offset_vector|Optional offset you can apply to the points after they are positioned.|v1.5|
+|bool|use_navigation_mesh_positions|If this is set to **true** and the `navigation_map_rid` property is set to a valid navigation map, the point grid positions will be placed on the navigation mesh. Default value is **true**.|v1.5|
+|RID|navigation_map_rid|See the description of the `use_navigation_mesh_positions` property.|v1.5|
+|TypedArray<Node2/3D>|point_grid|The grid of points as Node2D/Node3D nodes.|v1.5|
+|bool|is_run_in_debug_mode|If this is set to **true**, the `score` and `is_filtered` properties will be set by the search space for the point grid nodes.|v1.5|
 
 
 #### Methods 
