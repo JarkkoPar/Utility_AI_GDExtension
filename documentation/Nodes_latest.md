@@ -796,7 +796,7 @@ For instance in a very dense 2D square grid, there could be a **base point** eve
 
 The **lattice point** is a point relative to the base point. For the 2D square grid mentioned earlier the `point_grid_lattice_vector` would be *(1,0)*. This will create the lattice point to the right of the base point.
 
-During the creation of the point grid the x and y axes are looped through starting from `-0.5 * grid_size.x`, `-0.5 * grid_size.y` and going up to `0.5 * grid_size.x`, `0.5 * grid_size.y`. On each loop iteration the `point_grid_base_spacing_vector` x and y components are added to the current position to get the next position for the next pair of points. So on each iteration, both the base point and the lattice point will be added. 
+During the creation of the point grid the x and y axes are looped through starting from `-0.5 * grid_size.x`, `-0.5 * grid_size.y` and going up to `0.5 * grid_size.x`, `0.5 * grid_size.y`. On each loop iteration the `point_grid_base_spacing_vector` x and y components are added to the current position to get the next position for the next pair of points. So on each iteration, both the base point and the lattice point will be added. For 3D grids the z-axis is handled similarly to the x and y axes.
 
 <img src="../tutorial/images/point_grid_lattice_1.png"><br>
 *Square grid base point and lattice point.*
@@ -806,14 +806,14 @@ To get a triangular grid, only the lattice point needs to be moved. If we move i
 <img src="../tutorial/images/point_grid_lattice_2.png"><br>
 *Triangle grid base point and lattice point.*
 
-By adjusting the base point and lattice vector values, you can create various types of grids with the density you want.
+By adjusting the base point spacing and lattice vector values, you can create various types of grids with the density you want.
 
 > [!WARNING]
 > When creating point grids, it is **very** easy to create a huge amount of points for a search space. 
 
-Optionally a NavigationMesh can be used when the point grid is been queried. Then the points will be placed on the closest point on the NavigationMesh. 
+Optionally a **NavigationMesh** can be used when the point grid is been queried. Then the points will be placed on the closest point to their grid position on the NavigationMesh. 
 
-To set a visible **debug shape** for the point grid, you can create a Node2D (or derived node, such as Sprite2D) for the UtilityAIPointGrid2DSearchSpace and a Node3D (or derived node, such as MeshInstance) for the UtilityAIPointGrid3DSearchSpace. The node should be added as a **child node** for the search space.
+To set a visible **debug shape** for the point grid, you can create a Node2D (or derived node, such as Sprite2D) for the UtilityAIPointGrid2DSearchSpace and a Node3D (or derived node, such as MeshInstance) for the UtilityAIPointGrid3DSearchSpace. The node should be added as a **child node** for the search space and its name must be **DEBUG**.
 
 <img src="../tutorial/images/point_grids_2d_and_2d_debug_shapes.png"><br>
 
