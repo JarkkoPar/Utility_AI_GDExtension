@@ -86,17 +86,14 @@ The **search criteria** define how the search space nodes are **scored** and **f
 
 The queries are posted using the `NodeQuerySystem` singleton's `post_query(search_space, is_high_priority)` method. The first parameter is a reference to the **search space node** and the second a boolean that defines if the query is high priority or not. The query system uses **time budgeting**, also commonly called *time slicing*. High priority queries get more time per physics frame for their execution than regular, non-high priority queries.
 
-When a query is posted it is added to a list of active queries. Queries in the active list are executed in a *round-robin* manner. Each high priority query gets to run for 20 microseconds per frame by default, and each regular priority query gets to run 10 microseconds per frame by default. 
-
+When a query is posted it is added to a list of active queries. Queries in the active list are executed in a *round-robin* manner. This means that the queries are run in a *loop* starting from the first posted query going towards the latest posted query, and looping back to the first, until the queries have completed or the time to run queries for the physics frame has run out. A high priority query gets to run up to 20 microseconds per update, and a regular priority query up to 10 microseconds. 
 
 
 ### 3.3 Challenges with utility based queries
 
-While behaviour trees are very good at choosing which tasks to execute at each moment, they aren't very good at handling (or visually representing) *states*. 
+Queries usually aren't *real-time* solutions. If a game targets 120 or 60 FPS refresh rates, there isn't much time to run the queries per frame. If a search space is very large, it isn't possible to get the query results back during the frame even on the best hardware available.
 
-Moving between states is usually **cyclic**, meaning that you can transition between various states and even go back and forth between them. For instance, your AI can start in a *Patrol* state and transition to *Idle* or *Combat* states and back to *Patrol* state again. Behaviour Trees are **acyclic**. They start from the root node and then plummet down the tree, ticking the nodes, until they land on some task node. The task node may be within a branch that realizes the behaviour that can be associated with a *Patrol*, *Idle* or *Combat* state, but the tree itself is oblivious of this state. 
-
-If you find yourself wanting to move between states while building your behaviour tree, you should read up on [**State Trees**](Getting_started_with_State_Trees.md) and consider implementing your logic there instead. 
+Luckily AI has a super power: **AI can wait**. As long as the NPC has something reasonably intelligent to do, the players won't notice that the AI is actually waiting for a search to finish.  
 
 
 ## 4. Utility enabled Behaviour Trees in Utility AI GDExtension
