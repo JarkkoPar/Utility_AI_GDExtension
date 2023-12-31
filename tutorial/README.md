@@ -13,13 +13,14 @@ The goal of these tutorials is to help you learn how to use the Utility AI GDExt
 
 ### Getting started
 
-These getting started tutorials create the same AI using AI Agent Behaviours, a Behaviour Tree and a State Tree. The AI will follow the mouse cursor but keep a minimum distance to it. 
+These getting started tutorials create the same AI using AI Agent Behaviours, a Behaviour Tree and a State Tree. A similar behaviour is created also using the Node Query System. The AI will follow the mouse cursor but keep a minimum distance to it. 
 
 |Tutorial|Description|
 |--|--|
 |[Getting started with Agent Behaviours](Getting_started_with_Agent_Behaviours.md)|Beginner tutorial on utility-based Agent in Utility AI GDExtension.|
 |[Getting started with Behaviour Trees](Getting_started_with_Behaviour_Trees.md)|Beginner tutorial on Behaviour Trees in general and in Utility AI GDExtension.|
 |[Getting started with State Trees](Getting_started_with_State_Trees.md)|Beginner tutorial on State Trees in general and in Utility AI GDExtension.|
+|[Getting started with the Node Query System](Getting_started_with_the_Node_Query_System.md)|Beginner tutorial on State Trees in general and in Utility AI GDExtension.|
 
 
 ### Advanced tutorials
