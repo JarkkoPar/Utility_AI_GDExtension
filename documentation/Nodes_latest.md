@@ -580,7 +580,7 @@ The Run NQS Query node can be used to initialite Node Query System queries. They
 
 |Type|Name|Description|Version|
 |--|--|--|--|
-|NodePath|nqs_search_space_nodepath|A nodepath to a NQS Search Space node.|v1.4|
+|Node|nqs_search_space|A node reference to a NQS Search Space node. (Changed from v1.4 node path).|v1.5|
 |int|top_n_to_find|The number of results the search should return. Overrides the setting on the search space.|v1.4|
 
 
