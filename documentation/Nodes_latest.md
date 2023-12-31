@@ -682,11 +682,12 @@ The search space nodes are used to define the set of nodes that will be included
 **2D search spaces** 
 
 * UtilityAIArea2DSearchSpace
+* UtilityAIPointGrid2DSearchSpace
 
 **3D search spaces** 
 
 * UtilityAIArea3DSearchSpace
-* UtilityAINavigation3DPointGridSearchSpace
+* UtilityAIPointGrid3DSearchSpace
 
 
 The search space nodes need to have the `UtilityAISearchCriteria` nodes as their children. For performance, when adding the search criteria add the **filtering** criteria first if possible to reduce the number of nodes as early as possible. After those, add the score-based criteria to filter and rank the remaining nodes. 
@@ -782,6 +783,34 @@ These nodes use an Area2D or Area3D to define the search space. All the nodes th
 #### Methods 
 
 None.
+
+
+
+### UtilityAIPointGrid2DSearchSpace and UtilityAIPointGrid3DSearchSpace
+
+These nodes create and use a Node2D/3D point grid to define the search space. You need to set a Node2D/3D parent node where the nodes will be created as child nodes. The points are created relative to the parent node position and will inherit the transformations from the parent node. The parent node will be in the middle of the point grid.
+
+The points for the grid are created as pairs: a base point and a lattice point. For instance in a square grid, the base point settings are used to create a grid where there is a base point every 2*x and y point. The lattice point is a point relative to the base point and would have the vector (1,0). 
+
+Optionally a NavigationMesh can be used when the point grid is been queried. Then the points will be placed on the closest point on the NavigationMesh.
+
+
+#### Properties
+
+|Type|Name|Description|Version|
+|--|--|--|--|
+|Node|point_grid_parentnode|The parent node where the point grid will be created.|v1.5|
+|int|point_grid_type|The type of the grid, currently only RECTANGULAR is supported.|v1.5|
+|Vector2/3|grid_size|The grid width, height (and depth for 3D).|v1.5|
+|int|point_grid_lattice_type|The lattice type defines how the points are ordered.|v1.5|
+|Vector2/3|point_grid_base_spacing_vector|The base spacing of the point grid. Defines how rows and columns are created|v1.5|
+|Vector2/3|point_grid_lattice_vector|The "additional point" which defines the shape of the grid. 
+
+
+#### Methods 
+
+None.
+
 
 
 ### UtilityAISearchCriteria nodes 
