@@ -98,24 +98,14 @@ To enable queries and good overall game performance, per frame **time budgeting*
 Luckily AI has a super power: **AI can wait**. As long as the AI entity has something reasonably intelligent-looking to do, the players won't notice that the AI is actually waiting for a query or any other background task to finish. 
 
 
-## 4. Utility enabled Behaviour Trees in Utility AI GDExtension
+## 4. 
 
-You can use the utility enabled Behaviour Trees as the sole AI reasoning component, or as a sub-component of the AI Agent Behaviours or State Trees. Utility-based considerations can be attached to all of the nodes in Utility AI GDExtension, including the Behaviour Tree nodes. The considerations can be attached either as child nodes or in the Inspector as a property.
-
-<img src="images/getting_started_bt_2.png" height="256px"><img src="images/getting_started_bt_3.png" height="256px"><br>
-*Considerations can be child nodes or in the Inspector as properties.*<br>
-
-The **score based picker** node can be placed anywhere in the behaviour tree and during a *tick* it will first evaluate the *considerations* attached to its child nodes to find out which child node scores the highest, and then proceed to tick that node. 
-
-It is possible to start **Node Query System** queries from the Behaviour Trees by using the **RunNQSQuery** node. To do this, you need a *Search Space* that has been setup elsewhere in your scene. The RunNQSQuery node will post the query and return *running* until the query completes, in which case the RunNQSQuery node returns *success*.
-
-> [!NOTE]
-> When using the RunNQSQuery node, it is expected that you call the `NodeQuerySystem.run_queries()` method once per physics frame in your main scene.
+tbd
 
 
 ## 5. Creating the scenes
 
-The behaviour tree nodes work with both 2D and 3D scenes. For this tutorial we are creating everything in 2D because setting up the assets for 2D scenes is much quicker.
+The Node Query System works with both 2D and 3D scenes. For this tutorial we are creating everything in 2D because setting up the assets for 2D scenes is much quicker.
 
 We will create two scenes: a **main scene** in which we will spawn our AI-entities in, and a **ai_entity** scene that is the AI-entity we will be creating.
 
@@ -125,7 +115,7 @@ We will create two scenes: a **main scene** in which we will spawn our AI-entiti
 
 ![Creating the tutorial_scene](images/getting_started_bt_4.png)<br>
 
-This will be our *main scene* and we will *instantiate* the AI entities in to this scene.  The AI entity itself will be a separate AnimatedSprite2D scene with a behaviour tree.
+This will be our *main scene* and we will *instantiate* the AI entities in to this scene.  The AI entity itself will be a separate AnimatedSprite2D scene that will be steered by a NQS query.
 
 
 2. Create a new AnimatedSprite2D-based scene and name it as **ai_entity**.
@@ -180,9 +170,36 @@ This will be our *main scene* and we will *instantiate* the AI entities in to th
 12. If you haven't saved your project yet after adding the new scenes, do it now.
 
 
-### 5.2 Adding spawning to the main scene
+### 5.2 Adding a point grid and spawning to the main scene
 
-1. Go to the **tutorial_scene** tab in the editor. In the **scene-tab** make sure the **tutorial_scene** Node2D is selected and then click the **Attach a new or existing script to the selected node** button.
+1. Go to the **tutorial_scene** tab in the editor. Right click on the **tutorial_scene** node and add a **UtilityAIPointGrid2DSearcSpace** node. We use this search space only to create a shared point grid for all the AI entities.
+
+![Adding the point grid](images/getting_started_nqs_1.png)<br>
+
+
+2. Add another child node to the **tutorial_scene** node, this time a **Node2D** and change its name to **mouse_point_grid**.
+
+![Adding the point grid parent node](images/getting_started_nqs_2.png)<br>
+
+
+3. In the **Scene-tab**, select again the **tutorial_scene** node and go to the **Inspector-tab**. Set the *mouse_point_grid* as the **Point Grid Parent Node**, change the **Grid Size** to x=400, y=400 and edit the **Point Grid Base Spacing Vector** to x=48, y=24 and the **Point Grid Lattice Vector** to x=24 and y=12.  
+
+![Setting up the the point grid](images/getting_started_nqs_3.png)<br>
+
+
+4. To see the grid, we will add a **DEBUG** node as a child of the **UtilityAIPointGrid2DSearchSpace**. Right click on the search space node and then add a **Sprite2D** node as its child. Rename the *Sprite2D* node as **DEBUG**.
+
+![Adding the DEBUG node](images/getting_started_nqs_4.png)<br>
+
+5. Make sure the *DEBUG* node is selected, then in the **Inspector-tab** set the texture as the Godot icon and change the scale to 0.1.
+
+![Setting up the DEBUG node](images/getting_started_nqs_5.png)<br>
+
+6. Your node tree in the **Scene-tab** should look now as follows:
+
+![The resulting node tree](images/getting_started_nqs_6.png)<br>
+
+7. In the **Scene-tab** select the **tutorial_scene** and then click the **Attach a new or existing script to the selected node** button.
 
 ![Main scene attach script](images/getting_started_bt_15.png)<br>
  
@@ -216,13 +233,20 @@ extends Node2D
 
 @onready var ai_entity_template:PackedScene = preload("res://ai_entity.tscn")
 var mouse_position:Vector2
+var mouse_point_grid:Node2D
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	randomize()
+	
+	# To see how the NQS is running, we initialize the performance counters.
+	NodeQuerySystem.initialize_performance_counters()
+	# We won't be using regular queries, so allocate 100% of the time budget to 
+	# the high priority queries.
+	NodeQuerySystem.set_time_allocation_pct_to_high_priority_queries(1.0)
+	
 	# For convinience in changing the number of AI-entities to create
-	var num_entities:int = 1
+	var num_entities:int = 256
 	
 	# Create all the entities.
 	for i in range(0, num_entities):
@@ -230,14 +254,23 @@ func _ready():
 		var new_ai_entity:Node2D = ai_entity_template.instantiate()
 		# Sets a random position somewhere on the screen for the AI-entity.
 		new_ai_entity.position = Vector2( randf() * get_viewport_rect().end.x, randf() * get_viewport_rect().end.y)
+		
+		# Sets the point grid parent node.
+		new_ai_entity.point_grid_node_from_parent = $mouse_point_grid
+		
 		# Adds the AI-entity to the scene.
 		add_child(new_ai_entity)
 
 
 func _physics_process(delta):
+	# This will run the node queries that have been posted by the ai entities.
+	NodeQuerySystem.run_queries()
+
 	# Set the mouse cursor position as the to-vector.
 	mouse_position = get_viewport().get_mouse_position()
-
+	
+	# Move the point grid to the mouse position.
+	$mouse_point_grid.position = mouse_position
 
 ```
 
@@ -245,13 +278,13 @@ This code will instantiate the given number of AI-entities to the main scene to 
 
  * On the row The `@onready var ai_entity_template:PackedScene = preload("res://ai_entity.tscn)` we load the **ai_entity** scene which we will use to instantiate the AI entities in the **_ready()** method.
  * After that we create a variable **mouse_position** that the AI entities will use to check where the mouse cursor is.
- * In the **_ready()** method we first set the number of entities to instantiate as 1 in `var num_entities:int = 1`. Then in the **for-loop** we first use the `instantiate()` method of the loaded *ai_entity* scene to create a new instance of the AI entity, we then set a random position for it, and finally add it to the *main scene* by adding it as a child using the `add_child(new_ai_entity)` method. 
- * In the **_physics_process(delta)** method the only thing we do is set the `mouse_position` variable as the current position. We do this once in the main scene, as finding the mouse position is a surprisingly costly operation and calling this method for each AI entity can get quite costly when you add more AI entities.
+ * In the **_ready()** method we first initialize the Node Query System performance counters by calling `NodeQuerySystem.initialize_performance_counters()`. This isn't necessary, but allows us to see how the queries are doing in the Debugging-menu when running the scene. We then set the **time allocation percent** to allocate 100% of the time budget to high priority queries by calling the `NodeQuerySystem.set_time_allocation_pct_to_high_priority_queries(1.0)`. After that we set the number of entities to instantiate as 256 in `var num_entities:int = 256`. Then in the **for-loop** we first use the `instantiate()` method of the loaded *ai_entity* scene to create a new instance of the AI entity, we then set a random position for it, and finally add it to the *main scene* by adding it as a child using the `add_child(new_ai_entity)` method. 
+ * In the **_physics_process(delta)** method we run all the NQS queries by calling `NodeQuerySystem.run_queries()` method. *Rembember*: this only should be done once per frame in the main scene. We then set the `mouse_position` variable as the current position. We do this once in the main scene, as finding the mouse position is a surprisingly costly operation and calling this method for each AI entity can get quite costly when you add more AI entities. And finally, we move the point grid to the mouse position by updating the position of the **mouse_point_grid** node.
 
-We are now done with the main scene. Next we will focus on creating the **ai_entity** scene with a Behaviour Tree based AI.
+We are now done with the main scene. Next we will focus on creating the **ai_entity** scene and create a NQS query for it that will utilize the point grid we created. We will use a Behaviour Tree root node to post the query.
 
 
-## 6. Creating the Behaviour Tree for the AI entity
+## 6. Creating the the AI entity scene
 
 1. Select the **ai_entity** scene in the editor.
 
