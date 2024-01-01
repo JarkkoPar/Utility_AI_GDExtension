@@ -89,11 +89,13 @@ The queries are posted using the `NodeQuerySystem` singleton's `post_query(searc
 When a query is posted it is added to a list of active queries. Queries in the active list are executed in a *round-robin* manner. This means that the queries are run in a *loop* starting from the first posted query going towards the latest posted query, and looping back to the first, until the queries have completed or the time to run queries for the physics frame has run out. A high priority query gets to run up to 20 microseconds per update, and a regular priority query up to 10 microseconds. 
 
 
-### 3.3 Challenges with utility based queries
+### 3.3 Challenges with game world queries
 
-Queries usually aren't *real-time* solutions. If a game targets 120 or 60 FPS refresh rates, there isn't much time to run the queries per frame. If a search space is very large, it isn't possible to get the query results back during the frame even on the best hardware available.
+Queries take time. Especially queries that need to go through large data sets and do complex logic to filter and score the results can be time consuming. If a game targets 120 or 60 FPS refresh rates, there isn't much time to run the queries per frame in addition to all the other game logic. This means that the queries will have only a fraction of the frame time available for the searches they need to perform. 
 
-Luckily AI has a super power: **AI can wait**. As long as the NPC has something reasonably intelligent to do, the players won't notice that the AI is actually waiting for a search to finish.  
+To enable queries and good overall game performance, per frame **time budgeting** or *time slicing* needs to be used. With time budgeting the queries can run a set amount of time per frame, and then suspend until the next frame. This causes a delay between when a query was posted and when the results are returned. 
+
+Luckily AI has a super power: **AI can wait**. As long as the AI entity has something reasonably intelligent-looking to do, the players won't notice that the AI is actually waiting for a query or any other background task to finish. 
 
 
 ## 4. Utility enabled Behaviour Trees in Utility AI GDExtension
