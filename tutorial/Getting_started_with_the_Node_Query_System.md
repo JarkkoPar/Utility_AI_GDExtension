@@ -182,7 +182,7 @@ This will be our *main scene* and we will *instantiate* the AI entities in to th
 ![Adding the point grid parent node](images/getting_started_nqs_2.png)<br>
 
 
-3. In the **Scene-tab**, select again the **tutorial_scene** node and go to the **Inspector-tab**. Set the *mouse_point_grid* as the **Point Grid Parent Node**, change the **Grid Size** to x=400, y=400 and edit the **Point Grid Base Spacing Vector** to x=48, y=24 and the **Point Grid Lattice Vector** to x=24 and y=12.  
+3. In the **Scene-tab**, select again the **UtilityAIPointGrid2DSearchSpace** node and go to the **Inspector-tab**. Set the *mouse_point_grid* as the **Point Grid Parent Node**, change the **Grid Size** to x=400, y=400 and edit the **Point Grid Base Spacing Vector** to x=48, y=24 and the **Point Grid Lattice Vector** to x=24 and y=12.  
 
 ![Setting up the the point grid](images/getting_started_nqs_3.png)<br>
 
@@ -204,12 +204,12 @@ This will be our *main scene* and we will *instantiate* the AI entities in to th
 ![Main scene attach script](images/getting_started_bt_15.png)<br>
  
 
-2. In the **Attach Node Script** dialog, you can leave everything to defaults and click the **Create** button.
+8. In the **Attach Node Script** dialog, you can leave everything to defaults and click the **Create** button.
 
 ![Main scene attach script](images/getting_started_bt_16.png)<br>
 
 
-3. The **Script editor** should be automatically shown. If not, choose it from the menu at the top of the editor view. You should see the following code:
+9. The **Script editor** should be automatically shown. If not, choose it from the menu at the top of the editor view. You should see the following code:
 
 ```gdscript
 extends Node2D
@@ -233,7 +233,6 @@ extends Node2D
 
 @onready var ai_entity_template:PackedScene = preload("res://ai_entity.tscn")
 var mouse_position:Vector2
-var mouse_point_grid:Node2D
 
 
 # Called when the node enters the scene tree for the first time.
@@ -278,7 +277,7 @@ This code will instantiate the given number of AI-entities to the main scene to 
 
  * On the row The `@onready var ai_entity_template:PackedScene = preload("res://ai_entity.tscn)` we load the **ai_entity** scene which we will use to instantiate the AI entities in the **_ready()** method.
  * After that we create a variable **mouse_position** that the AI entities will use to check where the mouse cursor is.
- * In the **_ready()** method we first initialize the Node Query System performance counters by calling `NodeQuerySystem.initialize_performance_counters()`. This isn't necessary, but allows us to see how the queries are doing in the Debugging-menu when running the scene. We then set the **time allocation percent** to allocate 100% of the time budget to high priority queries by calling the `NodeQuerySystem.set_time_allocation_pct_to_high_priority_queries(1.0)`. After that we set the number of entities to instantiate as 256 in `var num_entities:int = 256`. Then in the **for-loop** we first use the `instantiate()` method of the loaded *ai_entity* scene to create a new instance of the AI entity, we then set a random position for it, and finally add it to the *main scene* by adding it as a child using the `add_child(new_ai_entity)` method. 
+ * In the **_ready()** method we first initialize the Node Query System performance counters by calling `NodeQuerySystem.initialize_performance_counters()`. This isn't necessary, but allows us to see how the queries are doing in the Debugging-menu when running the scene. We then set the **time allocation percent** to allocate 100% of the time budget to high priority queries by calling the `NodeQuerySystem.set_time_allocation_pct_to_high_priority_queries(1.0)`. After that we set the number of entities to instantiate as 256 in `var num_entities:int = 256`. Then in the **for-loop** we first use the `instantiate()` method of the loaded *ai_entity* scene to create a new instance of the AI entity, we then set a random position for it, add a reference to the *mouse_point_grid* node, and finally add it to the *main scene* by adding it as a child using the `add_child(new_ai_entity)` method. 
  * In the **_physics_process(delta)** method we run all the NQS queries by calling `NodeQuerySystem.run_queries()` method. *Rembember*: this only should be done once per frame in the main scene. We then set the `mouse_position` variable as the current position. We do this once in the main scene, as finding the mouse position is a surprisingly costly operation and calling this method for each AI entity can get quite costly when you add more AI entities. And finally, we move the point grid to the mouse position by updating the position of the **mouse_point_grid** node.
 
 We are now done with the main scene. Next we will focus on creating the **ai_entity** scene and create a NQS query for it that will utilize the point grid we created. We will use a Behaviour Tree root node to post the query.
