@@ -33,7 +33,7 @@ If you want the source code, you can find it here: [Utility AI Source Code repos
 
 # Compatibility
 Works on Godot 4.1.2 or newer versions. 
-Currently 64bit Windows and Linux versions are available.
+Currently 64 bit Windows, 64 bit Linux, MacOS and wasm32 (web) versions are available.
 
 
 # Installation
@@ -43,7 +43,13 @@ Just copy the addons-folder with all its contents to your Godot project root fol
 
 # Documentation
 
-You can find the documentation [here](documentation/Nodes_latest.md) and the tutorials [here](tutorial/README.md).
+You can find the documentation [here](documentation/Nodes_latest.md).
+
+
+# Getting started and tutorials
+
+Read the getting started tutorials [here](tutorial/README.md).
+
 
 # Authors
 

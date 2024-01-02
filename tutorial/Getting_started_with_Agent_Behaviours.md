@@ -78,17 +78,21 @@ Before we start, let's review what *agent behaviours* are.
 
 Agent Behaviours are a utility-function based AI system for creating AI to your non-playable characters. The system uses **sensors** to get data about the game world, **behaviours** and **considerations** to choose the correct behaviour, and optional **actions** to realize the selected behaviour. The considerations use **curves** to weight the sensor input, allowing you to tune the importance of various inputs to your liking.
 
-The use of utility functions for the behaviours means that the AI entity can react to world state by weighting its options against one another. Where *behaviour trees* and *state trees* are more static when selecting which nodes to activate, the utility based agent behaviours can consider several variables and even combine them to come to a conclusion on which behaviour is the most appropriate for the situation.
+The use of utility functions for the behaviours means that the AI entity can react to the game world by weighting its options against one another based on the input it receives from the sensors. Where *behaviour trees* and *state trees* are more static when selecting which nodes to activate, the utility based agent behaviours can consider several variables and even combine them to come to a conclusion on which behaviour is the most appropriate for the situation.
 
-You can use the agent behaviours together with the state trees and behaviour trees. For instance, the agent behaviours can be used to select the top-level behaviour and the behaviour or state trees can be used to realize the behaviour.
+> [!NOTE]
+> If you are familiar with **state machines**, you can also think of the Agent Behaviours as a **loosely coupled state machine**. The *AI Agent* node is the *State Machine* node, and the *Behaviours* are its *States*. Instead of fixed transitions between states, this loosely coupled state machine uses *utility-based considerations* to determine when to transition between states and what state it should choose.
+
+
+You can use the agent behaviours together with the behaviour trees and state trees. For instance, the agent behaviours can be used to select the top-level behaviour and the behaviour or state trees can be used to realize the behaviour.
 
 
 
 ### 3.1 The structure of the Agent Behaviours
 
-The structure of the agent behaviours controls the decision making for your AI entity. Agent behaviours consists of a **AI Agent** node that is the basis of the structure. The AI Agent gets input from the game world by using **sensors**. The sensor nodes are added as the child nodes of the AI Agent node.
+The structure of the agent behaviours controls the decision making for your AI entity. Agent behaviours consists of a **AI Agent** node that is the basis of the structure (the **root** node). The AI Agent gets input from the game world by using **sensors**. The sensor nodes are added as the child nodes of the AI Agent node.
 
-The *behaviours* the AI Agent will choose from are defined using the **Behaviour** nodes. The behaviours are added as child nodes to the AI Agent.
+The *behaviours* the AI Agent will choose from are defined using the **Behaviour** nodes. The behaviours are added as child nodes to the AI Agent. 
 
 Each behaviour needs **Considerations** as either their child nodes or as a property in the *Inspector*. The considerations are used to **score** the behaviours. The AI Agent will choose its behaviour amongst the top-scoring behaviours.
 
