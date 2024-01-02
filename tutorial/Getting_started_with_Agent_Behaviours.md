@@ -452,61 +452,11 @@ This concludes the tutorial, but there are things you can try to learn more. For
  * Try adding another type of AI entity that has some other logic for its behaviour. 
  * Try setting the the `num_entities` to a larger value in the **tutorial_scene**. How many AI entities you can add without it affecting performance? 
 
-In 6.1 it was noted that you usually don't want to tick the tree every physics frame. There are several reasons for this. For one, the game world usually doesn't change dramatically each frame and as a result the AI Agent would end up choosing the same behaviour as it did on the previous frame. Secondly, updating the AI Agent each frame has of course a cost. If the updating doesn't result in a change in the behaviour and it costs some frame time, it doesn't make sense to do the updating unless it is necessary. Thirdly, we humans (and also animals in general) have various *reaction times* that cause some delay when we are reacting to the changes in our environment. Adding some delay may make your AI entities more *believable* and fun. Finally, updating the AI Agent every frame can lead to a practice of adding per-frame logic inside the AI, which in turn can lead to a unnecessarily complex AI structure. 
+In 6.1 it was noted that you usually don't want to update the AI every physics frame. There are several reasons for this. For one, the game world usually doesn't change dramatically each frame and as a result the AI Agent would end up choosing the same behaviour as it did on the previous frame. Secondly, updating the AI Agent each frame has of course a cost. If the updating doesn't result in a change in the behaviour and it costs some frame time, it doesn't make sense to do the updating unless it is necessary. Thirdly, we humans (and also animals in general) have various *reaction times* that cause some delay when we are reacting to the changes in our environment. Adding some delay may make your AI entities more *believable* and fun. Finally, updating the AI Agent every frame can lead to a practice of adding per-frame logic inside the AI, which in turn can lead to a unnecessarily complex AI structure. 
 
-Some of the ways to tick the state tree less often can be:
- * Add a delay or cooldown. Each time you update the AI Agent, you set a variable in the **ai_entity** node to some short time duration and then tick the tree only after this time has passed. An example of this is given below.
- * Evaluate the AI Agent options based on **events**. For example, if you have an Area2D or Area3D that you use for sensing the environment, you can evaluate what the AI Agent should do when an enemy enters or exits the area. Another examples could be the AI entity losing or gaining more health, getting an alarm signal, and so on.
+Some of the ways to update the AI less often can be:
+ * Set the cooldown value for the AI agent node to a higher value. Each time you update the AI Agent, this cooldown value will be reset and the update will happen only after the cooldown time has passed.
+ * Evaluate the AI Agent options based on **events**. For example, if you have an Area2D or Area3D that you use for sensing the environment, you can evaluate what the AI Agent should do when an enemy enters or exits the area. Another example could be the AI entity losing or gaining more health, getting an alarm signal, and so on.
 
 To see the difference of adding some delay to updateing the AI agent, test how the code below for the **ai_entity** script changes the way the AI works. The only thing it adds is the `ticking_delay` variable that introduces a minimum delay plus a random variance to when the updating occurs. You can try adding different delays and how it affects performance and the AI reaction times.
 
-```gdscript
-extends AnimatedSprite2D
-
-# This is the distance sensor. 
-@onready var sensor_distance:UtilityAIDistanceVector2Sensor = $UtilityAIAgent/UtilityAIDistanceVector2Sensor
-var movement_speed:float = 0.0
-var ticking_delay:float = 0.0
-
-
-func _physics_process(delta):
-	# Set the AI-entity position as the from-vector.
-	sensor_distance.from_vector = global_position
-	
-	# Set the mouse cursor position as the to-vector.
-	sensor_distance.to_vector = get_parent().mouse_position 
-	
-	# Update the AI.
-	ticking_delay -= delta
-	if ticking_delay <= 0.0:
-		ticking_delay = 0.3 + randf() * 0.3
-		$UtilityAIAgent.evaluate_options(delta)
-	
-	# Move based on movement speed.
-	self.global_position += sensor_distance.direction_vector * movement_speed * delta
-	
-	# Flip the sprite horizontally based on the direction vector horizontal (x)
-	# value.
-	flip_h = (sensor_distance.direction_vector.x < 0)
-	# If the movement speed is negative, the entity is moving away so
-	# we should flip the sprite again.
-	if movement_speed < 0.0:
-		flip_h = !flip_h
-
-
-func _on_utility_ai_agent_behaviour_changed(behaviour_node):
-	if behaviour_node == null:
-		return
-	
-	if behaviour_node.name == "Approach":
-		movement_speed = -100
-		play("moving")
-	elif behaviour_node.name == "Flee":
-		movement_speed = 100
-		play("moving")
-	else:
-		movement_speed = 0
-		play("default")
-
-
-```

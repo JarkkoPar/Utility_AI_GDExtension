@@ -73,9 +73,6 @@ You now have all the assets we need for this tutorial. The setup in your FileSys
 ![FileSystem](images/getting_started_bt_1_assets.png)<br>
 
 
-Before we get started with development, it is good review what Behaviour Trees are. If you already are experienced in using behaviour trees, you can hop on to [4. Utility enabled Behavour Trees in Utility AI GDExtension](Getting_started_with_State_Trees.md#4-utility-enabled-behaviour-trees-in-utility-ai-gdextension) to learn how the utility enabled behaviour trees in Utility AI GDExtension expand the classical Behaviour Tree functionality. Otherwise, read on.
-
-
 ## 3. About State Trees
 
 State trees are a new solution to AI that combine the flexibility and tree-structure of Behaviour Trees to the state management of State Machines. The state tree defines a hierarchical set of states and allows you to define transitions to any level of the hierarchy. The state tree will then determine which child states are activated.

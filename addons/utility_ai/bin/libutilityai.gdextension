@@ -4,11 +4,14 @@ entry_symbol = "utility_ai_library_init"
 compatibility_minimum = 4.1
 
 [libraries]
-
+macos.debug = "res://addons/utility_ai/bin/libutilityai.macos.template_debug.framework"
+macos.release = "res://addons/utility_ai/bin/libutilityai.macos.template_release.framework"
 windows.debug.x86_64 = "res://addons/utility_ai/bin/libutilityai.windows.template_debug.x86_64.dll"
 windows.release.x86_64 = "res://addons/utility_ai/bin/libutilityai.windows.template_release.x86_64.dll"
 linux.debug.x86_64 = "res://addons/utility_ai/bin/libutilityai.linux.template_debug.x86_64.so"
 linux.release.x86_64 = "res://addons/utility_ai/bin/libutilityai.linux.template_release.x86_64.so"
+web.debug.wasm32 = "res://addons/utility_ai/bin/libutilityai.javascript.template_debug.wasm32.wasm"
+web.release.wasm32 = "res://addons/utility_ai/bin/libutilityai.javascript.template_release.wasm32.wasm"
 
 [icons]
 UtilityAI = "res://addons/utility_ai/icons/UtilityAIDefault.svg"
@@ -35,7 +38,8 @@ UtilityAIAngleVector2Sensor = "res://addons/utility_ai/icons/UtilityAIDefault.sv
 UtilityAIAngleVector3Sensor = "res://addons/utility_ai/icons/UtilityAIDefault.svg"
 UtilityAIArea2DVisibilitySensor = "res://addons/utility_ai/icons/UtilityAIArea2DVisibilitySensor.svg"
 UtilityAIArea3DVisibilitySensor = "res://addons/utility_ai/icons/UtilityAIArea3DVisibilitySensor.svg"
-UtilityAINavigation3DPointGridSearchSpaces = "res://addons/utility_ai/icons/UtilityAINavigation3DPointGridSearchSpace.svg"
+UtilityAIPointGrid2DSearchSpace = "res://addons/utility_ai/icons/UtilityAIPointGridSearchSpace.svg"
+UtilityAIPointGrid3DSearchSpace = "res://addons/utility_ai/icons/UtilityAIPointGridSearchSpace.svg"
 UtilityAINQSSearchSpaces = "res://addons/utility_ai/icons/UtilityAISearchSpaces.svg"
 UtilityAINodeGroupSearchSpace = "res://addons/utility_ai/icons/UtilityAISearchSpaces.svg"
 UtilityAINodeChildrenSearchSpace = "res://addons/utility_ai/icons/UtilityAISearchSpaces.svg"

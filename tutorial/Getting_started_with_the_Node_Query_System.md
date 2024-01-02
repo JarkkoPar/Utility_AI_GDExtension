@@ -493,53 +493,9 @@ To change the number of AI entities created, change the `num_entities` variable 
 
 This concludes the tutorial, but there are things you can try to learn more. For instance:
 
- * Try adding some more logic to the tutorial scene, for instance a point that the AI entities want to avoid, an animation they will some times play when they are not moving or an item they can pick up.
- * Try adding another type of AI entity that has some other logic for its behaviour. 
+ * Try adding some more features to the point grid and then criteria to score and filter the results.
+ * Try adding a new Node2D in the **tutorial_scene** and add some Node2D's as its children to random positions. Set a group for these child nodes and then try and set up a **UtilityAINodeGroupSearchSpace** for the AI to use instead of the point grid.
  * Try setting the the `num_entities` to a larger value in the **tutorial_scene**. How many AI entities you can add without it affecting performance? 
+ * How does resizing or changing the spacing of the point grid affect performance? 
+ * 
 
-In 7.1 it was noted that you usually don't want to tick the tree every physics frame. There are several reasons for this. For one, the game world usually doesn't change dramatically each frame and as a result the behaviour tree would end up to the same task node as it did on the previous frame. Secondly, ticking the behaviour tree each frame has of course a cost. If the ticking doesn't result in a change in the behaviour and it costs some frame time, it doesn't make sense to tick the tree unless it is necessary. Thirdly, we humans (and also animals in general) have various *reaction times* that cause some delay when we are reacting to the changes in our environment. Adding some delay may make your AI entities more *believable* and fun. Finally, ticking the tree every frame can lead to a practice of adding per-frame logic inside the behaviour tree which in turn can lead to a unnecessarily complex tree. 
-
-Some of the ways to tick the behaviour tree less often can be:
- * Add a delay or cooldown. Each time you tick the tree, you set a variable in the **ai_entity** node to some short time duration and then tick the tree only after this time has passed. An example of this is given below.
- * Tick the tree based on **events**. For example, if you have an Area2D or Area3D that you use for sensing the environment, you can tick the tree when an enemy enters or exits the area. Another examples could be the AI entity losing or gaining more health, getting an alarm signal, and so on.
-
-To see the difference of adding some delay to ticking the tree, test how the code below for the **ai_entity** script changes the way the AI works. The only thing it adds is the `ticking_delay` variable that introduces a minimum delay plus a random variance to when the ticking occurs. You can try adding different delays and how it affects performance and the AI reaction times.
-
-```gdscript
-extends AnimatedSprite2D
-
-# This is the distance sensor. 
-@onready var sensor_distance:UtilityAIDistanceVector2Sensor = $UtilityAIBTRoot/UtilityAIDistanceVector2Sensor
-var movement_speed:float = 0.0
-var ticking_delay:float = 0.0
-
-
-func _ready():
-	ticking_delay = randf() * 0.3
-
-
-func _physics_process(delta):
-	# Set the AI-entity position as the from-vector.
-	sensor_distance.from_vector = global_position
-	
-	# Set the mouse cursor position as the to-vector.
-	sensor_distance.to_vector = get_parent().mouse_position 
-	
-	# Update the AI.
-	ticking_delay -= delta
-	if ticking_delay <= 0.0:
-		ticking_delay = 0.3 + randf() * 0.3
-		$UtilityAIBTRoot.tick(self, delta)
-	
-	# Move based on movement speed.
-	self.global_position += sensor_distance.direction_vector * movement_speed * delta
-	
-	# Flip the sprite horizontally based on the direction vector horizontal (x)
-	# value.
-	flip_h = (sensor_distance.direction_vector.x < 0)
-	# If the movement speed is negative, the entity is moving away so
-	# we should flip the sprite again.
-	if movement_speed < 0.0:
-		flip_h = !flip_h
-
-```
