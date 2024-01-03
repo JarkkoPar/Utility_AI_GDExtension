@@ -195,6 +195,11 @@ This will be our *main scene* and we will *instantiate* the AI entities in to th
 
 ![Setting up the DEBUG node](images/getting_started_nqs_5.png)<br>
 
+6. The *DEBUG* node still selected, go to the **Node-tab**, click the Groups selection and add the DEBUG node in to the **point_grid** group.
+
+![Setting up the DEBUG node](images/getting_started_nqs_7.png)<br>
+
+
 6. Your node tree in the **Scene-tab** should look now as follows:
 
 ![The resulting node tree](images/getting_started_nqs_6.png)<br>
@@ -254,9 +259,6 @@ func _ready():
 		# Sets a random position somewhere on the screen for the AI-entity.
 		new_ai_entity.position = Vector2( randf() * get_viewport_rect().end.x, randf() * get_viewport_rect().end.y)
 		
-		# Sets the point grid parent node.
-		new_ai_entity.point_grid_node_from_parent = $mouse_point_grid
-		
 		# Adds the AI-entity to the scene.
 		add_child(new_ai_entity)
 
@@ -277,13 +279,17 @@ This code will instantiate the given number of AI-entities to the main scene to 
 
  * On the row The `@onready var ai_entity_template:PackedScene = preload("res://ai_entity.tscn)` we load the **ai_entity** scene which we will use to instantiate the AI entities in the **_ready()** method.
  * After that we create a variable **mouse_position** that the AI entities will use to check where the mouse cursor is.
- * In the **_ready()** method we first initialize the Node Query System performance counters by calling `NodeQuerySystem.initialize_performance_counters()`. This isn't necessary, but allows us to see how the queries are doing in the Debugging-menu when running the scene. We then set the **time allocation percent** to allocate 100% of the time budget to high priority queries by calling the `NodeQuerySystem.set_time_allocation_pct_to_high_priority_queries(1.0)`. After that we set the number of entities to instantiate as 256 in `var num_entities:int = 256`. Then in the **for-loop** we first use the `instantiate()` method of the loaded *ai_entity* scene to create a new instance of the AI entity, we then set a random position for it, add a reference to the *mouse_point_grid* node, and finally add it to the *main scene* by adding it as a child using the `add_child(new_ai_entity)` method. 
- * In the **_physics_process(delta)** method we run all the NQS queries by calling `NodeQuerySystem.run_queries()` method. *Rembember*: this only should be done once per frame in the main scene. We then set the `mouse_position` variable as the current position. We do this once in the main scene, as finding the mouse position is a surprisingly costly operation and calling this method for each AI entity can get quite costly when you add more AI entities. And finally, we move the point grid to the mouse position by updating the position of the **mouse_point_grid** node.
+ * In the **_ready()** method we first initialize the Node Query System performance counters by calling `NodeQuerySystem.initialize_performance_counters()`. This isn't necessary, but allows us to see how the queries are doing in the Debugging-menu when running the scene.
+ * We then set the **time allocation percent** to allocate 100% of the time budget to high priority queries by calling the `NodeQuerySystem.set_time_allocation_pct_to_high_priority_queries(1.0)`. 
+ * After that we set the number of entities to instantiate as 256 in `var num_entities:int = 256`. 
+ * Then in the **for-loop** we first use the `instantiate()` method of the loaded *ai_entity* scene to create a new instance of the AI entity, we then set a random position for it, and finally add it to the *main scene* by adding it as a child using the `add_child(new_ai_entity)` method. 
+ * In the **_physics_process(delta)** method we run all the NQS queries by calling `NodeQuerySystem.run_queries()` method. **Remember**: this only should be done once per frame in the main scene. We then set the `mouse_position` variable as the current position. We do this once in the main scene, as finding the mouse position is a surprisingly costly operation and calling this method for each AI entity can get quite costly when you add more AI entities. And finally, we move the point grid to the mouse position by updating the position of the **mouse_point_grid** node.
 
 We are now done with the main scene. Next we will focus on creating the **ai_entity** scene and create a NQS query for it that will utilize the point grid we created. We will use a Behaviour Tree root node to post the query.
 
 
 ## 6. Creating the the AI entity scene
+
 
 1. Select the **ai_entity** scene in the editor.
 
@@ -292,48 +298,40 @@ We are now done with the main scene. Next we will focus on creating the **ai_ent
 
 ![Add child node to the ai_entity node](images/getting_started_bt_17.png)<br>
 
+3. Choose the **UtilityAINodeGroupSearchSpace** and add it to the scene by clicking the **Create** button. 
 
-3. Choose the **UtilityAIBTRoot** node and add it to the scene by clicking the **Create** button. The root-node will be the node we will be *ticking* later in code.
+![Add child node to the ai_entity node](images/getting_started_nqs_9.png)<br>
 
-![The Behaviour Tree root node](images/getting_started_bt_18.png)<br>
+4. With the **UtilityAINodeGroupSearchSpace** selected, go to the **Inspector-tab** and write in the **Group Name** property the same group name you added for the *DEBUG* node: **point_grid**. This will make the search space use the grid point nodes as its search space.
 
+5. We'll now add the **search criteria** as the child nodes of the *search space*. The first one will be used to filter out the nodes so that they form the familiar donut-shape from the other tutorials. Add a child node to the search space and choose the **UtilityAIDistanceToVector2SearchCriterion** node. 
 
-4. We'll use a **Sensor** to track the distance and direction vector to the mouse cursor. Right-click on the **UtilityaiBTRoot** node you created and add a **UtilityAIDistanceVector2Sensor** as its child node.
+![Add child node to the ai_entity node](images/getting_started_nqs_10.png)<br>
 
-![Add the distance sensor](images/getting_started_bt_19.png)<br>
+6. Select the **UtilityAIDistanceToVector2SearchCriterion** node in the **Scene-tab**, then in the **Inspector-tab** set the **Min Distance** property to **90** and the **Max Distance** property to **200**. Make sure both **Use for Scoring** and **Use for Filtering** properties are checked.
 
-In the **Inspector** make sure to check the boxes for **Is Distance Calculated** and **Is Direction Vector Calculated** for the distance sensor.
+![Add child node to the ai_entity node](images/getting_started_nqs_11.png)<br>
 
-![Add the distance sensor](images/getting_started_distance_vector_checks.png)<br>
+7. The second search criteria will be used to find the closest grid point to the AI entity. Create a **UtilityAIDistanceToNode2DSearchCriterion** as a child of the **UtilityAINodeGroupSearchSpace**.
 
-5. Add another child node to the UtilityAIBTRoot node, this time a **UtilityAIBTSelector**. The selector will try to tick its child nodes one by one, starting from the top-most one. 
+![Add child node to the ai_entity node](images/getting_started_nqs_12.png)<br>
 
-![Add the selector node](images/getting_started_bt_20.png)<br>
+8. Select the **UtilityAIDistanceToNode2DSearchCriterion** node and then set the **Distance To** property as the **ai_entity** node, the **Max Distance** property to 1000. Finally, add an **activation curve** that goes from 1.0 to 0.0 in the Y-axis as X-axis increases to 1. This will make the nodes that are *near* to the AI entity get a high score and those that are farther away a lower score.
 
-6. Select the **UtilityAIBTSelector** in the **Scene-tab** and then add 3 **UtilityAIBTSequenceNode**s as childs of the selector node. 
+![Add child node to the ai_entity node](images/getting_started_nqs_13.png)<br>
 
-![Add the sequence nodes](images/getting_started_bt_21.png)<br>
+**We are now done with the NQS query. Next we'll add the Behaviour Tree nodes that will continuously run the query.**
 
-7. Rename the **Selector** node as **Keep a fixed distance to the cursor**, and the sequence nodes (starting from the top-most one) as follows: **Move closer to the cursor**, **Move away from the cursor** and **Wait**. 
+9. Add a **UtilityAIBTRoot** node as the child of the **ai_entity** node, and then add a **UtilityAIBTRunNQSQuery** node as the child of the **UtilityAIBTRoot** node.
 
-![Add the sequence nodes](images/getting_started_bt_22.png)<br>
+![Add child node to the ai_entity node](images/getting_started_nqs_14.png)<br>
 
-8. In the **Scene-tab** select the **Move closer to the cursor** node and then add two **UtilityAIBTLeaf** nodes as its childs. 
+10. With the **UtilityAIBTRunNQSQuery** node selected, go to the **Inspector-tab** and set the **Nqs Search Space** property as the **UtilityAINodeGroupSearchSpace** node.
 
-![Add the sequence nodes](images/getting_started_bt_23.png)<br>
-
-
-9. Rename the first child leaf-node as **Is too far from the cursor** and the second one as **Move closer**. 
-
-![Add the sequence nodes](images/getting_started_bt_24.png)<br>
+![Add the sequence nodes](images/getting_started_nqs_15.png)<br>
 
 
-10. Add two more child nodes to under the **Move away from the cursor** and name them **Is too close to the cursor** and **Move away**. And under the **Wait** sequence add one leaf-node and name it as **Set to idle animation**. 
-
-![Add the sequence nodes](images/getting_started_bt_25.png)<br>
-
-
-We have now created the structure for the AI's logic. On each tick, the behaviour tree will choose some task node based on the structure. What is missing are the ai_entity handling code and the `on_tick()` methods for the behaviour tree tasks, and we will add them in the next step.
+We have now created the structure for the NQS query. On each tick the AI entity will try to post the query. This will only succeed if the query has completed.
 
 
 ## 7. Adding the on_tick() methods
