@@ -95,12 +95,16 @@ Queries take time. Especially queries that need to go through large data sets an
 
 To enable queries and good overall game performance, per frame **time budgeting** or *time slicing* needs to be used. With time budgeting the queries can run a set amount of time per frame, and then suspend until the next frame. This causes a delay between when a query was posted and when the results are returned. 
 
-Luckily AI has a super power: **AI can wait**. As long as the AI entity has something reasonably intelligent-looking to do, the players won't notice that the AI is actually waiting for a query or any other background task to finish. 
+Luckily AI can do something other systems cannot: **AI can wait**. 
 
 
-## 4. 
+## 4. Waiting is a super power
 
-tbd
+It may sound peculiar, but unlike other systems in a game, AI can usually wait. As long as the AI entity has something reasonably intelligent-looking to do, the players won't notice that the AI is actually waiting for a query or any other background task to finish. The key is to find a sweet spot where the frame time is reasonable and the waiting time is not too much to be distracting to the players. This means optimizing the *search space*, the *search criteria* and *when the queries are posted*. Queries can also be *prioritized* so that important ones get a high priority and more execution time per frame.
+
+In this tutorial we will create an extreme example to illustrate the functionality of the NQS and time budgeting in a similar setting to the other AI components available in Utility AI GDExtension. Unlike in a real game, *all* the AI does in this tutorial is continuously run queries to do its logic. By default the search space is 90 node point grid with little criterias to minimize it. To make matters worse, the AI entities will even post all their queries at the same time when starting the scene. As you increase the number of AI entities you will likely see some delay starting to happen when a few hundred to a thousand AI entities have been added (depending on your hardware, of course). As such, this tutorial scene is also a good way to get a feel on how much waiting is too much waiting.
+
+In a real game, you will likely have less AI entities running queries, they will run the queries at different times and your search spaces will be more optimized.
 
 
 ## 5. Creating the scenes
