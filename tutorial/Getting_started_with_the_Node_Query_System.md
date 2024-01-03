@@ -182,7 +182,7 @@ This will be our *main scene* and we will *instantiate* the AI entities in to th
 ![Adding the point grid parent node](images/getting_started_nqs_2.png)<br>
 
 
-3. In the **Scene-tab**, select again the **UtilityAIPointGrid2DSearchSpace** node and go to the **Inspector-tab**. Set the *mouse_point_grid* as the **Point Grid Parent Node**, change the **Grid Size** to x=400, y=400 and edit the **Point Grid Base Spacing Vector** to x=48, y=24 and the **Point Grid Lattice Vector** to x=24 and y=12.  
+3. In the **Scene-tab**, select again the **UtilityAIPointGrid2DSearchSpace** node and go to the **Inspector-tab**. Set the *mouse_point_grid* as the **Point Grid Parent Node**, change the **Grid Size** to x=400, y=400, the **Point Grid Lattice Type** to **Custom**, and edit the **Point Grid Base Spacing Vector** to x=96, y=48 and the **Point Grid Lattice Vector** to x=48 and y=24.  
 
 ![Setting up the the point grid](images/getting_started_nqs_3.png)<br>
 
@@ -334,7 +334,7 @@ We are now done with the main scene. Next we will focus on creating the **ai_ent
 We have now created the structure for the NQS query. On each tick the AI entity will try to post the query. This will only succeed if the query has completed.
 
 
-## 7. Adding the on_tick() methods
+## 7. Adding the ai_entity script
 
 
 1. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **ai_entity** node. Replace the code with the following code (see explanation for it below):
@@ -342,158 +342,81 @@ We have now created the structure for the NQS query. On each tick the AI entity 
 ```gdscript
 extends AnimatedSprite2D
 
-# This is the distance sensor. 
-@onready var sensor_distance:UtilityAIDistanceVector2Sensor = $UtilityAIBTRoot/UtilityAIDistanceVector2Sensor
-var movement_speed:float = 0.0
+var movement_speed:float = 100.0
+var movement_target_point:Vector2
+var dir_to_target:Vector2
 
 
 func _physics_process(delta):
 	# Set the AI-entity position as the from-vector.
-	sensor_distance.from_vector = global_position
-	
-	# Set the mouse cursor position as the to-vector.
-	sensor_distance.to_vector = get_parent().mouse_position 
+	$UtilityAINodeGroupSearchSpace/UtilityAIDistanceToVector2SearchCriterion.distance_to_vector = get_parent().mouse_position 
 	
 	# Update the AI.
 	$UtilityAIBTRoot.tick(self, delta)
 	
 	# Move based on movement speed.
-	self.global_position += sensor_distance.direction_vector * movement_speed * delta
+	self.global_position += dir_to_target * movement_speed * delta
+	if (global_position - movement_target_point).length() < 10.0:
+		movement_speed = 0.0
+	else:
+		movement_speed = 100.0
 	
 	# Flip the sprite horizontally based on the direction vector horizontal (x)
 	# value.
-	flip_h = (sensor_distance.direction_vector.x < 0)
+	flip_h = (dir_to_target.x < 0)
 	# If the movement speed is negative, the entity is moving away so
 	# we should flip the sprite again.
 	if movement_speed < 0.0:
 		flip_h = !flip_h
 
-
 ```
 
 What this code does:
- * The row `@onready var sensor_distance:UtilityAIDistanceVector2Sensor = $UtilityAIBTRoot/UtilityAIDistanceVector2Sensor` gets a reference to the Vector2 based distance sensor of the AI entity. This sensor is used to check the distance and to get the direction vector towards the target.
- * The row `var movement_speed:float = 0.0` defines a variable that we will use to control the movement speed of the AI entity.
- * In the `_physics_process(delta)` method we first set the distance sensor **from-position** as the global position of the AI entity, and the **to-position** as the location of the mouse cursor from the parent node. The sensor will use these two positions to calculate the distance from the AI entity to the mouse cursor, and also the direction vector that we will use later for movement.
- * `$UtilityAIBTRoot.tick(self, delta)` ticks the behaviour tree. As **user_data** we give the root node of the AI entity scene which in this case is the **self** keyword. This gives the behaviour tree node `on_tick()` methods access to all the properties of the AI entity node.
- * After *ticking* the root node, the row `self.global_position += sensor_distance.direction_vector * movement_speed * delta` moves the AI entity based on the direction vector calculated by the distance sensor. Delta time is used to scale the movement amount. The `movement_speed` is set by the behaviour tree task nodes.
+ * The row `var movement_speed:float = 0.0` defines a variable that we will use to control the movement speed of the AI entity. We also define two other variables: `movement_target_point` that is the target the AI entity will move to, and the `dir_to_target` that will be used to store the direction towards the movement target point for the AI entity.
+ * In the `_physics_process(delta)` method we first set the **UtilityAIDistanceToVector2SearchCriterion**'s **distance_to_vector** property as the location of the mouse cursor from the parent node. This will create the donut-shape for the query result.
+ * `$UtilityAIBTRoot.tick(self, delta)` ticks the behaviour tree. As **user_data** we simply give **null**, as we do not need it for this tutorial.
+ * After *ticking* the root node, the row `self.global_position += dir_to_target * movement_speed * delta` moves the AI entity based on the direction vector we will soon calculate in a method we will define soon. We will also set the `movement_speed` in that method. Delta time is used to scale the movement amount.
+ * The following `if (global_position - movement_target_point).length() < 10.0:` statement checks if the AI entity is close enough to its target and then sets the `movement_speed` to **0.0**, which stops the AI entity. Otherwise it sets the movement speed to **100**.
  * The final rows of the method make sure the character sprite is facing the direction it is moving to by flipping the sprite horizontally when needed.
 
 > [!NOTE]
 > For this tutorial we are calling the root node `tick()` method every physics frame. This isn't what you usually want to do in a real game. See section [9. Next steps](Getting_started_with_the_Node_Query_System.md#9-next-steps) for more information.
 
 
-2. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **Is too far from the cursor** node. Replace the code with the following code (see explanation for it below):
+2. In the **Scene-tab**, select the **UtilityAINodeGroupSearchSpace** and then go to the **Node-tab** and connect the **query_completed(search_space: Object)** signal to the **ai_entity** scene's script.
+
+3. Set the signal handler code as follows (explanation of the code follows):
 
 ```gdscript
-extends UtilityAIBTLeaf
 
-
-func on_tick(actor, delta):
-	# Check if the distance is greater than expected.
-	if actor.sensor_distance.distance > 150.0:
-		return 1 # Success = Far
-	return -1 # Failure = Not far
-
-```
-
-We define the `on_tick()` method and name the **user_data** parameter as the **actor**. You can set the name to anything you want. In this case the name "actor" was chosen because in step 7.1 we use the **ai_entity** node in the root node `tick()` method.
-
-All the `on_tick()` method does is that it checks what the distance to the mouse cursor is based on the sensor. If it is greater than the expected value 1 is returned. This means that the leaf node succeeded. If not, -1 (failure) is returned. 
-
-What we have defined is called a **conditional** node for the behaviour tree. A conditional node returns *success* if the condition passes and *failure* if it doesn't. Because the **Is too far from the cursor** node is within a sequence, returning *success* means that the sequence will continue to the next node, **Move closer**. The logic we've described is therefore: "If the AI entity is too far from the cursor, move closer to it".
-
-
-3. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **Move closer** node. Replace the code with the following code (see explanation for it below):
-
-```gdscript
-extends UtilityAIBTLeaf
-
-
-func on_tick(actor, delta):
-	actor.movement_speed = -100.0
-	actor.play("moving")
-	return 1
+func _on_utility_ai_node_group_search_space_query_completed(search_space):
+	if search_space.query_results.size() == 0:
+		return
+	movement_target_point = search_space.query_results[0].global_position
+	dir_to_target = (movement_target_point - global_position).normalized()
 
 
 ```
 
-Again, we define the `on_tick()` method and this time we set the `movement_speed` of the actor (which is the AI entity) to -100 and play the "moving" animation. The method always returns 1 (success). 
+This code is called when ever the NQS query completes. It first checks if the query returned any results. Then it assings the `movement_target_point` as the global position of the first point grid node found by the query. Finally, it calculates the *direction vector* towards the target point from the AI entity's position in the final row `dir_to_target = (movement_target_point - global_position).normalized()`.
 
-The behaviour tree is a structure used for **making decisions about what to do** so it makes sense to keep the behaviour tree nodes as light as possible, setting properties that steer the AI entity's behaviour, and then implement the *realization* of that logic in the AI entity or some other node. This allows you to *tick* the tree less often and decoupling the decision making from the realization will also allow for more opportunities to reuse the behaviour tree nodes you create.
-
-
-4. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **Is too close to the cursor** node. Replace the code with the following code (see explanation for it below):
-
-```gdscript
-extends UtilityAIBTLeaf
-
-
-func on_tick(actor, delta):
-	# Check if the distance is less than expected.
-	if actor.sensor_distance.distance < 90:
-		return 1 # Success = Too close
-	return -1 # Failure = Not too close
-
-
-```
-
-This again is a **conditional** node. This time we are checking if the AI entity is too close to the cursor and if so, return 1 (success) and otherwise -1 (failure).
-
-
-5. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **Move away** node. Replace the code with the following code (see explanation for it below):
-
-```gdscript
-extends UtilityAIBTLeaf
-
-
-func on_tick(actor, delta):
-	actor.movement_speed = 100.0
-	actor.play("moving")
-	return 1
-
-
-```
-
-This is the almost the same code as we had in step 7.3 but instead of the movement_speed being -100, it is now 100. This means we are moving the other direction. Together with the **Is too close to the cursor** conditional node this node describes the logic: "If the AI entity is too close to the cursor, move away from it".
-
-
-6. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **Set to idle animation** node. Replace the code with the following code (see explanation for it below):
-
-```gdscript
-extends UtilityAIBTLeaf
-
-
-func on_tick(actor, delta):
-	actor.movement_speed = 0.0
-	actor.play("default")
-	return 1
-
-
-```
-
-This node sets the movement_speed to 0, so that the AI entity will be standing still. The animation is set as the default animation, which was the idle-animation. Again, the node only returns 1 (success).
-
-
-7. Your **ai_entity** scene should now look like the image below, with scripts added to the **ai_entity**, **Is too far from the cursor**, **Move closer**, **Is too close to the cursor**, **Move away** and **Set to idle animation** nodes. 
-
-![Add the sequence nodes](images/getting_started_bt_26.png)<br>
+The AI entity scene is now completed. It is time to run the **tutorial_scene** and see the results.
 
 
 ## 8. Running the main scene
 
-Now that we've added the logic for the AI in the form of the behaviour tree and the `on_tick()` methods, you can select the **tutorial_scene** and run it. As you move the mouse cursor, the AI entity should move closer to the cursor if it is too far away and farther away if the cursor gets too close. 
+Now that we've added the logic for the AI in the form of the NQS query and the required code to post the queries, you can select the **tutorial_scene** and run it. As you move the mouse cursor, the AI entity should move to the points in the point grid. 
 
-To change the number of AI entities created, change the `num_entities` variable to a larger value in the **tutorial_scene**.
+To change the number of AI entities created, change the `num_entities` variable to a larger value in the **tutorial_scene**. 
 
 
 ## 9. Next steps
 
 This concludes the tutorial, but there are things you can try to learn more. For instance:
 
- * Try adding some more features to the point grid and then criteria to score and filter the results.
- * Try adding a new Node2D in the **tutorial_scene** and add some Node2D's as its children to random positions. Set a group for these child nodes and then try and set up a **UtilityAINodeGroupSearchSpace** for the AI to use instead of the point grid.
- * Try setting the the `num_entities` to a larger value in the **tutorial_scene**. How many AI entities you can add without it affecting performance? 
- * How does resizing or changing the spacing of the point grid affect performance? 
- * 
+ * Try setting the the `num_entities` to a larger value in the **tutorial_scene**. How many AI entities you can add without it affecting performance? How does it affect the movement of the AI entities?
+ * Try adding some more *features* to the point grid by attaching a script to the *DEBUG* node, and then criteria to the AI-entity's NQS query to score and filter the results.
+ * Try resizing or changing the spacing of the point grid and the lattice vector to create different grid shapes. How does changing the values affect the results? 
+
+You may notice that adding more AI entities creates more delay before they start moving when running the tutorial scene. This is because of the per physics frame **time budgeting** for the queries. All the queries advance a little bit each frame, and when the number of queries becomes larger, only some of them have time to advance. This creates the delay. This delay can be mitigated by adjusting the time budget, adding smarter filtering criteria, or by adjusting search space nodes (which in this case is the point grid). 
 
