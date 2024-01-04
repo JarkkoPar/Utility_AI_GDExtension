@@ -53,7 +53,7 @@ This is the main node that is used to manage the UtilityAI. A UtilityAIAgent nod
 |Return value|Name|Description|Version|
 |--|--|--|--|
 |void|evaluate_options(float delta)|Gathers input from sensors and evaluates all the available behaviours by calculating a score for each of them and then choosing a random behaviour from the top `num_behaviours_to_select` behaviours.|v1.0|
-|void|update_current_behaviour()|Updates the currently selected behaviour and if the current `action` has been marked as finished, returns the next action.|v1.0|
+|void|update_current_behaviour()|Updates the currently selected behaviour and if the current `action` has been marked as finished, returns the next action. If no actions are left or no actions have been defined for the current behaviour, ends the behaviour.|v1.0|
 |void|abort_current_behaviour()|Immediately stops the currently selected behaviour and action. Used for stopping behaviours that have `Can Be Interrupted` property as `false`.|v1.0|
 
 #### Signals
@@ -329,7 +329,8 @@ These two node types should be added as child nodes of the `UtilityAIBehaviour` 
 
 Action groups can be used create sequences of actions, or to pick one random action from several choices. This allows for more complex actions to be performed by a behaviour.
 
-*NOTE!* When the `AI agent` has chosen a behaviour, the action step function is called to find the first action to execute. The action that is being executed must be set as finished for the `AI agent` step function to be able to go to the next action. The action logic itself can be implemented anywhere else.
+> [!NOTE] 
+> When the `AI agent` has chosen a behaviour, the action step function is called to find the first action to execute. The action that is being executed must be set as finished for the `AI agent` step function to be able to go to the next action. The action logic itself can be implemented anywhere else.
 
 #### Properties
 
@@ -644,6 +645,42 @@ This is the root node for a State Tree. To update the tree, you call the `tick()
 |Type|Name|Description|Version|
 |--|--|--|--|
 |void|tick(Variant user_data, float delta)|The `tick()`-method is used to update the State Tree state. You can provide any Godot variant type as a parameter (usually a node used as an actor or a dictionary used as a blackboard), along with a delta-time. User_data and delta are passed to the `on_enter_state()`, `on_exit_state()`, `on_tick()` and `on_enter_condition()` methods of the child nodes.|v1.5|
+
+
+### UtilityAISTNode
+
+This is the workhorse of the State Tree. It acts as all the other levels of the state tree other than the tree root. If a UtilityAISTNode has no child nodes, it is considered a **leaf** node. If it has child nodes, it is considered like a **selector** in a behaviour tree: it will evaluate its child nodes to find a *leaf node* to activate.
+
+To make use of the UtilityAISTNode, define the following methods for all the nodes:
+
+```gdscript
+extends UtilityAISTNode
+
+
+func on_enter_condition(user_data, delta) -> bool:
+	# Do your logic here to decide when this node should be activated.
+	# Return true or false based on your logic.
+	return true
+
+
+func on_enter_state(user_data, delta) -> void:
+	# Initialize your state here.
+	pass
+
+
+func on_exit_state(user_data, delta) -> void:
+	# Clean up before exiting the state here.
+	pass
+
+
+func on_tick(user_data, delta) -> void:
+	# Do what ever the state needs to do here.
+	pass
+
+```
+
+> [!NOTE]
+> You can rename the `user_data` parameter what ever you want. Most common ones would be `blackboard` if you are using a dictionary to share variables between your states, and `actor` if you just pass the root node of your AI entity scene.
 
 
 # The Node Query System (NQS)
