@@ -386,7 +386,7 @@ What this code does:
  * The final rows of the method make sure the character sprite is facing the direction it is moving to by flipping the sprite horizontally when needed.
 
 > [!NOTE]
-> For this tutorial we are calling the root node `tick()` method every physics frame. This isn't what you usually want to do in a real game. See section [9. Next steps](Getting_started_with_State_Trees.md#9-next-steps) for more information.
+> For this tutorial we are calling the root node `tick()` method every physics frame. This isn't always what you want to do in a real game, even though for *state machines* in games this is quite usual. See section [9. Next steps](Getting_started_with_State_Trees.md#9-next-steps) for more information.
 
 
 
@@ -506,13 +506,15 @@ This concludes the tutorial, but there are things you can try to learn more. For
  * Try adding another type of AI entity that has some other logic for its behaviour. 
  * Try setting the the `num_entities` to a larger value in the **tutorial_scene**. How many AI entities you can add without it affecting performance? 
 
-In 7.1 it was noted that you usually don't want to tick the tree every physics frame. There are several reasons for this. For one, the game world usually doesn't change dramatically each frame and as a result the state tree would end up to the same task node as it did on the previous frame. Secondly, ticking the state tree each frame has of course a cost. If the ticking doesn't result in a change in the states and it costs some frame time, it doesn't make sense to tick the tree unless it is necessary. Thirdly, we humans (and also animals in general) have various *reaction times* that cause some delay when we are reacting to the changes in our environment. Adding some delay may make your AI entities more *believable* and fun. Finally, ticking the tree every frame can lead to a practice of adding per-frame logic inside the state tree which in turn can lead to a unnecessarily complex tree. 
+In 7.1 it was noted that you don't always want to tick the tree every physics frame. A *tick* can be thought of as a periodic check if a state transition is possible. In some cases you *do* want to check it every frame, but not always. Some of the reasons why **not** to tick the state tree every frame are that the game world usually doesn't change dramatically each frame and as a result the state tree likely will stay in the same state. Ticking the state tree each frame also has a cost and if the ticking doesn't result in a state transition or anything else beneficial, it becomes a waste.
 
 Some of the ways to tick the state tree less often can be:
  * Add a delay or cooldown. Each time you tick the tree, you set a variable in the **ai_entity** node to some short time duration and then tick the tree only after this time has passed. An example of this is given below.
  * Tick the tree based on **events**. For example, if you have an Area2D or Area3D that you use for sensing the environment, you can tick the tree when an enemy enters or exits the area. Another examples could be the AI entity losing or gaining more health, getting an alarm signal, and so on.
 
-To see the difference of adding some delay to ticking the tree, test how the code below for the **ai_entity** script changes the way the AI works. The only thing it adds is the `ticking_delay` variable that introduces a minimum delay plus a random variance to when the ticking occurs. You can try adding different delays and how it affects performance and the AI reaction times.
+However, it is common to tick the state machines every frame so don't be afraid to do so when you need to. The state tree for this tutorial was designed so it doesn't have to be, so you can see the effect it can have on performance.
+
+To see the difference of adding some delay to ticking the tree, test how the code below for the **ai_entity** script changes the way the AI works. The only thing it adds is the `ticking_delay` variable that introduces a minimum delay plus a random variance to when the ticking occurs. You can try adding different delays and how it affects performance and the AI reaction times and the number of entities you can run.
 
 ```gdscript
 extends AnimatedSprite2D
