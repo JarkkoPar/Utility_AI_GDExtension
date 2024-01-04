@@ -305,7 +305,7 @@ In the inspector, set the **Thinking Delay in Seconds** property as **0**.
 
 ![Add the distance sensor](images/getting_started_ab_2.png)<br>
 
-In the **Inspector** make sure to check the boxes for **Is Distance Calculated** and **Is Direction Vector Calculated** for the distance sensor. Then update the **Max Distance** property to **200**.
+In the **Inspector** make sure to check the boxes for **Is Distance Calculated** and **Is Direction Vector Calculated** for the distance sensor. Then update the **Max Distance** property to **200**. Check also the checkboxes **Is Distance Calculated** and **Is Direction Vector Calculated**. They are used to choose if these properties are calculated or not and are set to **false** by default.
 
 ![Set max distance](images/getting_started_distance_vector_checks_max_distance.png)<br>
 

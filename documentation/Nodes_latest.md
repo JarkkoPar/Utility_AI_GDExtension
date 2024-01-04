@@ -288,7 +288,7 @@ func _ready():
     
 ```
 
-The consideration nodes only calculate their score if the input value has been changed, or a custom eval-method has been defined. 
+Since version 1.5 the consideration nodes only calculate their score if the input value has been changed, or a custom eval-method has been defined. 
 
 
 #### Properties
