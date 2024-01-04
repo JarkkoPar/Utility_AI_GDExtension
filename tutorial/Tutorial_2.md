@@ -1,4 +1,9 @@
-# Tutorial
+# Tutorial 2
+
+> [!WARNING]
+> This tutorial is deprecated and remains available for users of versions below 1.5. For the latest tutorial to get started with the Agent Behaviours, please read (Getting Started with Agent Behaviours)[Getting_started_with_Agent_Behaviours.md] tutorial.
+
+
 This tutorial shows how to create a simple AI Agent with two behaviours.
 
 # Create the test scene

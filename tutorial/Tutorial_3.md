@@ -1,4 +1,8 @@
-# Tutorial
+# Tutorial 3
+
+> [!WARNING]
+> This tutorial is deprecated and remains available for users of versions below 1.5. For the latest tutorial to get started with the Node Query System, please read (Getting Started with the Node Query System)[Getting_started_with_the_Node_Query_System.md] tutorial.
+
 This tutorial shows how to create a simple query using the Node Query System.
 
 # Create the test scene
@@ -87,11 +91,11 @@ extends Node2D
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	$UtilityAINodeChildrenSearchSpace.execute_query()
+	$UtilityAINodeChildrenSearchSpace.execute_query(4000)
 
 ```
 
-This script runs the search space query every frame. In an actual game you don't usually want to do that, rather run the query when ever it is actually needed. But for this tutorial it works just fine.
+This script runs the search space query every frame and gives it 4000 microseconds time to run. In an actual game you don't usually want to do that, rather run the query when ever it is actually needed. But for this tutorial it works just fine.
 
 
 ## Testing it out

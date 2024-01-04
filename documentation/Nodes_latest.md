@@ -45,6 +45,7 @@ This is the main node that is used to manage the UtilityAI. A UtilityAIAgent nod
 |String|top_scoring_behaviour_name|This property shows what was the top scoring behaviour after the latest `evaluate_options()` method call.|v1.0|
 |string|current_behaviour_name|This property shows what was the selected behaviour after the latest `evaluate_options()` method call.|v1.0|
 |int|total_evaluate_options_usec|This property shows how many microseconds (usec) the latest `evaluate_options()` method call required to complete.|v1.4|
+|float|current_behaviour_bias|This property can be used to set a bias to the current behaviour score. This can be useful to reduce or eliminate *oscillation* between Behaviours. The bias gets added after the actual consideration-based score has been calculated.|v1.5|
 
 
 #### Methods 
@@ -734,7 +735,7 @@ All the search spaces have the following general properties.
 |Type|Name|Description|Version|
 |--|--|--|--|
 |void|initialize_search_space()|If you override the `_ready()` method, you have to call `initialize_search_space()` in your overridden _ready() method.|v1.3|
-|bool|execute_query(int time_budget_usec)|The `execute_query()` method fetches the search space nodes based on its configuration and then applies the search criteria in top-down order. A time budget can be set to limit the time the method uses for the query. Returns false if the query hasn't finished (time has run out) and true otherwise.|v1.4|
+|bool|execute_query(int time_budget_usec)|The `execute_query()` method fetches the search space nodes based on its configuration and then applies the search criteria in top-down order. A `time_budget_usec`, which is the time budget in microseconds, must be set to limit the time the method uses for the query. Returns false if the query hasn't finished (time has run out) and true otherwise.|v1.4|
 |void|start_query()|The `start_query()` method prepares the search space for a query, but does not yet apply any criteria.|v1.4|
 
 
