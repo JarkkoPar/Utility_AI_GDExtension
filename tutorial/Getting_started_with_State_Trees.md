@@ -307,9 +307,9 @@ We are now done with the main scene. Next we will focus on creating the **ai_ent
 
 ![Add the distance sensor](images/getting_started_st_2.png)<br>
 
-In the **Inspector** make sure to check the boxes for **Is Distance Calculated** and **Is Direction Vector Calculated** for the distance sensor.
+In the **Inspector** make sure to check the boxes for **Is Distance Calculated** and **Is Direction Vector Calculated** for the distance sensor. These are set to **false** by default as the sensor uses the *squared distance* internally and unless they are set to true, the direction vector and the distance will not be calculated. Then update the **Max Distance** property to **200**. 
 
-![Add the distance sensor](images/getting_started_distance_vector_checks.png)<br>
+![Set max distance](images/getting_started_distance_vector_checks_max_distance.png)<br>
 
 
 
