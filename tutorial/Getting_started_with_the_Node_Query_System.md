@@ -100,11 +100,11 @@ Luckily AI can do something other systems cannot: **AI can wait**.
 
 ## 4. Waiting is a super power
 
-It may sound peculiar, but unlike other systems in a game, AI can usually wait. As long as the AI entity has something reasonably intelligent-looking to do, the players won't notice that the AI is actually waiting for a query or any other background task to finish. The key is to find a sweet spot where the frame time is reasonable and the waiting time is not too much to be distracting to the players. This means optimizing the *search space*, the *search criteria* and *when the queries are posted*. Queries can also be *prioritized* so that important ones get a high priority and more execution time per frame.
+It may sound peculiar, but unlike other systems in a game, AI can usually wait. As long as an AI entity has something reasonably intelligent-looking to do, the players won't notice that the AI is actually waiting for something, a query or any other background task, to finish. The key is to find a sweet spot where the frame time is performant and the waiting time for the AI entities is not too much to be distracting to the players. This means optimizing the *search space*, the *search criteria* and *when the queries are posted*. Queries can also be *prioritized* so that important ones get a high priority and more execution time per frame.
 
-In this tutorial we will create an extreme example to illustrate the functionality of the NQS and time budgeting in a similar setting to the other AI components available in Utility AI GDExtension. Unlike in a real game, *all* the AI does in this tutorial is continuously run queries to do its logic. By default the search space is 90 node point grid with little criterias to minimize it. To make matters worse, the AI entities will even post all their queries at the same time when starting the scene. As you increase the number of AI entities you will likely see some delay starting to happen when a few hundred to a thousand AI entities have been added (depending on your hardware, of course). As such, this tutorial scene is also a good way to get a feel on how much waiting is too much waiting.
+In this tutorial we create an extreme example to illustrate the functionality of the NQS and time budgeting in a similar setting to the other beginner AI tutorials. Unlike in a real game, *all* the AI does in this tutorial is continuously run queries to do its logic. By default the search space is 90 node point grid with little criterias to minimize it. To make matters worse, the AI entities will even post all their queries at the same time when starting the scene. As you increase the number of AI entities you will likely see some delay starting to happen when a few hundred to a thousand AI entities have been added (depending on your hardware, of course). As such, this tutorial scene is also a good way to get a feel on how much waiting is too much waiting.
 
-In a real game, you will likely have less AI entities running queries, they will run the queries at different times and your search spaces will be more optimized.
+In a real game, you will likely have less AI entities running queries, they will run the queries at different times, and your search spaces will be more optimized. They will also have more opportunities to do *intelligent waiting* in your game world.
 
 
 ## 5. Creating the scenes
@@ -418,9 +418,11 @@ To change the number of AI entities created, change the `num_entities` variable 
 
 This concludes the tutorial, but there are things you can try to learn more. For instance:
 
- * Try setting the the `num_entities` to a larger value in the **tutorial_scene**. How many AI entities you can add without it affecting performance? How does it affect the movement of the AI entities?
+ * Try setting the the `num_entities` to a larger value in the **tutorial_scene**. How many AI entities you can add without it affecting performance? How does it affect the movement of the AI entities (you can find the answer below)?
  * Try adding some more *features* to the point grid by attaching a script to the *DEBUG* node, and then criteria to the AI-entity's NQS query to score and filter the results.
+ * Try creating the points manually, by adding some Node2D's under the **mouse_point_grid** node and by removing the point grid search space (remember to add your Node2D's to the *point_grid* group!).
  * Try resizing or changing the spacing of the point grid and the lattice vector to create different grid shapes. How does changing the values affect the results? 
+ * Try adding more logic to the behaviour tree to let the AI entities do *intelligent waiting* when the query is running and to post the queries only when they really need them. For instance, move the AI agent when it has a valid position and clear it when it arrives to it, and does some animation while the query is finding another position to move to.
 
 You may notice that adding more AI entities creates more delay before they start moving when running the tutorial scene. This is because of the per physics frame **time budgeting** for the queries. All the queries advance a little bit each frame, and when the number of queries becomes larger, only some of them have time to advance. This creates the delay. This delay can be mitigated by adjusting the time budget, adding smarter filtering criteria, or by adjusting search space nodes (which in this case is the point grid). 
 

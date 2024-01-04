@@ -33,7 +33,9 @@ If you want the source code, you can find it here: [Utility AI Source Code repos
 
 # Compatibility
 Works on Godot 4.1.2 or newer versions. 
-Currently 64 bit Windows, 64 bit Linux, wasm32 (web) versions are available. For MacOS there are *unsigned* binaries included in the package.
+Currently 64 bit Windows, 64 bit Linux versions are available. 
+
+There are also experimental builds available for wasm32/web and MacOS (*unsigned*).
 
 
 # Installation
@@ -54,6 +56,7 @@ Read the getting started tutorials [here](tutorial/README.md).
 # Authors
 
 JarkkoPar with [Contributors](https://github.com/JarkkoPar/Utility_AI/graphs/contributors). Big thank you to all of you who've helped out!
+
 
 # Example project
 
@@ -109,6 +112,7 @@ A Search Space defines a set of nodes you will use in your query:
  * UtilityAINodeGroupSearchSpace
  * UtilityAINodeChildrenSearchSpace
  * UtilityAIArea2DSearchSpace and UtilityAIArea3DSearchSpace
+ * UtilityAIPointGrid2DSearchSpace and UtilityAIPointGrid3DSearchSpace
 
 A Search Criterion filters and scores the nodes in a search space to find the top N nodes:
 
