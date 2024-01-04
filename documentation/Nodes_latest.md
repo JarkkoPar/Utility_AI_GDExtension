@@ -591,9 +591,11 @@ The Run NQS Query node can be used to initialite Node Query System queries. They
 
 # Utility enabled State Tree
 
-The Utility AI State Tree is just two nodes: `UtilityAISTRoot` and `UtilityAISTNode`. Together they enable you to create hierarchical state machines with a similar node structure and state selection to a Behaviour Tree. The Utility AI State Tree nodes are utility-enabled, which means that if desired, the node selection for a state can be done by using UtilityAIConsideration nodes or resources. Alternatively a `on_enter_condition()` method can be defined for the State Tree nodes for the selection.
+A StateTree is a state management structure that is a hybrid of a behaviour tree and a hierarchical state machine.
 
-A StateTree is a state management structure that is a hybrid of a behaviour tree and a hierarchical state machine. When the tree is *ticked* for the first time, a set of active states is selected by evaluating the child nodes of the root node, and the childs of the child nodes, until a *leaf node* is found that can be activated. All the State Tree nodes from the root node all the way down to the leaf node are then considered as "active". On subsequent calls to the root node `tick()` method, all the active nodes are ticked in top-to-down order from the root to the leaf node. This allows you to create a hierarchy of states with shared logic on the top-level nodes and more specific logic on the leaf nodes. 
+The Utility AI GDExtensions State Tree is just two nodes: `UtilityAISTRoot` and `UtilityAISTNode`. The State Tree nodes are utility-enabled, which means that if desired, the node selection for a state can be done by using UtilityAIConsideration nodes or resources. Alternatively a `on_enter_condition()` method can be defined for the State Tree nodes to define the selection logic.
+
+When the tree is *ticked* for the first time, a set of active states is selected by evaluating the child nodes of the root node, and the childs of the child nodes, until a *leaf node* is found that can be activated (i.e. its `on_enter_condition()` returns true or utility-based evaluation selects it as the highest-scoring node). All the State Tree nodes from the root node all the way down to the found leaf node are then considered as "active". On subsequent calls to the root node `tick()` method, all the active nodes are ticked in top-to-down order from the root to the leaf node. This allows you to create a hierarchy of states with shared logic on the top-level nodes and more specific logic on the leaf nodes. You can select the child node evaluation method for each State Tree node by setting the `child_state_selection_rule` property.
 
 User-defined methods `on_enter_condition(user_data, delta) -> bool`, `on_enter_state(user_data, delta)`, `on_exit_state(user_data, delta)` and `on_tick(user_data, delta)` can be defined to create your custom state activation and handling logic.
 
@@ -602,7 +604,7 @@ The states are changed by calling the `transition_to()` method and by providing 
 > [!NOTE]
 > When a scene with a State Tree is first run, during the first call to the `tick()` method the State Tree will automatically transition to the root node to find the initial set of active states. 
 
-When the state changes, the `on_exit_state()` method is called for existing state nodes that are not included in the new state. Similarly, for new state nodes that were not included in the existing state, the `on_enter_state()` method is called. 
+When the state changes, the `on_exit_state()` method is called for existing state nodes that are not included in the new state set. Similarly, for new state nodes that were not included in the existing state set, the `on_enter_state()` method is called. 
 
 During a tick, the `on_tick()` method is called for all the active states.
 
