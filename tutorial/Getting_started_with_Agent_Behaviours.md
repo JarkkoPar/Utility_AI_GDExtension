@@ -104,14 +104,15 @@ The *behaviours* contain **actions** that are executed when a behaviour is activ
 
 ### 3.2 The update methods for the Agent Behaviours
 
-The AI Agent is updated by calling its `evaluate_options()` method. This method will update all the **sensors** and evaluate all the **behaviour groups** and **behaviours** that are child nodes of the **AI agent**. Based on the evaluation it will choose a behaviour as the active behaviour. When this happens, the **behaviour_changed signal** is emitted. 
+The AI Agent is updated by calling its `evaluate_options()` method. This method will update all the **sensors** and evaluate all the **behaviour groups** and **behaviours** that are child nodes of the **AI agent**. Based on the evaluation it will choose a behaviour as the active behaviour. When this happens, the **behaviour_changed signal** is emitted with the chosen behaviour. 
 
 The `evaluate_options()` method evaluates the behaviours in top-to-down order and places them to a list based on their score. If two behaviours get the same score, the one that is evaluated first gets higher priority. As an example, this means that in a situation where you want to choose top 3 behaviours out of 10 and you already have evaluated 3 behaviours, if the any of the later ones get the same score as the behaviour at third place, the later behaviour gets discarded. If later evaluated behaviour gets the same score as the second one, it will be placed third in the list.  
 
-If *actions* are used, the `update_current_behaviour()` method is then called to choose an action to perform. When an action gets selected the **action_changed()** signal is emitted. If a behaviour has no actions set as its child nodes, the `update_current_behaviour()` will exit and emit the **behaviour_changed()** signal with a **null** behaviour.
+If *actions* are used, the `update_current_behaviour()` method is then called to choose an action to perform. When an action gets selected the **action_changed()** signal is emitted with the chosen action. If a behaviour has no actions set as its child nodes, the `update_current_behaviour()` will exit and emit the **behaviour_changed()** signal with a **null** behaviour.
 
 When choosing the behaviour the `evaluate_options()` method will check if the **Can be interrupted** property of the currently active behaviour is set. If it is, the behaviours will be evaluated. If not, the `evaluate_options()` method will exit. When using the *can be interrupted* property for a behaviour you can end a behaviour by setting all its child actions as finished by assigning their **is_finished** property as true. If the behaviour does not have action nodes as its childs, you can end the behaviour by calling the AI Agent's `update_current_behaviour()` method.
 
+As mentioned earlier, the `evaluate_options()` method returns the chosen behaviour, and the `update_current_behaviour()` the current action (if actions are being used). This allows the Agent Behaviours to **decouple** the AI reasoning logic from the code that actually realizes the behaviour.   
 
 
 ### 3.3 Challenges with utility based systems
@@ -456,11 +457,10 @@ This concludes the tutorial, but there are things you can try to learn more. For
  * Try adding another type of AI entity that has some other logic for its behaviour. 
  * Try setting the the `num_entities` to a larger value in the **tutorial_scene**. How many AI entities you can add without it affecting performance? 
 
-In 6.1 it was noted that you usually don't want to update the AI every physics frame. There are several reasons for this. For one, the game world usually doesn't change dramatically each frame and as a result the AI Agent would end up choosing the same behaviour as it did on the previous frame. Secondly, updating the AI Agent each frame has of course a cost. If the updating doesn't result in a change in the behaviour and it costs some frame time, it doesn't make sense to do the updating unless it is necessary. Thirdly, we humans (and also animals in general) have various *reaction times* that cause some delay when we are reacting to the changes in our environment. Adding some delay may make your AI entities more *believable* and fun. 
+In 6.1 it was noted that you usually don't want to update the AI every physics frame. There are several reasons for this. For one, the game world usually doesn't change dramatically each frame and as a result the AI Agent would end up choosing the same behaviour as it did on the previous frame. Secondly, updating the AI Agent each frame has of course a cost, even if it can be a tiny one. If the updating doesn't result in a change in the behaviour and it costs some frame time, it doesn't make sense to do the updating unless it is necessary. The more AI agents you want to run, the more important this becomes. Thirdly, we humans (and also animals in general) have various *reaction times* that cause some delay when we are reacting to the changes in our environment. Adding some delay may make your AI entities more *believable* and fun. 
 
 Some of the ways to update the AI less often can be:
  * Set the cooldown value for the AI agent node to a higher value. Each time you update the AI Agent, this cooldown value will be reset and the update will happen only after the cooldown time has passed.
+ * Use a delay like on the Behaviour Tree tutorial with a random variance added.
  * Evaluate the AI Agent options based on **events**. For example, if you have an Area2D or Area3D that you use for sensing the environment, you can evaluate what the AI Agent should do when an enemy enters or exits the area. Another example could be the AI entity losing or gaining more health, getting an alarm signal, and so on.
-
-To see the difference of adding some delay to updateing the AI agent, test how the code below for the **ai_entity** script changes the way the AI works. The only thing it adds is the `ticking_delay` variable that introduces a minimum delay plus a random variance to when the updating occurs. You can try adding different delays and how it affects performance and the AI reaction times.
 

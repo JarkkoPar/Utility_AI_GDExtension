@@ -105,7 +105,7 @@ To handle state transitioning, entering, exiting and updating the states, four s
  * `func on_exit_state(user_data, delta)` is used to run any clean up after the state is no longer active.
  * `func on_tick(user_data, delta)` is used to run what ever code the state needs to do when it is *ticked*.
 
-The `transition_to()` method can be called anywhere in the state's script code. However, the usual place for it is in the `on_tick()` method.
+The `transition_to()` method can be called anywhere in the state's script code. If you want to start a transition from the script of some completely different node, you should use a node reference to call the method, for instance `$MyStateTreeRoot.transition_to(".")`.
 
 Any active state that is no longer active after the call to `transition_to()` will call its `on_exit_state()` method. Similarly, any inactive state that gets activated will call its `on_enter_state()` method. 
 
@@ -385,9 +385,6 @@ What this code does:
  * After *ticking* the root node, the row `self.global_position += sensor_distance.direction_vector * movement_speed * delta` moves the AI entity based on the direction vector calculated by the distance sensor. Delta time is used to scale the movement amount. The `movement_speed` is set by the active state.
  * The final rows of the method make sure the character sprite is facing the direction it is moving to by flipping the sprite horizontally when needed.
 
-> [!NOTE]
-> For this tutorial we are calling the root node `tick()` method every physics frame. This isn't always what you want to do in a real game, even though for *state machines* in games this is quite usual. See section [9. Next steps](Getting_started_with_State_Trees.md#9-next-steps) for more information.
-
 
 
 2. In the **ai_entity** scene, in the **Scene-tab**, attach a script to the **Moving closer** node. Replace the code with the following code (see explanation for it below):
@@ -506,15 +503,15 @@ This concludes the tutorial, but there are things you can try to learn more. For
  * Try adding another type of AI entity that has some other logic for its behaviour. 
  * Try setting the the `num_entities` to a larger value in the **tutorial_scene**. How many AI entities you can add without it affecting performance? 
 
-In 7.1 it was noted that you don't always want to tick the tree every physics frame. A *tick* can be thought of as a periodic check if a state transition is possible. In some cases you *do* want to check it every frame, but not always. Some of the reasons why **not** to tick the state tree every frame are that the game world usually doesn't change dramatically each frame and as a result the state tree likely will stay in the same state. Ticking the state tree each frame also has a cost and if the ticking doesn't result in a state transition or anything else beneficial, it becomes a waste.
+In this tutorial the State Tree is ticked every physics frame, and this is how state machines are usually used in games. States are a very convinient way of organizing your game and AI logic. After the State Tree has chosen the active states, the ticking only has the cost of the logic that you've built within the `on_tick()` method. 
 
-Some of the ways to tick the state tree less often can be:
- * Add a delay or cooldown. Each time you tick the tree, you set a variable in the **ai_entity** node to some short time duration and then tick the tree only after this time has passed. An example of this is given below.
- * Tick the tree based on **events**. For example, if you have an Area2D or Area3D that you use for sensing the environment, you can tick the tree when an enemy enters or exits the area. Another examples could be the AI entity losing or gaining more health, getting an alarm signal, and so on.
+The tutorial State Tree was created so that it sets some parameters for the AI entity when entering a state, namely which animation it should play and its movement speed, and then during each *tick* it checks if a transition should occur. The ticking is therefore focused on checking if transitions between states are needed. You can also use the state tree the other way around: you have the game logic *inside* the states within the `on_tick()` method and then use **events** to check when a state transition should occur. 
 
-However, it is common to tick the state machines every frame so don't be afraid to do so when you need to. The state tree for this tutorial was designed so it doesn't have to be, so you can see the effect it can have on performance.
+The game world usually doesn't change dramatically between frames, so it can be said that the tutorial State Tree does a lot of redundant checking for transitions by checking them every frame. This can be fixed simply by adding a delay or a cooldown as mentioned in the Behaviour Tree tutorial. Each time you tick the tree, you set a variable in the **ai_entity** node to some short time duration and then tick the tree only after this time has passed. An example of this is given below.
 
-To see the difference of adding some delay to ticking the tree, test how the code below for the **ai_entity** script changes the way the AI works. The only thing it adds is the `ticking_delay` variable that introduces a minimum delay plus a random variance to when the ticking occurs. You can try adding different delays and how it affects performance and the AI reaction times and the number of entities you can run.
+However, it is common to tick the state machines every frame so don't be afraid to do so. It all depends on how you are using the State Tree. 
+
+To see the difference of adding some delay to ticking the tree, test how the code below for the **ai_entity** script changes the way the AI works. The only thing it adds is the `ticking_delay` variable that introduces a minimum delay plus a random variance to when the ticking occurs. You can try adding different delays and how it affects performance, the AI reaction times and the number of entities you can run.
 
 ```gdscript
 extends AnimatedSprite2D
