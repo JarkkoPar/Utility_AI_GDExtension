@@ -14,10 +14,11 @@ For this tutorial, we'll start with an empty Godot 4.1  project.
  1. [Project creation and installation of Utility AI GDExtension](Getting_started_with_the_Node_Query_System.md#1-project-creation-and-installation-of-utility-ai-gdextension)
  2. [Setting up the project and assets](Getting_started_with_the_Node_Query_System.md#2-setting-up-the-project-and-assets)
  3. [About the Node Query System](Getting_started_with_the_Node_Query_System.md#3-about-behaviour-trees)
- 4. [Utility enabled Behaviour Trees in Utility AI GDExtension](Getting_started_with_the_Node_Query_System.md#4-utility-enabled-behaviour-trees-in-utility-ai-gdextension)
+ 4. [Waiting is a super power](Getting_started_with_the_Node_Query_System.md#4-waiting-is-a-super-power)
  5. [Creating the scenes](Getting_started_with_the_Node_Query_System.md#5-creating-the-scenes)
- 6. [Creating the Behaviour Tree for the AI-entity](Getting_started_with_the_Node_Query_System.md#6-creating-the-behaviour-tree-for-the-ai-entity)
- 7. [Adding the on_tick() methods](Getting_started_with_the_Node_Query_System.md#7-adding-the-on_tick-methods)
+ 6. [Creating the the AI entity scene
+](Getting_started_with_the_Node_Query_System.md#6-creating-the-ai-entity-scene)
+ 7. [Adding the ai_entity script](Getting_started_with_the_Node_Query_System.md#7-adding-the-ai_entity-script)
  8. [Running the main scene](Getting_started_with_the_Node_Query_System.md#8-running-the-main-scene)
  9. [Next steps](Getting_started_with_the_Node_Query_System.md#9-next-steps)
 
