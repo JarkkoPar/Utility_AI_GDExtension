@@ -20,7 +20,7 @@ These getting started tutorials create the same AI using AI Agent Behaviours, a 
 |[Getting started with Agent Behaviours](Getting_started_with_Agent_Behaviours.md)|Beginner tutorial on utility-based Agent in Utility AI GDExtension.|
 |[Getting started with Behaviour Trees](Getting_started_with_Behaviour_Trees.md)|Beginner tutorial on Behaviour Trees in general and in Utility AI GDExtension.|
 |[Getting started with State Trees](Getting_started_with_State_Trees.md)|Beginner tutorial on State Trees in general and in Utility AI GDExtension.|
-|[Getting started with the Node Query System](Getting_started_with_the_Node_Query_System.md)|Beginner tutorial on State Trees in general and in Utility AI GDExtension.|
+|[Getting started with the Node Query System](Getting_started_with_the_Node_Query_System.md)|Beginner tutorial about the Node Query System in Utility AI GDExtension.|
 
 
 ### Advanced tutorials
