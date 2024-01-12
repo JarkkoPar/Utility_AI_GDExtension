@@ -33,7 +33,13 @@ The *Node Query System* focuses on using utility functions to score and filter a
 
 ### UtilityAIAgent 
 
-This is the main node that is used to manage the UtilityAI. A UtilityAIAgent node represents an AI entity that can reason based in `sensor` input and then choose `behaviours` to react to the sensor input.
+This is the main node that is used to manage the UtilityAI. A UtilityAIAgent node represents an AI entity that can reason based in `sensor` input and then choose `behaviours` to react to the sensor input based on scores that are calculated with `considerations`. `Behaviours` can contain optional `actions` that allow reuse of action logic.
+
+There are two methods that are used to update the AI Agent: 
+ * `evaluate_options(delta)` is used to choose a `behaviour`
+ * `update_current_behaviour()` is used to step `actions` of a `behaviour`
+
+Utility AI systems can be susceptile to *oscillation*, which means that two or more evaluated options get the highest score and the system ends up switching several times between the options. The `current_behaviour_bias` property in the AI Agent can be used to add some bias towards the currently selected behaviour, which will decrease the chances of oscillation. In a sense the AI Agent is "more determined" to continue with the currently selected behaviour.
 
 #### Properties
 
