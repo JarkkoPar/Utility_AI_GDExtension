@@ -248,11 +248,15 @@ None.
 
 ### UtilityAIBehaviourGroup
 
-The `UtilityAIBehaviourGroup` node type should be added as child node of the `UtilityAIAgent` node, preferably after any `sensor` and `sensor group` nodes. There can only be one level of child nodes, which means you cannot have nested Behaviour Group nodes.
+The `UtilityAIBehaviourGroup` node type should be added as child node of the `UtilityAIAgent` node, preferably after any `sensor` and `sensor group` nodes. There can only be one level of child nodes for the Behaviour Groups, which means you cannot have nested Behaviour Group nodes. 
 
 The purpose of the behaviour group nodes is to allow logical grouping if behaviours and also to allow group-based activation and deactivation of Behaviour nodes.
 
 The behaviour group node will use the  `consideration` nodes that are its childs to determine a `score` for itself. If this `score` is greater or equal to the set `activation score` or if there are no considerations added to the behaviour group, the child behaviours will be evaluated during the AI Agent's `evaluate_options` call. 
+
+As an example, you can have an enemy AI with the behaviour groups "on foot combat" and "vehicle combat" which contain the relevant behaviours for each group. By default the "on foot combat" would be active and the "vehicle combat" inactive. The "vehicle combat" behaviour group would be set as active when the enemy AI enters a vehicle, adding the vehicle-related behaviours to the enemy AI's list of options.
+
+You can group your behaviours any way you want but it can make sense to do the grouping based on the **goal** the behaviours will achieve. 
 
 
 #### Properties
@@ -279,7 +283,7 @@ Each consideration node can contain an `activation curve` that can be defined in
 
 If a `sensor` or a `sensor group` is used as the input value for a consideration, the `activation_input_value` for the consideration will be the `sensor_value` property of the sensor node. Otherwise the value of the consideration's `activation_input_value` property will be used. In simple terms: sensors are **optional**, you can use considerations without them if you set the `activation_input_value` directly in your code.
 
-Consideration groups can be used to aggregate the input from several considerations or consideration groups to create more complex consideration logic. You can nest as many consideration groups as you like, and each consideration group may contain any number of child consideration groups or child considerations.
+Consideration groups can be used to aggregate the input from several considerations or consideration groups to create more complex consideration logic. You can nest as many consideration groups as you like, and each consideration group may contain any number and combination of child consideration groups or child considerations.
 
 A custom evaluation method can be defined for the `UtilityAIConsideration` node by extending the node with a script and defining a method named `eval`: 
 
@@ -338,7 +342,7 @@ The `UtilityAIConsideration` has the following methods:
 
 These two node types should be added as child nodes of the `UtilityAIBehaviour` node. They are used when a `behaviour` is being executed by the `AI agent`. 
 
-Action groups can be used create sequences of actions, or to pick one random action from several choices. This allows for more complex actions to be performed by a behaviour.
+Action groups can be used create sequences of actions, or to pick one random action from several choices. This allows for more complex actions to be performed by a behaviour. You can nest as many action groups as you need, and they can contain any number and combination of actions or action groups.
 
 > [!NOTE] 
 > When the `AI agent` has chosen a behaviour, the action step function is called to find the first action to execute. The action that is being executed must be set as finished for the `AI agent` step function to be able to go to the next action. The action logic itself can be implemented anywhere else.
