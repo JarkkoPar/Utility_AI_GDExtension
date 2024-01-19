@@ -74,7 +74,12 @@ Utility AI systems can be susceptile to *oscillation*, which means that two or m
 
 These two node types should be added as child nodes of the `UtilityAIAgent` node. They are used to give input data to `consideration` nodes. A `sensor` is used by one or more `consideration` nodes. A `sensor group` is a node that can be used to aggregate input from several sensors (or sensor groups) for a higher-level input to the consideration nodes. 
 
-Why use sensors in the first place? Consider the situation where you have several behaviours that use the "IsPlayerClose" consideration and maybe different variations, such as "IsPlayerAboutMidDistanceFromMe" or what ever. With the sensor nodes you can calculate the distance once and set it to a sensor, and then all the various considerations can make use of the distance in a relatively easy way and the distance only needs to be calculated once.
+**Why use sensors in the first place?** 
+
+Consider the situation where you have several behaviours that use the "IsPlayerClose" consideration and maybe different variations, such as "IsPlayerAboutMidDistanceFromMe" or what ever. With the sensor nodes you can calculate the distance once and set it to a sensor, and then all the various considerations can make use of the distance in a relatively easy way and the distance only needs to be calculated once.
+
+The specialized sensors also have the added benefit that their logic is done on C++ instead of gdscript. This gives them a performance boost compared to writing similar logic in gdscript.
+
 
 #### Properties
 
@@ -270,11 +275,11 @@ None.
 
 These two node types should be added as child nodes of the `UtilityAIBehaviour` node. They are used when a `behaviour` is being scored by the `AI agent`. 
 
-Each consideration node can contain an `activation curve` that can be defined in the node properties. If no curve has been set, the consideration nodes input value will be used as the consideration result as-is.
+Each consideration node can contain an `activation curve` that can be defined in the node properties. The `activation_input_value` property is used as the **x-axis value** to find the **y-value** on the `activation curve`. The **y-value** is then the resulting **score** for the consideration. If no curve has been set, the `activation_input_value` will be used as the consideration score as-is.
 
-If a `sensor` or a `sensor group` is used as the input value for a consideration the input for the consideration will be the `sensor_value` property of the sensor node. Otherwise the value of the consideration's `activation_input_value` property will be used.
+If a `sensor` or a `sensor group` is used as the input value for a consideration, the `activation_input_value` for the consideration will be the `sensor_value` property of the sensor node. Otherwise the value of the consideration's `activation_input_value` property will be used. In simple terms: sensors are **optional**, you can use considerations without them if you set the `activation_input_value` directly in your code.
 
-Consideration groups can be used to aggregate the input from several considerations or consideration groups to create more complex consideration logic. 
+Consideration groups can be used to aggregate the input from several considerations or consideration groups to create more complex consideration logic. You can nest as many consideration groups as you like, and each consideration group may contain any number of child consideration groups or child considerations.
 
 A custom evaluation method can be defined for the `UtilityAIConsideration` node by extending the node with a script and defining a method named `eval`: 
 
