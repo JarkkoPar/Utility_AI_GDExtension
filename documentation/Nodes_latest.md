@@ -2,9 +2,9 @@
 
 This section describes the nodes, their properties and methods in detail. After each property and method you can find the version tag when the given property/method was introduced or last changed.
 
-This document describes the version **1.5** of Utility AI GDExtension. 
+This document describes the version **1.6** of Utility AI GDExtension. 
 
-Documentation of earlier versions: [1.4](Nodes_v1_4.md),[1.3](Nodes_v1_3.md), [1.2](Nodes_v1_2.md)
+Documentation of earlier versions: [1.5](Nodes_v1_5.md), [1.4](Nodes_v1_4.md), [1.3](Nodes_v1_3.md), [1.2](Nodes_v1_2.md)
 
 
 **Contents**
@@ -66,8 +66,12 @@ Utility AI systems can be susceptile to *oscillation*, which means that two or m
 
 |Signal|Parameters|Description|Version|
 |--|--|--|--|
+|behaviour_group_changed|behaviour_group_node|Emitted when the behaviour group changes during `evaluate_options` or after a behaviour has completed during the `update_current_behaviour` call.|v1.6|
+|behaviour_group_exited|behaviour_group_node|Emitted when the behaviour group exits during `evaluate_options` or after a behaviour has completed during the `update_current_behaviour` call.|v1.6|
 |behaviour_changed|behaviour_node|Emitted when the behaviour changes during `evaluate_options` or after a behaviour has completed during the `update_current_behaviour` call.|v1.0|
+|behaviour_exited|behaviour_node|Emitted when exits during `evaluate_options` or after a behaviour has completed during the `update_current_behaviour` call.|v1.6|
 |action_changed|action_node|Emitted when the current action changes during a `update_current_behaviour` call.|v1.0|
+|action_exited|action_node|Emitted when the current action exits during a `update_current_behaviour` call.|v1.6|
 
 
 ### UtilityAISensor and UtilityAISensorGroup
@@ -246,6 +250,16 @@ The `UtilityAIBehaviour` has the following properties:
 
 None.
 
+#### Signals
+
+|Signal|Parameters|Description|Version|
+|--|--|--|--|
+|behaviour_entered||Emitted when the behaviour gets selected during the UtilityAIAgent `evaluate_options` call.|v1.6|
+|behaviour_exited||Emitted for the current behaviour when some other behaviour gets selected during the UtilityAIAgent `evaluate_options` call.|v1.6|
+|physics_frame_tick|delta|Called when the node gets the physics_process tick notification. Can be used to handle behaviour update logic.|v1.6|
+|idle_frame_tick|delta|Called when the node gets the process tick notification. Can be used to handle behaviour update logic.|v1.6|
+
+
 ### UtilityAIBehaviourGroup
 
 The `UtilityAIBehaviourGroup` node type should be added as child node of the `UtilityAIAgent` node, preferably after any `sensor` and `sensor group` nodes. There can only be one level of child nodes for the Behaviour Groups, which means you cannot have nested Behaviour Group nodes. 
@@ -274,6 +288,14 @@ The `UtilityAIBehaviourGroup` has the following properties:
 
 None.
 
+#### Signals
+
+|Signal|Parameters|Description|Version|
+|--|--|--|--|
+|behaviour_group_entered||Emitted when a behaviour within the behaviour group gets selected during the UtilityAIAgent `evaluate_options` call.|v1.6|
+|behaviour_group_exited||Emitted for the current behaviour group when some behaviour in some other behaviour group gets selected during the UtilityAIAgent `evaluate_options` call.|v1.6|
+|physics_frame_tick|delta|Called when the node gets the physics_process tick notification. Can be used to handle behaviour group related update logic.|v1.6|
+|idle_frame_tick|delta|Called when the node gets the process tick notification. Can be used to handle behaviour group related update logic.|v1.6|
 
 ### UtilityAIConsideration and UtilityAIConsiderationGroup
 
@@ -372,6 +394,17 @@ The `UtilityAIActionGroup` has the following properties:
 #### Methods 
 
 None.
+
+#### Signals
+
+The `UtilityAIAction` node has the following signals.
+
+|Signal|Parameters|Description|Version|
+|--|--|--|--|
+|action_entered||Emitted when the action gets selected during the UtilityAIAgent `update_current_behaviour` call.|v1.6|
+|action_exited||Emitted for the current action when some other action gets selected during the UtilityAIAgent `update_current_behaviour` call.|v1.6|
+|physics_frame_tick|delta|Called when the node gets the physics_process tick notification. Can be used to handle action update logic.|v1.6|
+|idle_frame_tick|delta|Called when the node gets the process tick notification. Can be used to handle action update logic.|v1.6|
 
 # Utility enabled Behaviour Tree
 
@@ -612,7 +645,7 @@ The Utility AI GDExtensions State Tree is just two nodes: `UtilityAISTRoot` and 
 
 When the tree is *ticked* for the first time, a set of active states is selected by evaluating the child nodes of the root node, and the childs of the child nodes, until a *leaf node* is found that can be activated (i.e. its `on_enter_condition()` method returns true or utility-based evaluation selects it as the highest-scoring node). All the State Tree nodes from the root node all the way down to the found leaf node are then considered as "active". On subsequent calls to the root node `tick()` method, all the active nodes are ticked in top-to-down order from the root to the leaf node. This allows you to create a hierarchy of states with shared logic on the top-level nodes and more specific logic on the leaf nodes. You can select the child node evaluation method for each State Tree node by setting the `child_state_selection_rule` property.
 
-User-defined methods `on_enter_condition(user_data, delta) -> bool`, `on_enter_state(user_data, delta)`, `on_exit_state(user_data, delta)` and `on_tick(user_data, delta)` can be defined to create your custom state activation and handling logic.
+User-defined methods `on_enter_condition(user_data, delta) -> bool`, `on_enter_state(user_data, delta)`, `on_exit_state(user_data, delta)` and `on_tick(user_data, delta)` can be defined to create your custom state activation and handling logic. Alternatively, you can also use the **signals** `state_check_enter_condition(user_data, delta)`, `state_entered(user_data, delta)`, `state_exited(user_data, delta)` and `state_ticked(user_data, delta)`. 
 
 The states are changed by calling the `transition_to()` method and by providing a *NodePath* to a child node of the State Tree root node as a target state. The child nodes of the target node are evaluated, all the way down the tree, until a leaf State Tree node is activated. If no active leaf node is found, the state transition fails and the State Tree remains in the existing state.
 
@@ -646,6 +679,14 @@ All the State Tree nodes have the following shared methods:
 |--|--|--|--|
 |void|transition_to(NodePath new_state_nodepath, Variant user_data, float delta)|This method is used to transition between states in the Stae Tree. You must provide the NodePath (relative to the State Tree root node) for the target state and you can provide any Godot variant type as a parameter (usually a node used as an actor or a dictionary used as a blackboard), along with a delta-time. User_data and delta are passed to the `on_enter_condition()`-method when selecting the active states.|v1.5|
 
+#### Shared signals for all the State Tree nodes
+
+|Signal|Parameters|Description|Version|
+|--|--|--|--|
+|state_check_enter_condition|user_data, delta|Emitted when the the `on_enter_condition()` check needs to be done. The signal **must** call the `set_on_entered_condition(bool enter_state)` method with either true or false as the parameter to indicate if the state should be entered or not.|v1.6|
+|state_entered|user_data,delta|Emitted when the state is entered. Add any state initialization to this signal handler.|v1.6|
+|state_exited|user_data,delta|Emitted when the state is exited. Add any state deinitialization to this signal handler.|v1.6|
+|state_ticked|user_data,delta|Emitted when the state is ticked. Add state update logic to this signal handler.|v1.6|
 
 ### UtilityAISTRoot
 
@@ -702,22 +743,60 @@ func on_tick(user_data, delta) -> void:
 
 # The Node Query System (NQS)
 
-The Utility AI Node Query System is a set of nodes that can be used to score and filter any set of Godot nodes to find the top N best nodes given a set of search criteria. The two main node types for the Node Query System are `UtilityAINQSSearchSpaces` and `UtilityAINQSSearchCriteria`. The *Search Spaces* nodes define a set of nodes as a "search space". The *Search Criteria* nodes define **filtering** and **scoring** criteria. Similarly to Considerations an *activation curve* can be set to further customize the scoring of each criteria to fit the needs of your game.
+The Utility AI Node Query System is a set of nodes that can be used to score and filter any set of Godot nodes to find the top N best nodes given a set of search criteria. The two main node types for the Node Query System are `UtilityAINQSSearchSpaces` and `UtilityAINQSSearchCriteria`. 
 
 The Node Query System has been designed to be as flexible as possible and to allow **any** node property to be used as a scoring or filtering criterion. This allows the use of the system for spatial reasoning ("what is the best cover point/tile to move to?"), but also any other type of quantitative reasoning or ranking a game could need for the AI ("what is the best inventory item to use?, "who is the biggest threat?"). 
+
+
+**The structure of a query**
+
+![NQS Structure](images/nqs_structure.png)
+
+The **Search Spaces** nodes define a set of nodes as a "search space" for **queries**. A simple example of a search space would be a specific node group.
+
+The **Search Criteria** nodes define **filtering** and **scoring** criteria when **queries** are executed to find nodes within a search space. The filtering and scoring can use any node property, for example the node position or the distance from a given coordinate to the node position. Similarly to Considerations an *activation curve* can be set to further customize the scoring of each criteria to fit the needs of your game.
+
+The **queries** are calls to the `post_query()` method of the NQS singleton (recommended way of using the NQS), or the `execute_query()` method of a search space. The method applies the criteria nodes set as the child nodes of the search space and stores the results in the `query_results` and `query_result_scores` properties of the search space. 
+
+
+**How filtering works**
+
+The criterion nodes contain the *Use for Filtering* property. If this property is set to true (the checkbox is checked), the criterion will remove the nodes that do not match its filtering rule. For example, the *Distance* criteria have `min_distance` and `max_distance` properties. If the distance to a node is less than the `min_distance` or greater than the `max_distance`, the node is filtered out and it will not be included when evaluating the next criteria. 
+
+
+**How scoring works**
+
+The *Use for Scoring* property needs to be set to true if a criterion should assign a score to a node. The scoring logic depends on the criterion. For instance, the *distance* criteria calculcate the distance from a given position to the evaluated node, and then use the minimum and maximum distance values to scale the result to the range of 0..1. If the distance is less than the set minimum distance, the score will be 0. If it is greater than the maximum distance, the score will be 1. 
+
+The scoring for each node is done by **multiplying** the score the node gets in each criterion. 
+
+![NQS Scoring](images/nqs_score_calculation.png)
+
+If a criterion is not used for scoring, it will simply assign the value 1.0 as the node score. 
+
+
+**Filtering and Scoring together**
+
+For performance, when adding the search criteria add the **filtering** criteria first if possible to reduce the number of nodes as early as possible. After those, add the score-based criteria to filter and rank the remaining nodes. 
+
 
 ### NodeQuerySystem-singleton
 
 A singleton has been added that allows *time budgeting* for the NQS queries. See the included example project for an example of how to use the singleton. As of version **1.4** the singleton is the recommended way of executing the queries. It is still possible to execute them directly as well, if needed.
 
+To use the NodeQuerySystem-singleton to execute queries, you call the `NodeQuerySystem.post_query(Node search_space, bool is_high_priority)` method. The queries can be posted with a **regular priority** or a **high priority**. The high priority queries are always updated first, and by default they are also allocated more time per physics frame. The remaining time is used to update the regular priority queries. 
+
+Utility AI GDExtension targets currently the version 4.1 of the Godot Engine to offer the widest compatibility for Godot 4.X releases. Unfortunately, in version 4.1 of Godot a singleton cannot have a `_physics_process()` method, and therefore updating the singleton requires one line of code to be added to your game. Specifically, the `NodeQuerySystem.run_queries()` method needs to be called **once** per physics frame to allow the queries to execute. 
+
+
 The NodeQuerySystem-singleton has the following properties:
 
 |Type|Name|Description|Version|
 |--|--|--|--|
-|int|run_queries_time_budget_per_frame_usec|This is the time the `run_queries()` method is allowed to run per frame, in usec (microseconds).|v1.4|
-|float|time_allocation_pct_to_high_priority_queries|Value between 0..1, determines how much of the `run_queries_time_budget_per_frame` is used for high-priority queries.|v1.4|
-|int|high_priority_query_per_frame_execute_query_time_budget_usec|This is the time used by `run_queries()` method for each high priority query it updates per frame. Default value: 20 usec (microseconds).|v1.5|
-|int|regular_query_per_frame_execute_query_time_budget_usec|This is the time used by `run_queries()` method for each regular query it updates per frame. Default value: 10 usec (microseconds).|v1.5|
+|int|run_queries_time_budget_per_frame_usec|This is the time the `run_queries()` method is allowed to run per frame, in usec (microseconds). When the time runs out, they will resume from where they left off on the next physics frame.|v1.4|
+|float|time_allocation_pct_to_high_priority_queries|Value between 0..1, determines how much of the `run_queries_time_budget_per_frame` is used for high-priority queries. The time left over is used for the regular priority queries.|v1.4|
+|int|high_priority_query_per_frame_execute_query_time_budget_usec|This how much time the `run_queries()` method uses to make progress for each high priority query at a time. If you have 5 high priority queries posted, for example, and this is set to 20 microseconds, `run_queries()` loops through the 5 queries and uses approximately 20 microseconds for each query during each loop iteration until the time budget for high priority queries runs out. Default value: 20 usec (microseconds).|v1.5|
+|int|regular_query_per_frame_execute_query_time_budget_usec|This is the time used by `run_queries()` method for each regular query it has time to update per update iteration. Default value: 10 usec (microseconds).|v1.5|
 
 And the following methods:
 
@@ -737,7 +816,7 @@ And the following methods:
 
 ### UtilityAISearchSpaces nodes 
 
-The search space nodes are used to define the set of nodes that will be included in the search. The following nodes have been implemented:
+The search space nodes are used to define the set of nodes that will be included in the search when a **query** is executed. The following search space nodes have been implemented:
 
 **General search spaces**
 
@@ -755,14 +834,12 @@ The search space nodes are used to define the set of nodes that will be included
 * UtilityAIPointGrid3DSearchSpace
 
 
-The search space nodes need to have the `UtilityAISearchCriteria` nodes as their children. For performance, when adding the search criteria add the **filtering** criteria first if possible to reduce the number of nodes as early as possible. After those, add the score-based criteria to filter and rank the remaining nodes. 
 
-When the query finishes, the search spaces emit the `query_completed`-signal.
-The search spaces fill in a TypedArray `_query_results` and a PackedFloat64Array `_query_result_scores`. These are sorted by the score in a descending order. This means that the first node in the `_query_results` array is also the one with the highest score.
+The search space nodes need to have the `UtilityAISearchCriteria` nodes as their children. When the query finishes, the search spaces emit the `query_completed`-signal. The search spaces fill in a TypedArray `_query_results` and a PackedFloat64Array `_query_result_scores`. These are sorted by the score in a descending order. This means that the first node in the `_query_results` array is also the one with the highest score.
 
 The `execute_query()` method average runtime and other metrics (see below) are available for debugging and finetuning your queries. 
 
-Each search space can be run by itself, by calling its `execute_query()` method until it returns true (completed), or by using the `NodeQuerySystem`-singleton. If the singleton is used, you should not use the `execute_query()` method at all, but simply post the query using `NodeQuerySystem.post_query()`-method instead.
+Each search space can be run by itself, by calling its `execute_query()` method until it returns true (completed), or by using the `NodeQuerySystem`-singleton. If the singleton is used, you should not use the `execute_query()` method at all, but simply post the query using `NodeQuerySystem.post_query()`-method instead. The NodeQuerySystem singleton is the recommended way of executing the queries for search spaces, as it allows the use of time budgeting.
  
 
 #### Shared properties
@@ -773,8 +850,8 @@ All the search spaces have the following general properties.
 |--|--|--|--|
 |bool|is_active|This property can be used to include or exlude the node from processing.|v1.3|
 |int|top_n_to_find|The number of nodes to return (at maximum)|v1.3|
-|TypedArray<Node>|_query_results|The resulting array of nodes, sorted in descending order based on the score.|v1.3|
-|PackedFloat64Array|_query_result_scores|The resulting array of node scores.|v1.3|
+|TypedArray<Node>|query_results|The resulting array of nodes, sorted in descending order based on the score.|v1.3|
+|PackedFloat64Array|query_result_scores|The resulting array of node scores.|v1.3|
 |int|average_call_runtime_usec|Used for debugging and tuning, the average time a single call to `execute_query()` method takes.|v1.4|
 |int|total_query_runtime_usec|The total time to complete the query. Note that this calculates the time from starting the query to finishing it, which means that for queries that take several frames this includes processing time used **outside** of the `execute_query()` method (i.e. *all* your other code you run per frame).|v1.4|
 |int|completed_signal_time_usec|The time it takes to handle the `query_completed` signal (i.e. your result handling code).|v1.4|
@@ -1050,14 +1127,15 @@ None.
 
 ### UtilityAIMetadataSearchCriterion
 
-The metadata search criterion can be used to filter out nodes that do not contain certain metadata.
+The metadata search criterion can be used to filter nodes based on their metadata. Currently only metadata with type String is supported. Both the name and value of the metadata must match, otherwise the node will be filtered out.
 
 
 #### Properties
 
 |Type|Name|Description|Version|
 |--|--|--|--|
-|StringName|metadata|The name of the metadata field to find||v1.3|
+|StringName|metadata_name|The name of the metadata field to find.|v1.3|
+|String|metadata_value|The value of the named metadata field.|v1.6|
 
 
 #### Methods 
