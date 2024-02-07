@@ -27,6 +27,19 @@ The *Agent behaviours*, *Utility enabled State Tree* and *Utility enabled Behavi
 The *Node Query System* focuses on using utility functions to score and filter any type of Godot nodes. They answer the question "What is the *best node for the job*?". Use the NQS when you want to choose the best tile to move to, the biggest threat to attack, the best healing item to consume, for example.
 
 
+## Example use cases for nodes
+
+All the AI node types in Utility AI GDExtension can be used to create AI behaviours. However, each type has their strengths which make them better suited for certain use cases.
+
+The **Agent Behaviours** and the **State Tree** are higher-level structures that define states or high-level behaviours. They use rules or scoring to select the appropriate state/behaviour, like *idle*, *patrol*, *attack* or *flee*. **State Trees** can also be used for any other state management, like menus and other systems.
+
+The **Behaviour Tree** nodes are best suited for task-oriented and reactive AI behaviour. A behaviour tree is a *plan* for realizing a specific goal, for example *moving to a target position* or *entering a building*. It is easy to build fallback plans using behaviour trees, for example *entering a building* may be done by first trying to go in through the front door, and if that fails, trying the window instead.
+
+Agent Behaviours and Behaviour Trees are not built with the idea of directly jumping from a node to another. If you have such a need, the you should use a **State tree**.
+
+A practical way of using these systems together is to use either Agent Behaviours or a State Tree to choose a high-level state. When a state or a behaviour requires more complex logic, use a behaviour tree to realize the logic. This keeps the state management out of the behaviour trees and makes them smaller, and on the other hand allows the Behaviours/States to focus on the "bigger picture" and care less about the details or complexities of how the goal of the Behaviour/State is achieved.
+
+
 # Agent Behaviours
 
 ## Agent behaviour nodes
